@@ -1,0 +1,193 @@
+CCS PCM C Compiler, Version 4.013, 28193               11-th3-08 20:59
+
+               Filename: G:\Mach dien\Lap trinh C\CCS\Lap trinh nang cao\music box.lst
+
+               ROM used: 143 words (2%)
+                         Largest free fragment is 2048
+               RAM used: 8 (2%) at main() level
+                         10 (3%) worst case
+               Stack:    2 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   049
+0003:  NOP
+.................... #include <16F877A.h> 
+.................... //////// Standard Header file for the PIC16F877A device //////////////// 
+.................... #device PIC16F877A 
+.................... #list 
+....................  
+.................... #device *=16 
+.................... #fuses NOWDT,HS,NOPUT,NOPROTECT,NODEBUG,NOBROWNOUT,NOLVP,NOCPD,NOWRT      //khai bao cac thiet dat cho PIC 
+.................... #use delay(clock=24000000)                               //khai bao su dung thach anh 20MHz de su dung ham delay cua chuong trinh 
+0004:  MOVLW  23
+0005:  MOVWF  04
+0006:  BCF    03.7
+0007:  MOVF   00,W
+0008:  BTFSC  03.2
+0009:  GOTO   018
+000A:  MOVLW  07
+000B:  MOVWF  78
+000C:  CLRF   77
+000D:  DECFSZ 77,F
+000E:  GOTO   00D
+000F:  DECFSZ 78,F
+0010:  GOTO   00C
+0011:  MOVLW  C7
+0012:  MOVWF  77
+0013:  DECFSZ 77,F
+0014:  GOTO   013
+0015:  NOP
+0016:  DECFSZ 00,F
+0017:  GOTO   00A
+0018:  RETLW  00
+0019:  MOVLW  02
+001A:  SUBWF  23,F
+001B:  BTFSS  03.0
+001C:  GOTO   028
+001D:  MOVLW  23
+001E:  MOVWF  04
+001F:  BCF    03.7
+0020:  MOVF   00,W
+0021:  BTFSC  03.2
+0022:  GOTO   028
+0023:  GOTO   026
+0024:  GOTO   025
+0025:  NOP
+0026:  DECFSZ 00,F
+0027:  GOTO   024
+0028:  RETLW  00
+.................... /*************************************************************************************/ 
+.................... void a(unsigned int ring){ 
+.................... unsigned int a; 
+.................... for(a=0;a<ring;a++){ 
+0029:  CLRF   22
+002A:  MOVF   21,W
+002B:  SUBWF  22,W
+002C:  BTFSC  03.0
+002D:  GOTO   048
+.................... output_bit(pin_c0,1); 
+002E:  BSF    07.0
+002F:  BCF    20.0
+0030:  MOVF   20,W
+0031:  BSF    03.5
+0032:  MOVWF  07
+*
+0054:  MOVLW  FF
+0055:  BCF    03.5
+0056:  MOVWF  20
+.................... delay_us(1136); 
+*
+0033:  MOVLW  01
+0034:  BCF    03.5
+0035:  MOVWF  23
+0036:  CALL   004
+0037:  MOVLW  88
+0038:  MOVWF  23
+0039:  CALL   019
+.................... output_bit(pin_c0,0); 
+003A:  BCF    07.0
+003B:  BCF    20.0
+003C:  MOVF   20,W
+003D:  BSF    03.5
+003E:  MOVWF  07
+.................... delay_us(1136); 
+003F:  MOVLW  01
+0040:  BCF    03.5
+0041:  MOVWF  23
+0042:  CALL   004
+0043:  MOVLW  88
+0044:  MOVWF  23
+0045:  CALL   019
+.................... } 
+0046:  INCF   22,F
+0047:  GOTO   02A
+.................... } 
+0048:  RETLW  00
+.................... /********************************/ 
+.................... void main(){ 
+0049:  CLRF   04
+004A:  BCF    03.7
+004B:  MOVLW  1F
+004C:  ANDWF  03,F
+004D:  BSF    03.5
+004E:  BSF    1F.0
+004F:  BSF    1F.1
+0050:  BSF    1F.2
+0051:  BCF    1F.3
+0052:  MOVLW  07
+0053:  MOVWF  1C
+.................... output_low(pin_c3); 
+*
+0057:  BCF    20.3
+0058:  MOVF   20,W
+0059:  BSF    03.5
+005A:  MOVWF  07
+005B:  BCF    03.5
+005C:  BCF    07.3
+.................... while(1){ 
+.................... a(50);delay_ms(10); 
+005D:  MOVLW  32
+005E:  MOVWF  21
+005F:  CALL   029
+0060:  MOVLW  0A
+0061:  MOVWF  23
+0062:  CALL   004
+.................... a(0);delay_ms(50); 
+0063:  CLRF   21
+0064:  CALL   029
+0065:  MOVLW  32
+0066:  MOVWF  23
+0067:  CALL   004
+.................... a(50);delay_ms(10); 
+0068:  MOVLW  32
+0069:  MOVWF  21
+006A:  CALL   029
+006B:  MOVLW  0A
+006C:  MOVWF  23
+006D:  CALL   004
+.................... a(0);delay_ms(50); 
+006E:  CLRF   21
+006F:  CALL   029
+0070:  MOVLW  32
+0071:  MOVWF  23
+0072:  CALL   004
+.................... a(50);delay_ms(10); 
+0073:  MOVLW  32
+0074:  MOVWF  21
+0075:  CALL   029
+0076:  MOVLW  0A
+0077:  MOVWF  23
+0078:  CALL   004
+.................... a(0);delay_ms(50); 
+0079:  CLRF   21
+007A:  CALL   029
+007B:  MOVLW  32
+007C:  MOVWF  23
+007D:  CALL   004
+.................... a(50);delay_ms(200); 
+007E:  MOVLW  32
+007F:  MOVWF  21
+0080:  CALL   029
+0081:  MOVLW  C8
+0082:  MOVWF  23
+0083:  CALL   004
+.................... a(0);delay_ms(300); 
+0084:  CLRF   21
+0085:  CALL   029
+0086:  MOVLW  02
+0087:  MOVWF  21
+0088:  MOVLW  96
+0089:  MOVWF  23
+008A:  CALL   004
+008B:  DECFSZ 21,F
+008C:  GOTO   088
+.................... } 
+008D:  GOTO   05D
+.................... } 
+....................  
+008E:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F3A   HS NOWDT NOPUT NODEBUG NOPROTECT NOBROWNOUT NOLVP NOCPD NOWRT

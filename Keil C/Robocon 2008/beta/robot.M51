@@ -1,0 +1,382 @@
+BL51 BANKED LINKER/LOCATER V6.02                                                        03/22/2008  18:08:10  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.02, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE robot.obj TO robot RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  robot.obj (ROBOT)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CCASE)
+
+
+LINK MAP OF MODULE:  robot (ROBOT)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         _DATA_GROUP_
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     00BDH     UNIT         ?PR?_CHAYTHANG?ROBOT
+            CODE    00C0H     005EH     UNIT         ?PR?SENSOR?ROBOT
+            CODE    011EH     0026H     UNIT         ?C?LIB_CODE
+            CODE    0144H     0022H     UNIT         ?PR?MAIN?ROBOT
+            CODE    0166H     0012H     UNIT         ?PR?_DELAY?ROBOT
+            CODE    0178H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0184H     000AH     UNIT         ?PR?V_TRAI1?ROBOT
+            CODE    018EH     000AH     UNIT         ?PR?V_TRAI2?ROBOT
+            CODE    0198H     000AH     UNIT         ?PR?V_TRAI3?ROBOT
+            CODE    01A2H     000AH     UNIT         ?PR?V_TRAI4?ROBOT
+            CODE    01ACH     000AH     UNIT         ?PR?V_TRAI5?ROBOT
+            CODE    01B6H     000AH     UNIT         ?PR?V_TRAI6?ROBOT
+            CODE    01C0H     000AH     UNIT         ?PR?V_TRAI7?ROBOT
+            CODE    01CAH     000AH     UNIT         ?PR?V_PHAI1?ROBOT
+            CODE    01D4H     000AH     UNIT         ?PR?V_PHAI2?ROBOT
+            CODE    01DEH     000AH     UNIT         ?PR?V_PHAI3?ROBOT
+            CODE    01E8H     000AH     UNIT         ?PR?V_PHAI4?ROBOT
+            CODE    01F2H     000AH     UNIT         ?PR?V_PHAI5?ROBOT
+            CODE    01FCH     000AH     UNIT         ?PR?V_PHAI6?ROBOT
+            CODE    0206H     000AH     UNIT         ?PR?V_PHAI7?ROBOT
+            CODE    0210H     0008H     UNIT         ?PR?V_THANG?ROBOT
+            CODE    0218H     0008H     UNIT         ?PR?STOP?ROBOT
+            CODE    0220H     0003H     UNIT         ?PR?_BANHTRAI?ROBOT
+            CODE    0223H     0003H     UNIT         ?PR?_BANHPHAI?ROBOT
+
+
+
+OVERLAY MAP OF MODULE:   robot (ROBOT)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+BL51 BANKED LINKER/LOCATER V6.02                                                      03/22/2008  18:08:10  PAGE 2
+
+
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?ROBOT
+
+?PR?MAIN?ROBOT                 -----    -----
+  +--> ?PR?_CHAYTHANG?ROBOT
+  +--> ?PR?STOP?ROBOT
+  +--> ?PR?_DELAY?ROBOT
+
+?PR?_CHAYTHANG?ROBOT           0008H    0001H
+  +--> ?PR?_DELAY?ROBOT
+  +--> ?PR?STOP?ROBOT
+  +--> ?PR?V_TRAI1?ROBOT
+  +--> ?PR?V_TRAI2?ROBOT
+  +--> ?PR?V_TRAI3?ROBOT
+  +--> ?PR?V_TRAI4?ROBOT
+  +--> ?PR?V_TRAI5?ROBOT
+  +--> ?PR?V_TRAI6?ROBOT
+  +--> ?PR?V_TRAI7?ROBOT
+  +--> ?PR?V_PHAI1?ROBOT
+  +--> ?PR?V_PHAI2?ROBOT
+  +--> ?PR?V_PHAI3?ROBOT
+  +--> ?PR?V_PHAI4?ROBOT
+  +--> ?PR?V_PHAI5?ROBOT
+  +--> ?PR?V_PHAI6?ROBOT
+  +--> ?PR?V_PHAI7?ROBOT
+  +--> ?PR?V_THANG?ROBOT
+  +--> ?PR?SENSOR?ROBOT
+
+?PR?STOP?ROBOT                 -----    -----
+  +--> ?PR?_BANHTRAI?ROBOT
+  +--> ?PR?_BANHPHAI?ROBOT
+
+?PR?V_TRAI1?ROBOT              -----    -----
+  +--> ?PR?_BANHTRAI?ROBOT
+  +--> ?PR?_BANHPHAI?ROBOT
+
+?PR?V_TRAI2?ROBOT              -----    -----
+  +--> ?PR?_BANHTRAI?ROBOT
+  +--> ?PR?_BANHPHAI?ROBOT
+
+?PR?V_TRAI3?ROBOT              -----    -----
+  +--> ?PR?_BANHTRAI?ROBOT
+  +--> ?PR?_BANHPHAI?ROBOT
+
+?PR?V_TRAI4?ROBOT              -----    -----
+  +--> ?PR?_BANHTRAI?ROBOT
+  +--> ?PR?_BANHPHAI?ROBOT
+
+?PR?V_TRAI5?ROBOT              -----    -----
+  +--> ?PR?_BANHTRAI?ROBOT
+  +--> ?PR?_BANHPHAI?ROBOT
+
+?PR?V_TRAI6?ROBOT              -----    -----
+  +--> ?PR?_BANHTRAI?ROBOT
+  +--> ?PR?_BANHPHAI?ROBOT
+
+BL51 BANKED LINKER/LOCATER V6.02                                                      03/22/2008  18:08:10  PAGE 3
+
+
+?PR?V_TRAI7?ROBOT              -----    -----
+  +--> ?PR?_BANHTRAI?ROBOT
+  +--> ?PR?_BANHPHAI?ROBOT
+
+?PR?V_PHAI1?ROBOT              -----    -----
+  +--> ?PR?_BANHTRAI?ROBOT
+  +--> ?PR?_BANHPHAI?ROBOT
+
+?PR?V_PHAI2?ROBOT              -----    -----
+  +--> ?PR?_BANHTRAI?ROBOT
+  +--> ?PR?_BANHPHAI?ROBOT
+
+?PR?V_PHAI3?ROBOT              -----    -----
+  +--> ?PR?_BANHTRAI?ROBOT
+  +--> ?PR?_BANHPHAI?ROBOT
+
+?PR?V_PHAI4?ROBOT              -----    -----
+  +--> ?PR?_BANHTRAI?ROBOT
+  +--> ?PR?_BANHPHAI?ROBOT
+
+?PR?V_PHAI5?ROBOT              -----    -----
+  +--> ?PR?_BANHTRAI?ROBOT
+  +--> ?PR?_BANHPHAI?ROBOT
+
+?PR?V_PHAI6?ROBOT              -----    -----
+  +--> ?PR?_BANHTRAI?ROBOT
+  +--> ?PR?_BANHPHAI?ROBOT
+
+?PR?V_PHAI7?ROBOT              -----    -----
+  +--> ?PR?_BANHTRAI?ROBOT
+  +--> ?PR?_BANHPHAI?ROBOT
+
+?PR?V_THANG?ROBOT              -----    -----
+  +--> ?PR?_BANHTRAI?ROBOT
+  +--> ?PR?_BANHPHAI?ROBOT
+
+
+
+SYMBOL TABLE OF MODULE:  robot (ROBOT)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ROBOT
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  C:0166H         PUBLIC        _delay
+  D:00FDH         PUBLIC        CCAP3H
+  B:00D8H.6       PUBLIC        CR
+  D:00FEH         PUBLIC        CCAP4H
+  D:00DBH         PUBLIC        CCAPM1
+  D:00DCH         PUBLIC        CCAPM2
+  D:00DDH         PUBLIC        CCAPM3
+  D:00DEH         PUBLIC        CCAPM4
+  C:00C0H         PUBLIC        sensor
+BL51 BANKED LINKER/LOCATER V6.02                                                      03/22/2008  18:08:10  PAGE 4
+
+
+  D:00D9H         PUBLIC        CMOD
+  C:0144H         PUBLIC        main
+  C:01CAH         PUBLIC        v_phai1
+  C:01D4H         PUBLIC        v_phai2
+  C:01DEH         PUBLIC        v_phai3
+  C:01E8H         PUBLIC        v_phai4
+  C:01F2H         PUBLIC        v_phai5
+  C:01FCH         PUBLIC        v_phai6
+  C:0206H         PUBLIC        v_phai7
+  C:0184H         PUBLIC        v_trai1
+  C:018EH         PUBLIC        v_trai2
+  C:0198H         PUBLIC        v_trai3
+  C:0003H         PUBLIC        _chaythang
+  C:01A2H         PUBLIC        v_trai4
+  C:01ACH         PUBLIC        v_trai5
+  C:01B6H         PUBLIC        v_trai6
+  C:01C0H         PUBLIC        v_trai7
+  C:0223H         PUBLIC        _banhphai
+  C:0218H         PUBLIC        stop
+  C:0220H         PUBLIC        _banhtrai
+  B:0080H.0       PUBLIC        led1
+  B:0080H.1       PUBLIC        led2
+  B:0080H.2       PUBLIC        led3
+  B:0080H.3       PUBLIC        led4
+  C:0210H         PUBLIC        v_thang
+  B:0080H.4       PUBLIC        led5
+  B:0080H.5       PUBLIC        led6
+  B:0090H.2       PUBLIC        dcphai
+  B:0080H.6       PUBLIC        led7
+  B:0080H.7       PUBLIC        led8
+  B:0090H.3       PUBLIC        dctrai
+  -------         PROC          _BANHTRAI
+  D:0007H         SYMBOL        duty
+  C:0220H         LINE#         34
+  C:0220H         LINE#         35
+  -------         ENDPROC       _BANHTRAI
+  -------         PROC          _BANHPHAI
+  D:0007H         SYMBOL        duty
+  C:0223H         LINE#         36
+  C:0223H         LINE#         37
+  -------         ENDPROC       _BANHPHAI
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        time
+  -------         DO            
+  D:0004H         SYMBOL        a
+  -------         ENDDO         
+  C:0166H         LINE#         39
+  C:0166H         LINE#         41
+  C:0177H         LINE#         42
+  -------         ENDPROC       _DELAY
+  -------         PROC          V_THANG
+  C:0210H         LINE#         44
+  C:0210H         LINE#         45
+  C:0215H         LINE#         46
+  -------         ENDPROC       V_THANG
+  -------         PROC          V_TRAI1
+  C:0184H         LINE#         48
+BL51 BANKED LINKER/LOCATER V6.02                                                      03/22/2008  18:08:10  PAGE 5
+
+
+  C:0184H         LINE#         49
+  C:0189H         LINE#         50
+  -------         ENDPROC       V_TRAI1
+  -------         PROC          V_TRAI2
+  C:018EH         LINE#         51
+  C:018EH         LINE#         52
+  C:0193H         LINE#         53
+  -------         ENDPROC       V_TRAI2
+  -------         PROC          V_TRAI3
+  C:0198H         LINE#         54
+  C:0198H         LINE#         55
+  C:019DH         LINE#         56
+  -------         ENDPROC       V_TRAI3
+  -------         PROC          V_TRAI4
+  C:01A2H         LINE#         57
+  C:01A2H         LINE#         58
+  C:01A7H         LINE#         59
+  -------         ENDPROC       V_TRAI4
+  -------         PROC          V_TRAI5
+  C:01ACH         LINE#         60
+  C:01ACH         LINE#         61
+  C:01B1H         LINE#         62
+  -------         ENDPROC       V_TRAI5
+  -------         PROC          V_TRAI6
+  C:01B6H         LINE#         63
+  C:01B6H         LINE#         64
+  C:01BBH         LINE#         65
+  -------         ENDPROC       V_TRAI6
+  -------         PROC          V_TRAI7
+  C:01C0H         LINE#         66
+  C:01C0H         LINE#         67
+  C:01C5H         LINE#         68
+  -------         ENDPROC       V_TRAI7
+  -------         PROC          V_PHAI1
+  C:01CAH         LINE#         70
+  C:01CAH         LINE#         71
+  C:01CFH         LINE#         72
+  -------         ENDPROC       V_PHAI1
+  -------         PROC          V_PHAI2
+  C:01D4H         LINE#         73
+  C:01D4H         LINE#         74
+  C:01D9H         LINE#         75
+  -------         ENDPROC       V_PHAI2
+  -------         PROC          V_PHAI3
+  C:01DEH         LINE#         76
+  C:01DEH         LINE#         77
+  C:01E3H         LINE#         78
+  -------         ENDPROC       V_PHAI3
+  -------         PROC          V_PHAI4
+  C:01E8H         LINE#         79
+  C:01E8H         LINE#         80
+  C:01EDH         LINE#         81
+  -------         ENDPROC       V_PHAI4
+  -------         PROC          V_PHAI5
+  C:01F2H         LINE#         82
+  C:01F2H         LINE#         83
+  C:01F7H         LINE#         84
+BL51 BANKED LINKER/LOCATER V6.02                                                      03/22/2008  18:08:10  PAGE 6
+
+
+  -------         ENDPROC       V_PHAI5
+  -------         PROC          V_PHAI6
+  C:01FCH         LINE#         85
+  C:01FCH         LINE#         86
+  C:0201H         LINE#         87
+  -------         ENDPROC       V_PHAI6
+  -------         PROC          V_PHAI7
+  C:0206H         LINE#         88
+  C:0206H         LINE#         89
+  C:020BH         LINE#         90
+  -------         ENDPROC       V_PHAI7
+  -------         PROC          STOP
+  C:0218H         LINE#         92
+  C:0218H         LINE#         93
+  C:021DH         LINE#         94
+  -------         ENDPROC       STOP
+  -------         PROC          SENSOR
+  -------         DO            
+  D:0007H         SYMBOL        total
+  -------         ENDDO         
+  C:00C0H         LINE#         96
+  C:00C0H         LINE#         98
+  C:011DH         LINE#         99
+  -------         ENDPROC       SENSOR
+  -------         PROC          _CHAYTHANG
+  D:0008H         SYMBOL        vach
+  C:0003H         LINE#         101
+  C:0005H         LINE#         102
+  C:0009H         LINE#         103
+  C:0010H         LINE#         104
+  C:0019H         LINE#         105
+  C:001CH         LINE#         106
+  C:001CH         LINE#         107
+  C:0050H         LINE#         108
+  C:0055H         LINE#         109
+  C:005AH         LINE#         110
+  C:005FH         LINE#         111
+  C:0064H         LINE#         112
+  C:0069H         LINE#         113
+  C:006EH         LINE#         114
+  C:0073H         LINE#         115
+  C:0078H         LINE#         116
+  C:007DH         LINE#         117
+  C:0082H         LINE#         118
+  C:0087H         LINE#         119
+  C:008CH         LINE#         120
+  C:0091H         LINE#         121
+  C:0096H         LINE#         122
+  C:0099H         LINE#         123
+  C:0099H         LINE#         124
+  C:00A5H         LINE#         125
+  C:00B3H         LINE#         126
+  C:00B5H         LINE#         127
+  C:00B5H         LINE#         128
+  C:00BFH         LINE#         129
+  -------         ENDPROC       _CHAYTHANG
+  -------         PROC          MAIN
+BL51 BANKED LINKER/LOCATER V6.02                                                      03/22/2008  18:08:10  PAGE 7
+
+
+  C:0144H         LINE#         131
+  C:0144H         LINE#         133
+  C:0147H         LINE#         134
+  C:0149H         LINE#         135
+  C:014CH         LINE#         136
+  C:014FH         LINE#         137
+  C:0152H         LINE#         138
+  C:0155H         LINE#         140
+  C:015AH         LINE#         141
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        ROBOT
+
+  -------         MODULE        ?C?CCASE
+  C:011EH         PUBLIC        ?C?CCASE
+  -------         ENDMOD        ?C?CCASE
+
+Program Size: data=10.0 xdata=0 code=550
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

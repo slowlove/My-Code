@@ -1,0 +1,188 @@
+CCS PCM C Compiler, Version 4.013, 28193               05-th4-08 03:01
+
+               Filename: G:\Mach dien\Lap trinh C\CCS\Lap trinh nang cao\PWM.lst
+
+               ROM used: 140 words (2%)
+                         Largest free fragment is 2048
+               RAM used: 9 (2%) at main() level
+                         10 (3%) worst case
+               Stack:    1 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   027
+0003:  NOP
+.................... #include <16F877A.h> 
+.................... //////// Standard Header file for the PIC16F877A device //////////////// 
+.................... #device PIC16F877A 
+.................... #list 
+....................  
+.................... #device *=16 
+.................... #fuses NOWDT,HS,NOPUT,NOPROTECT,NODEBUG,NOBROWNOUT,NOLVP,NOCPD,NOWRT      //khai bao cac thiet dat cho PIC 
+.................... #use delay(clock=20000000)                               //khai bao su dung thach anh 20MHz de su dung ham delay cua chuong trinh 
+0004:  MOVLW  23
+0005:  MOVWF  04
+0006:  BCF    03.7
+0007:  MOVF   00,W
+0008:  BTFSC  03.2
+0009:  GOTO   017
+000A:  MOVLW  06
+000B:  MOVWF  78
+000C:  CLRF   77
+000D:  DECFSZ 77,F
+000E:  GOTO   00D
+000F:  DECFSZ 78,F
+0010:  GOTO   00C
+0011:  MOVLW  7B
+0012:  MOVWF  77
+0013:  DECFSZ 77,F
+0014:  GOTO   013
+0015:  DECFSZ 00,F
+0016:  GOTO   00A
+0017:  RETLW  00
+0018:  MOVLW  03
+0019:  SUBWF  23,F
+001A:  BTFSS  03.0
+001B:  GOTO   026
+001C:  MOVLW  23
+001D:  MOVWF  04
+001E:  BCF    03.7
+001F:  MOVF   00,W
+0020:  BTFSC  03.2
+0021:  GOTO   026
+0022:  GOTO   024
+0023:  GOTO   024
+0024:  DECFSZ 00,F
+0025:  GOTO   023
+0026:  RETLW  00
+.................... /*************************************************************************************/ 
+.................... void main(){ 
+0027:  CLRF   04
+0028:  BCF    03.7
+0029:  MOVLW  1F
+002A:  ANDWF  03,F
+002B:  BSF    03.5
+002C:  BSF    1F.0
+002D:  BSF    1F.1
+002E:  BSF    1F.2
+002F:  BCF    1F.3
+0030:  MOVLW  07
+0031:  MOVWF  1C
+.................... unsigned char x; 
+.................... set_tris_c(0xf9);   //dat 2chan ccp_pwm la output con cac chan con lai la input 
+0032:  MOVLW  FF
+0033:  BCF    03.5
+0034:  MOVWF  20
+0035:  MOVLW  F9
+0036:  BSF    03.5
+0037:  MOVWF  07
+0038:  BCF    03.5
+0039:  MOVWF  20
+.................... output_c(0); 
+003A:  MOVLW  00
+003B:  MOVWF  20
+003C:  BSF    03.5
+003D:  CLRF   07
+003E:  BCF    03.5
+003F:  CLRF   07
+.................... output_b(0); 
+0040:  BSF    03.5
+0041:  CLRF   06
+0042:  BCF    03.5
+0043:  CLRF   06
+.................... setup_timer_2(t2_div_by_16,255,16);//t2_div_by_16:bo chia tan cho 16 => moi lan dem se mat thoi gian la (4/f*16) 
+0044:  MOVLW  78
+0045:  MOVWF  78
+0046:  IORLW  06
+0047:  MOVWF  12
+0048:  MOVLW  FF
+0049:  BSF    03.5
+004A:  MOVWF  12
+....................                                    //tang den 255 thi reset=>timer 2 se tran` sau 255*4/f*16 
+....................                                    //sau 16 lan tran timer 2 thi xay ra ngat=>sau 16*255*4/f*16 se xay ra ngat timer 2 
+....................                                    //tong cong thoi gian~13ms 
+.................... setup_ccp1(ccp_pwm); 
+004B:  BCF    03.5
+004C:  BCF    20.2
+004D:  MOVF   20,W
+004E:  BSF    03.5
+004F:  MOVWF  07
+0050:  BCF    03.5
+0051:  BCF    07.2
+0052:  MOVLW  0C
+0053:  MOVWF  17
+.................... setup_ccp2(ccp_pwm); 
+0054:  BCF    20.1
+0055:  MOVF   20,W
+0056:  BSF    03.5
+0057:  MOVWF  07
+0058:  BCF    03.5
+0059:  BCF    07.1
+005A:  MOVLW  0C
+005B:  MOVWF  1D
+.................... while(true){ 
+.................... while(x!=1023){ 
+005C:  MOVF   21,W
+005D:  SUBLW  FF
+005E:  BTFSC  03.2
+005F:  GOTO   070
+.................... x++; 
+0060:  INCF   21,F
+.................... set_pwm1_duty(x); 
+0061:  MOVF   21,W
+0062:  MOVWF  15
+.................... set_pwm2_duty(x); 
+0063:  MOVF   21,W
+0064:  MOVWF  1B
+.................... delay_us(2500);} 
+0065:  MOVLW  02
+0066:  MOVWF  23
+0067:  CALL   004
+0068:  MOVLW  02
+0069:  MOVWF  22
+006A:  MOVLW  F9
+006B:  MOVWF  23
+006C:  CALL   018
+006D:  DECFSZ 22,F
+006E:  GOTO   06A
+006F:  GOTO   05C
+.................... delay_ms(500); 
+0070:  MOVLW  02
+0071:  MOVWF  22
+0072:  MOVLW  FA
+0073:  MOVWF  23
+0074:  CALL   004
+0075:  DECFSZ 22,F
+0076:  GOTO   072
+.................... while(x>0){ 
+0077:  MOVF   21,F
+0078:  BTFSC  03.2
+0079:  GOTO   08A
+.................... x--; 
+007A:  DECF   21,F
+.................... set_pwm1_duty(x); 
+007B:  MOVF   21,W
+007C:  MOVWF  15
+.................... set_pwm2_duty(x); 
+007D:  MOVF   21,W
+007E:  MOVWF  1B
+.................... delay_us(2500);} 
+007F:  MOVLW  02
+0080:  MOVWF  23
+0081:  CALL   004
+0082:  MOVLW  02
+0083:  MOVWF  22
+0084:  MOVLW  F9
+0085:  MOVWF  23
+0086:  CALL   018
+0087:  DECFSZ 22,F
+0088:  GOTO   084
+0089:  GOTO   077
+.................... } 
+008A:  GOTO   05C
+.................... } 
+008B:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F3A   HS NOWDT NOPUT NODEBUG NOPROTECT NOBROWNOUT NOLVP NOCPD NOWRT

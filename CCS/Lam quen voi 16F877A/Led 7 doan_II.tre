@@ -1,0 +1,13 @@
+ÀÄLed 7 doan_II
+   ÀÄMAIN  0/47  Ram=2
+      ÃÄ??0??
+      ÃÄ@delay_ms1  0/20  Ram=1
+      ÃÄ@delay_ms1  0/20  Ram=1
+      ÀÄhienthi  0/62  Ram=4
+         ÃÄtachso  (Inline)  Ram=1
+         ³  ÃÄ@DIV88  0/21  Ram=3
+         ³  ÀÄ@DIV88  0/21  Ram=3
+         ÃÄtoled7seg  0/26  Ram=11
+         ÃÄ@delay_ms1  0/20  Ram=1
+         ÃÄtoled7seg  0/26  Ram=11
+         ÀÄ@delay_ms1  0/20  Ram=1

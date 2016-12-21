@@ -1,0 +1,64 @@
+[PROJECT]
+Target=Led 7 doan.hex
+Development_Mode=
+Processor=0x877A
+ToolSuite=CCS
+Processor_Text=PIC16F877A
+
+[Directories]
+Include=C:\Program Files\PICC\devices\;C:\Program Files\PICC\drivers\;
+Library=
+LinkerScript=
+
+[Target Data]
+FileList=G:\Mach dien\Lap trinh C\CCS\Lam quen voi 16F877A\Led 7 doan.c
+BuildTool=C-COMPILER
+OptionString=+FM
+AdditionalOptionString=
+BuildRequired=1
+
+[Led 7 doan.c]
+Type=4
+Path=
+FileList=
+BuildTool=
+OptionString=
+AdditionalOptionString=
+
+[mru-list]
+1=Led 7 doan
+
+[Windows]
+0=0000 %S 0 0 796 451 3 0
+
+[Led 7 doan]
+Type=4
+Path=
+FileList=
+BuildTool=
+OptionString=
+AdditionalOptionString=
+[defines]
+enabled=0
+D1=
+V1=
+[fileformats]
+forcecoff=0
+debug=4
+error=2
+object=0
+list=0
+scratch=0
+sta=0
+tre=0
+allerrors=1
+allwarnings=1
+stayupne=0
+stayupoe=0
+[Units]
+Count=1
+1=Led 7 doan.c (main)
+Link=0
+[Opened Files]
+1=Led 7 doan.c
+2=

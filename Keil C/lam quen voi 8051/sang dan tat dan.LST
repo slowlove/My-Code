@@ -1,0 +1,120 @@
+A51 MACRO ASSEMBLER  SANG_DAN_TAT_DAN                                                     11/16/2007 21:03:15 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.00b
+OBJECT MODULE PLACED IN sang dan tat dan.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE sang dan tat dan.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1                             ORG 0h   
+0000                   2                                             main:
+0000 758000            3     mov p0,#0
+0003 759000            4     mov p1,#0
+0006 75A000            5     mov p2,#0
+0009 75B000            6     mov p3,#0
+000C 7400              7                                             mov a,#0
+000E                   8     qt1: 
+000E D3                9     setb c
+000F 33               10     rlc a            
+0010 F580             11     mov p0,a
+0012 120074           12     lcall tre
+0015 A2E7             13     mov c,0e7h                 ;so sanh bit cuoi cua thanh ghi A
+0017 50F5             14     jnc qt1
+0019 7400             15                                             mov a,#0
+001B                  16     qt2:
+001B D3               17     setb c                   
+001C 33               18     rlc a  
+001D F590             19     mov p1,a
+001F 120074           20     lcall tre
+0022 A2E7             21     mov c,0e7h
+0024 50F5             22     jnc qt2
+0026 7400             23                                             mov a,#0
+0028                  24     qt3:
+0028 D3               25     setb c
+0029 33               26     rlc a    
+002A F5A0             27     mov p2,a
+002C 120074           28     lcall tre
+002F A2E7             29     mov c,0e7h
+0031 50F5             30     jnc qt3
+0033 7400             31                                             mov a,#0
+0035                  32     qt4:
+0035 D3               33     setb c                  
+0036 33               34     rlc a   
+0037 F5B0             35     mov p3,a
+0039 120074           36     lcall tre
+003C A2E7             37     mov c,0e7h
+003E 50F5             38     jnc qt4
+0040                  39     qt5:
+0040 C3               40     clr c
+0041 13               41     rrc a
+0042 F5B0             42     mov p3,a
+0044 120074           43     lcall tre
+0047 A2E0             44     mov c,0e0h                 ;so sanh bit dau tien cua thanh ghi A
+0049 40F5             45     jc qt5
+004B 74FF             46                                             mov a,#0ffh
+004D                  47     qt6:
+004D C3               48     clr c
+004E 13               49     rrc a
+004F F5A0             50     mov p2,a
+0051 120074           51     lcall tre
+0054 A2E0             52     mov c,0e0h
+0056 40F5             53     jc qt6
+0058 74FF             54                                             mov a,#0ffh
+005A                  55     qt7:
+005A C3               56     clr c
+005B 13               57     rrc a
+005C F590             58     mov p1,a
+A51 MACRO ASSEMBLER  SANG_DAN_TAT_DAN                                                     11/16/2007 21:03:15 PAGE     2
+
+005E 120074           59     lcall tre
+0061 A2E0             60     mov c,0e0h                      
+0063 40F5             61     jc qt7
+0065 74FF             62                                             mov a,#0ffh
+0067                  63     qt8:
+0067 C3               64     clr c
+0068 13               65     rrc a
+0069 F580             66     mov p0,a
+006B 120074           67     lcall tre
+006E A2E0             68     mov c,0e0h
+0070 40F5             69     jc qt8
+0072 808C             70                                             sjmp main
+                      71     ;;;;;;;;;;;;;;chuong trinh tao tre;;;;;;;;;;;;;
+0074                  72     tre:
+0074 7FFF             73          mov r7,#0ffh
+0076 7EFF             74     kt1: mov r6,#0ffh
+0078 DEFE             75     kt2: djnz r6,kt2
+007A DFFA             76          djnz r7,kt1
+007C 22               77              ret
+                      78     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      79     end
+A51 MACRO ASSEMBLER  SANG_DAN_TAT_DAN                                                     11/16/2007 21:03:15 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+KT1. . . . . . . .  C ADDR   0076H   A   
+KT2. . . . . . . .  C ADDR   0078H   A   
+MAIN . . . . . . .  C ADDR   0000H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+QT1. . . . . . . .  C ADDR   000EH   A   
+QT2. . . . . . . .  C ADDR   001BH   A   
+QT3. . . . . . . .  C ADDR   0028H   A   
+QT4. . . . . . . .  C ADDR   0035H   A   
+QT5. . . . . . . .  C ADDR   0040H   A   
+QT6. . . . . . . .  C ADDR   004DH   A   
+QT7. . . . . . . .  C ADDR   005AH   A   
+QT8. . . . . . . .  C ADDR   0067H   A   
+TRE. . . . . . . .  C ADDR   0074H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

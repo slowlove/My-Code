@@ -1,0 +1,211 @@
+CCS PCM C Compiler, Version 4.013, 28193               10-th4-08 04:06
+
+               Filename: G:\Mach dien\Lap trinh C\CCS\Lam quen voi 16F877A\led 7 doan dich chuyen.lst
+
+               ROM used: 176 words (2%)
+                         Largest free fragment is 2048
+               RAM used: 8 (2%) at main() level
+                         9 (2%) worst case
+               Stack:    2 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   084
+0003:  NOP
+.................... #include <16F877A.h> 
+.................... //////// Standard Header file for the PIC16F877A device //////////////// 
+.................... #device PIC16F877A 
+.................... #list 
+....................  
+.................... #use delay(clock=20000000)                               //khai bao su dung thach anh 20MHz de su dung ham delay cua chuong trinh 
+006E:  MOVLW  23
+006F:  MOVWF  04
+0070:  BCF    03.7
+0071:  MOVF   00,W
+0072:  BTFSC  03.2
+0073:  GOTO   081
+0074:  MOVLW  06
+0075:  MOVWF  78
+0076:  CLRF   77
+0077:  DECFSZ 77,F
+0078:  GOTO   077
+0079:  DECFSZ 78,F
+007A:  GOTO   076
+007B:  MOVLW  7B
+007C:  MOVWF  77
+007D:  DECFSZ 77,F
+007E:  GOTO   07D
+007F:  DECFSZ 00,F
+0080:  GOTO   074
+0081:  BCF    0A.3
+0082:  BCF    0A.4
+0083:  GOTO   0A8 (RETURN)
+.................... #fuses NOWDT,HS,NOPUT,NOPROTECT,NODEBUG,NOBROWNOUT,NOLVP,NOCPD,NOWRT      //khai bao cac thiet dat cho PIC 
+....................  /***********Program conver data on port to led 7 seg***********/ 
+....................  unsigned char toled7seg(unsigned char n) 
+....................  { 
+....................  switch(n)   //bien n trong ham switch co the thay bang 1 ham bat ki nhu data 
+....................  { 
+*
+0004:  MOVF   22,W
+0005:  ADDLW  E9
+0006:  BTFSC  03.0
+0007:  GOTO   04E
+0008:  ADDLW  17
+0009:  GOTO   053
+....................  case 0x00:n=0x40;break;   //conver number 0 
+000A:  MOVLW  40
+000B:  MOVWF  22
+000C:  GOTO   04E
+....................  case 0x01:n=0x79;break; 
+000D:  MOVLW  79
+000E:  MOVWF  22
+000F:  GOTO   04E
+....................  case 0x02:n=0x24;break; 
+0010:  MOVLW  24
+0011:  MOVWF  22
+0012:  GOTO   04E
+....................  case 0x03:n=0x30;break; 
+0013:  MOVLW  30
+0014:  MOVWF  22
+0015:  GOTO   04E
+....................  case 0x04:n=0x19;break; 
+0016:  MOVLW  19
+0017:  MOVWF  22
+0018:  GOTO   04E
+....................  case 0x05:n=0x12;break; 
+0019:  MOVLW  12
+001A:  MOVWF  22
+001B:  GOTO   04E
+....................  case 0x06:n=0x02;break; 
+001C:  MOVLW  02
+001D:  MOVWF  22
+001E:  GOTO   04E
+....................  case 0x07:n=0x78;break; 
+001F:  MOVLW  78
+0020:  MOVWF  22
+0021:  GOTO   04E
+....................  case 0x08:n=0x00;break; 
+0022:  CLRF   22
+0023:  GOTO   04E
+....................  case 0x09:n=0x10;break;   //conver number 9 
+0024:  MOVLW  10
+0025:  MOVWF  22
+0026:  GOTO   04E
+....................  case 0x0a:n=0x08;break;   //conver character a 
+0027:  MOVLW  08
+0028:  MOVWF  22
+0029:  GOTO   04E
+....................  case 0x0b:n=0x03;break;   //...b 
+002A:  MOVLW  03
+002B:  MOVWF  22
+002C:  GOTO   04E
+....................  case 0x0c:n=0x46;break;   //...c 
+002D:  MOVLW  46
+002E:  MOVWF  22
+002F:  GOTO   04E
+....................  case 0x0d:n=0x21;break;   //...d 
+0030:  MOVLW  21
+0031:  MOVWF  22
+0032:  GOTO   04E
+....................  case 0x0e:n=0x06;break;   //...e 
+0033:  MOVLW  06
+0034:  MOVWF  22
+0035:  GOTO   04E
+....................  case 0x0f:n=0x0e;break;   //...f 
+0036:  MOVLW  0E
+0037:  MOVWF  22
+0038:  GOTO   04E
+....................  case 0x10:n=0x09;break;   //...h 
+0039:  MOVLW  09
+003A:  MOVWF  22
+003B:  GOTO   04E
+....................  case 0x11:n=0x47;break;   //...l 
+003C:  MOVLW  47
+003D:  MOVWF  22
+003E:  GOTO   04E
+....................  case 0x12:n=0x48;break;   //...n 
+003F:  MOVLW  48
+0040:  MOVWF  22
+0041:  GOTO   04E
+....................  case 0x13:n=0x0c;break;   //...p 
+0042:  MOVLW  0C
+0043:  MOVWF  22
+0044:  GOTO   04E
+....................  case 0x14:n=0x18;break;   //...q 
+0045:  MOVLW  18
+0046:  MOVWF  22
+0047:  GOTO   04E
+....................  case 0x15:n=0x41;break;   //...u 
+0048:  MOVLW  41
+0049:  MOVWF  22
+004A:  GOTO   04E
+....................  case 0x16:n=0x11;break;   //...y 
+004B:  MOVLW  11
+004C:  MOVWF  22
+004D:  GOTO   04E
+....................  } 
+....................  return(n);                //tra lai ket qua cho bien n 
+004E:  MOVF   22,W
+004F:  MOVWF  78
+....................  } 
+0050:  BCF    0A.3
+0051:  BCF    0A.4
+0052:  GOTO   093 (RETURN)
+....................  void main(unsigned char x){ 
+*
+0084:  CLRF   04
+0085:  BCF    03.7
+0086:  MOVLW  1F
+0087:  ANDWF  03,F
+0088:  BSF    03.5
+0089:  BSF    1F.0
+008A:  BSF    1F.1
+008B:  BSF    1F.2
+008C:  BCF    1F.3
+008D:  MOVLW  07
+008E:  MOVWF  1C
+....................  while(true){ 
+....................  output_b(toled7seg(1)); 
+008F:  MOVLW  01
+0090:  BCF    03.5
+0091:  MOVWF  22
+0092:  GOTO   004
+0093:  BSF    03.5
+0094:  CLRF   06
+0095:  BCF    03.5
+0096:  MOVF   78,W
+0097:  MOVWF  06
+....................  for(x=1;x<0x20;x<<=1){ 
+0098:  MOVLW  01
+0099:  MOVWF  21
+009A:  MOVF   21,W
+009B:  SUBLW  1F
+009C:  BTFSS  03.0
+009D:  GOTO   0AD
+....................  output_d(x);delay_ms(500); 
+009E:  BSF    03.5
+009F:  CLRF   08
+00A0:  BCF    03.5
+00A1:  MOVF   21,W
+00A2:  MOVWF  08
+00A3:  MOVLW  02
+00A4:  MOVWF  22
+00A5:  MOVLW  FA
+00A6:  MOVWF  23
+00A7:  GOTO   06E
+00A8:  DECFSZ 22,F
+00A9:  GOTO   0A5
+....................  } 
+00AA:  BCF    03.0
+00AB:  RLF    21,F
+00AC:  GOTO   09A
+....................  }} 
+00AD:  BSF    03.5
+00AE:  GOTO   08F
+....................  
+00AF:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F3A   HS NOWDT NOPUT NODEBUG NOPROTECT NOBROWNOUT NOLVP NOCPD NOWRT

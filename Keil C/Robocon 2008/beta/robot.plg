@@ -1,0 +1,20 @@
+<html>
+<body>
+<pre>
+<h1>µVision3 Build Log</h1>
+<h2>Project:</h2>
+F:\Robocon program\robot.uv2
+Project File Date:  03/20/2008
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling robot.c...
+linking...
+Program Size: data=10.0 xdata=0 code=550
+creating hex file from "robot"...
+"robot" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=10.0 xdata=0 code=550
+creating hex file from "robot"...
+"robot" - 0 Error(s), 0 Warning(s).

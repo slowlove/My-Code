@@ -1,0 +1,159 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+004     @WRITE_PROGRAM_MEMORY8.P2
+005.3   led1
+005.4   led2
+005.5   led3
+008     data
+008     PSP_DATA
+008.7   BF
+009.0   E
+009.1   RW
+009.2   RS
+015-016 CCP_1
+015     CCP_1_LOW
+016     CCP_1_HIGH
+01B     CCP_2_LOW
+01B-01C CCP_2
+01C     CCP_2_HIGH
+020     @INTERRUPT_AREA
+021     @INTERRUPT_AREA
+022     @INTERRUPT_AREA
+023     @INTERRUPT_AREA
+024     @INTERRUPT_AREA
+025     @INTERRUPT_AREA
+026     @INTERRUPT_AREA
+027     @INTERRUPT_AREA
+028     ma_hangchuc
+029     ma_hangdonvi
+02A     ma_thapphan
+02B     hangchuc
+02C     hangdonvi
+02D     thapphan
+02E     a
+02F-030 x
+031-034 nhietdo
+035     @TRIS_C
+036-039 toled7seg.value
+036     moveto.dong
+036     khoitao.giao_thuc
+036-039 @FLT.P1
+036     cursor.manhinh
+036     hien_thi_ban_dau.@SCRATCH1
+036     readADC.@SCRATCH1
+036     MAIN.@SCRATCH1
+037     khoitao.so_dong
+037     cursor.contro
+037     moveto.vitri
+037     readADC.@SCRATCH2
+037     MAIN.@SCRATCH2
+038     cursor.kieu_contro
+038     khoitao.do_phan_giai
+038-039 @DIV1616.P1
+038     readADC.@SCRATCH3
+039     @delay_ms1.P1
+039     khoitao.@SCRATCH1
+039     cursor.@SCRATCH1
+039     readADC.@SCRATCH4
+03A-03D @FLT.P1
+03A-03B @DIV1616.P2
+03A-03D temp.value
+03A     khoitao.@SCRATCH2
+03A     cursor.@SCRATCH2
+03C     @DIV1616.@SCRATCH1
+03E-041 temp.t
+03E     @FLT.@SCRATCH1
+03F     @FLT.@SCRATCH2
+042-045 @SFTOI.P1
+042     temp.@SCRATCH1
+043     temp.@SCRATCH2
+044-045 @ITOF.P1
+044-047 @DIVFF.P2
+044     temp.@SCRATCH3
+045     temp.@SCRATCH4
+046-049 @MULFF.P1
+048-04B @DIVFF.P1
+04A-04D @MULFF.P1
+04C     @DIVFF.@SCRATCH1
+04D     @DIVFF.@SCRATCH2
+04E     @DIVFF.@SCRATCH3
+04E     @MULFF.@SCRATCH1
+04F     @DIVFF.@SCRATCH4
+04F     @MULFF.@SCRATCH2
+050     @DIVFF.@SCRATCH5
+050     @MULFF.@SCRATCH3
+051     @DIVFF.@SCRATCH6
+051     @MULFF.@SCRATCH4
+052     @MULFF.@SCRATCH5
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07B     @SCRATCH
+07F     @INTERRUPT_AREA
+09C.6   C1OUT
+09C.7   C2OUT
+0FF     @INTERRUPT_AREA
+10D-10E @READ_PROGRAM_MEMORY8.P1
+10D-10E @WRITE_PROGRAM_MEMORY8.P2
+17F     @INTERRUPT_AREA
+1FF     @INTERRUPT_AREA
+27F     @INTERRUPT_AREA
+2FF     @INTERRUPT_AREA
+37F     @INTERRUPT_AREA
+3FF     @INTERRUPT_AREA
+
+ROM Allocation:
+00B5  @delay_ms1
+00AA  command
+00F5  display
+00B3  khoitao
+03C1  clear
+00E4  cursor
+00FE  moveto
+0033  str
+0041  str1
+0056  str2
+006A  ma_so_nguyen
+0078  ma_so_thuc
+02D7  temp
+015B  @DIVFF
+0225  @MULFF
+029A  @SFTOI
+013E  @ITOF
+0373  toled7seg
+010B  hien_thi_ban_dau
+02B9  readADC
+0086  quetled
+03C5  MAIN
+034E  @DIV1616
+0382  @FLT
+03C5  @cinit
+
+Project Directory:
+    G:\Lap trinh C\CCS\Lap trinh nang cao\
+
+Project Files:
+    ADC_temp.c
+    C:\Program Files\PICC\devices\16F877A.h
+    lcd8b_lib.c
+
+Units:
+    G:\Lap trinh C\CCS\Lap trinh nang cao\ADC_temp.c (main)
+
+Compiler Settings:
+    Processor:      PIC16F877A
+    Pointer Size:   16
+    ADC Range:      0-1023
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      ADC_temp.err
+    Ext Symbols: ADC_temp.esym
+    INHX8:       ADC_temp.hex
+    Symbols:     ADC_temp.sym
+    List:        ADC_temp.lst
+    Debug/COFF:  ADC_temp.cof
+    Project:     ADC_temp.PJT

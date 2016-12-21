@@ -1,0 +1,44 @@
+C51 COMPILER V8.05a   DK_LED_DON                                                           11/28/2007 01:30:09 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE DK_LED_DON
+OBJECT MODULE PLACED IN dk led don.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE dk led don.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <AT89X51.H>
+   2          void tre(int time) 
+   3          { 
+   4   1       unsigned int n; 
+   5   1        for(n=0;n<time;n++)
+   6   1        {;} 
+   7   1      } 
+   8          void main(void) 
+   9          {
+  10   1      while(1)
+  11   1      {
+  12   2      unsigned char a;
+  13   2      for(;a<=0x7;)
+  14   2      {
+  15   3      a<<=1;
+  16   3      a++;
+  17   3      P0=a;
+  18   3      tre(3000);
+  19   3      }
+  20   2      }
+  21   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     45    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

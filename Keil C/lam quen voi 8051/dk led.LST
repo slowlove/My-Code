@@ -1,0 +1,45 @@
+C51 COMPILER V8.05a   DK_LED                                                               04/30/2008 23:17:53 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE DK_LED
+OBJECT MODULE PLACED IN dk led.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE dk led.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <AT89X51.H>
+   2          void delay(int time) 
+   3          { 
+   4   1       unsigned int n; 
+   5   1        for(n=0;n<time;n++); 
+   6   1      } 
+   7          void main(void) 
+   8          {unsigned char a=1,b;
+   9   1      
+  10   1       for(b=0;b<=0x08;b++)
+  11   1       {P1=a<<=1;
+  12   2       delay(10000);}
+  13   1      for(b=0x03;b>=0x03;b=b*2)
+  14   1      {
+  15   2      P1=b;
+  16   2      delay(10000);}
+  17   1      for(a=0xc0;a<=0xc0;a=a/2)
+  18   1      {P1=a;
+  19   2      delay(10000);
+  20   2      if(a==0x03) break;
+  21   2      }
+  22   1       }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     92    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

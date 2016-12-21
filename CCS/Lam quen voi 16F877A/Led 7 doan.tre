@@ -1,0 +1,9 @@
+ÀÄLed 7 doan
+   ÀÄMAIN  0/51  Ram=2
+      ÃÄ??0??
+      ÃÄtoled7seg  0/77  Ram=1
+      ³  ÀÄ@goto10064  0/27  Ram=0
+      ÃÄ@delay_ms1  0/21  Ram=1
+      ÃÄtoled7seg  0/77  Ram=1
+      ³  ÀÄ@goto10064  0/27  Ram=0
+      ÀÄ@delay_ms1  0/21  Ram=1

@@ -1,0 +1,231 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+004     @WRITE_PROGRAM_MEMORY8.P2
+007     portC
+007.0   c0
+007.1   c1
+007.2   c2
+007.3   c3
+007.4   c4
+007.5   c5
+007.6   c6
+007.7   c7
+008.0   RS
+008     portD
+008     PSP_DATA
+008.1   RW
+008.2   E
+008.3   d0
+008.4   d1
+008.5   d2
+008.6   d3
+008.6   BF
+015     CCP_1_LOW
+015-016 CCP_1
+016     CCP_1_HIGH
+01B     CCP_2_LOW
+01B-01C CCP_2
+01C     CCP_2_HIGH
+020     @INTERRUPT_AREA
+021     @INTERRUPT_AREA
+022     @INTERRUPT_AREA
+023     @INTERRUPT_AREA
+024     @INTERRUPT_AREA
+025     @INTERRUPT_AREA
+026     @INTERRUPT_AREA
+027     @INTERRUPT_AREA
+028     data
+029     a
+02A     b
+02B.0   chon_play
+02B.1   mode
+02C     phim
+02D     chon_ct
+02E     chon_page
+02F     backup
+030     @TRIS_C
+031     chose.x
+032     chose.value0
+033     numpad
+034     backup_chon
+035     backup_chon
+036.0   chon_reset
+037     chay_chuongtrinh.chuongtrinh
+037     khoitao.giao_thuc
+037     cursor.manhinh
+037     menu_display.page
+037     wellcome.@SCRATCH1
+037     cau_hoi_xac_nhan.@SCRATCH1
+037     thong_bao_complete.@SCRATCH1
+037     thong_bao_resetpage.@SCRATCH1
+037     MAIN.@SCRATCH1
+038     cursor.contro
+038     read.buff1
+038     chuongtrinh31.backup_chon31
+038     chuongtrinh32.backup_chon32
+038     khoitao.so_dong
+038     menu_display.@SCRATCH1
+038     chuongtrinh1.@SCRATCH1
+038     chuongtrinh2.@SCRATCH1
+038     chuongtrinh3.@SCRATCH1
+038     chuongtrinh4.@SCRATCH1
+038     chay_chuongtrinh.@SCRATCH1
+038     MAIN.@SCRATCH2
+039     cursor.kieu_contro
+039.0   chuongtrinh32.chon32
+039     khoitao.do_phan_giai
+039     read.buff2
+039.0   chuongtrinh31.chon31
+039     menu_display.@SCRATCH2
+03A     contro.dong
+03A     read.@SCRATCH1
+03A     khoitao.@SCRATCH1
+03A     cursor.@SCRATCH1
+03A     menu_display.@SCRATCH3
+03A     chuongtrinh31.@SCRATCH1
+03A     chuongtrinh32.@SCRATCH1
+03B     contro.cot
+03B     read.@SCRATCH2
+03B     khoitao.@SCRATCH2
+03B     cursor.@SCRATCH2
+03B     menu_display.@SCRATCH4
+03C     @delay_ms1.P1
+03C     moveto.dong
+03C     read.@SCRATCH3
+03D     moveto.vitri
+03D     read.@SCRATCH4
+03E     read.@SCRATCH5
+03F     read.@SCRATCH6
+040     read.@SCRATCH7
+041     chose.@SCRATCH1
+041     quet.@SCRATCH1
+042     quet.@SCRATCH2
+043     quet.@SCRATCH3
+044     quet.@SCRATCH4
+045     quet.@SCRATCH5
+046     quet.@SCRATCH6
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07B     @SCRATCH
+07F     @INTERRUPT_AREA
+09C.6   C1OUT
+09C.7   C2OUT
+0FF     @INTERRUPT_AREA
+10D-10E @READ_PROGRAM_MEMORY8.P1
+10D-10E @WRITE_PROGRAM_MEMORY8.P2
+17F     @INTERRUPT_AREA
+1FF     @INTERRUPT_AREA
+27F     @INTERRUPT_AREA
+2FF     @INTERRUPT_AREA
+37F     @INTERRUPT_AREA
+3FF     @INTERRUPT_AREA
+
+ROM Allocation:
+037A  @delay_ms1
+039A  enable
+038E  busy
+039E  command
+040E  display
+0571  read
+03C5  khoitao
+046B  clear
+03FD  cursor
+0435  moveto
+004C  menu
+046F  menu_display
+0153  msg_ask
+0561  muiten
+0558  eraser
+055C  contro
+0167  msg1
+017C  msg2
+0442  wellcome
+0191  msg1
+05CB  cau_hoi_xac_nhan
+01A6  msg
+05F2  thong_bao_complete
+01B5  msg1
+060B  thong_bao_resetpage
+05EE  vach
+01CB  msg
+0862  chuongtrinh1
+01DA  msg
+088D  chuongtrinh2
+01EF  msg
+08B8  chuongtrinh3
+0207  msg
+08E3  chuongtrinh4
+090E  chuongtrinh5
+090F  chuongtrinh6
+0910  chuongtrinh7
+0911  chuongtrinh8
+0912  chuongtrinh9
+0913  chuongtrinh10
+0914  chuongtrinh11
+0915  chuongtrinh12
+0916  chuongtrinh13
+0917  chuongtrinh14
+0918  chuongtrinh15
+0919  chuongtrinh16
+091A  chuongtrinh17
+091B  chuongtrinh18
+091C  chuongtrinh19
+091D  chuongtrinh20
+091E  chuongtrinh21
+091F  chuongtrinh22
+0920  chuongtrinh23
+0921  chuongtrinh24
+0922  chuongtrinh25
+0923  chuongtrinh26
+0924  chuongtrinh27
+0925  chuongtrinh28
+0926  chuongtrinh29
+0927  chuongtrinh30
+021A  msg1
+0928  chuongtrinh31
+022F  msg1
+09DE  chuongtrinh32
+0800  chay_chuongtrinh
+0AC6  MAIN
+0244  ask_prg
+0DA2  @goto10806
+0DB5  @goto10855
+0257  ext
+025B  chose
+0278  timer1
+027C  quet
+0AC6  @cinit
+0B0D  mode_menu
+0CB6  thuc_hien_chuong_trinh
+0B9A  mode_cmd
+
+Project Directory:
+    G:\Lap trinh C\CCS\Lap trinh chuyen nghiep\Menu_LCD_Project_Pro 2008\
+
+Project Files:
+    main.c
+    C:\Program Files\PICC\devices\16F877A.h
+    lcd_lib.c
+    menu_list.c
+    program.c
+
+Units:
+    G:\Lap trinh C\CCS\Lap trinh chuyen nghiep\Menu_LCD_Project_Pro 2008\main.c (main)
+
+Compiler Settings:
+    Processor:      PIC16F877A
+    Pointer Size:   16
+    ADC Range:      0-1023
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      main.err
+    Ext Symbols: main.esym
+    INHX8:       main.hex
+    Symbols:     main.sym
+    List:        main.lst
+    Project:     main.PJT

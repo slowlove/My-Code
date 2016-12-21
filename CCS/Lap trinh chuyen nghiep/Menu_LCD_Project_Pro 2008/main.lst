@@ -1,0 +1,3573 @@
+CCS PCM C Compiler, Version 4.068, 55132               20-th1-10 00:37
+
+               Filename: D:\Lap trinh C\CCS\Lap trinh chuyen nghiep\Menu_LCD_Project_Pro 2008\main.lst
+
+               ROM used: 3323 words (41%)
+                         Largest free fragment is 2048
+               RAM used: 27 (7%) at main() level
+                         55 (15%) worst case
+               Stack:    6 worst case (5 in main + 1 for interrupts)
+
+*
+0000:  MOVLW  08
+0001:  MOVWF  0A
+0002:  GOTO   496
+0003:  NOP
+0004:  MOVWF  7F
+0005:  SWAPF  03,W
+0006:  CLRF   03
+0007:  MOVWF  21
+0008:  MOVF   0A,W
+0009:  MOVWF  20
+000A:  CLRF   0A
+000B:  MOVF   04,W
+000C:  MOVWF  22
+000D:  MOVF   77,W
+000E:  MOVWF  23
+000F:  MOVF   78,W
+0010:  MOVWF  24
+0011:  MOVF   79,W
+0012:  MOVWF  25
+0013:  MOVF   7A,W
+0014:  MOVWF  26
+0015:  MOVF   7B,W
+0016:  MOVWF  27
+0017:  BCF    03.7
+0018:  BCF    03.5
+0019:  MOVLW  8C
+001A:  MOVWF  04
+001B:  BTFSS  00.1
+001C:  GOTO   01F
+001D:  BTFSC  0C.1
+001E:  GOTO   046
+001F:  BTFSS  0B.5
+0020:  GOTO   023
+0021:  BTFSC  0B.2
+0022:  GOTO   049
+0023:  BTFSS  0B.4
+0024:  GOTO   027
+0025:  BTFSC  0B.1
+0026:  GOTO   040
+0027:  MOVLW  8C
+0028:  MOVWF  04
+0029:  BTFSS  00.0
+002A:  GOTO   02D
+002B:  BTFSC  0C.0
+002C:  GOTO   043
+002D:  MOVF   22,W
+002E:  MOVWF  04
+002F:  MOVF   23,W
+0030:  MOVWF  77
+0031:  MOVF   24,W
+0032:  MOVWF  78
+0033:  MOVF   25,W
+0034:  MOVWF  79
+0035:  MOVF   26,W
+0036:  MOVWF  7A
+0037:  MOVF   27,W
+0038:  MOVWF  7B
+0039:  MOVF   20,W
+003A:  MOVWF  0A
+003B:  SWAPF  21,W
+003C:  MOVWF  03
+003D:  SWAPF  7F,F
+003E:  SWAPF  7F,W
+003F:  RETFIE
+0040:  BCF    0A.3
+0041:  BCF    0A.4
+0042:  GOTO   268
+0043:  BCF    0A.3
+0044:  BCF    0A.4
+0045:  GOTO   289
+0046:  BCF    0A.3
+0047:  BCF    0A.4
+0048:  GOTO   28D
+0049:  BCF    0A.3
+004A:  BCF    0A.4
+004B:  GOTO   26C
+.................... #include <16F877A.h> 
+.................... //////// Standard Header file for the PIC16F877A device //////////////// 
+.................... #device PIC16F877A 
+.................... #list 
+....................  
+.................... #device *=16 adc=10 
+.................... #use delay(clock=20M) 
+*
+038B:  MOVLW  41
+038C:  MOVWF  04
+038D:  BCF    03.7
+038E:  MOVF   00,W
+038F:  BTFSC  03.2
+0390:  GOTO   39E
+0391:  MOVLW  06
+0392:  MOVWF  78
+0393:  CLRF   77
+0394:  DECFSZ 77,F
+0395:  GOTO   394
+0396:  DECFSZ 78,F
+0397:  GOTO   393
+0398:  MOVLW  7B
+0399:  MOVWF  77
+039A:  DECFSZ 77,F
+039B:  GOTO   39A
+039C:  DECFSZ 00,F
+039D:  GOTO   391
+039E:  RETLW  00
+.................... #define lcd_4bit  //Su dung LCD the giao thuc 4bit 
+.................... #include <lcd_lib.c> 
+.................... /*********Thu vien cac ham dung cho LCD cua Slowlove**********/ 
+.................... /* xay dung:04/06/2008*/ 
+.................... /*Luu y:truoc khi dung thu vien nay phai dong bo cac bien va cac gia tri khai bao trong chuong trinh*/ 
+.................... /*===========================================================================================*/ 
+.................... #ifdef lcd_8bit   //Neu tu dau chuong trinh dinh nghia la lcd_8bit thi bien dich doan ma sau: 
+.................... /******Dinh nghia cac chan su dung trong chuomg trinh******/ 
+.................... #bit E   = 0x09.0 //chan e0 
+.................... #bit RW  = 0x09.1 //chan e1 
+.................... #bit RS  = 0x09.2 //chan e2 
+.................... #bit BF  = 0x08.7 //chan d7 
+.................... #byte data = 0x08 //port D 
+.................... /*========================================================================*/ 
+.................... /*******cac trang thai tin hieu dieu khien*********/ 
+.................... unsigned int8 read(void) 
+.................... { 
+.................... unsigned int8 read; 
+.................... RW=1;RS=0; 
+.................... E=0;E=1; 
+.................... delay_us(1); 
+.................... read=data; 
+.................... RW=0; 
+.................... return read; 
+.................... } 
+.................... void command(void) 
+.................... { 
+.................... /*chon thanh ghi va chon che do read/write*/ 
+.................... E=1; 
+.................... RS=0; //chon thanh ghi:RS=0:chon IR;RS=1:chon thanh ghi DR 
+.................... RW=0; //chon che do:RW=0:chon che do ghi;RW=1:chon che do doc 
+.................... E=0; //1 xung E 1=>0 dung de kich hoat lenh 
+.................... delay_us(50);   //doi 50us de thuc hien xong lenh 
+.................... } 
+.................... void display(void) 
+.................... { 
+.................... E=1; 
+.................... RS=1; 
+.................... RW=0; 
+.................... E=0; //1 xung E 1=>0 
+.................... delay_us(50);   //doi 50us de thuc hien xong lenh 
+.................... } 
+.................... /********khoi tao,khai bao cac thong so hoat dong cho LCD**********/ 
+.................... void khoitao(int1 giao_thuc,int1 so_dong,int1 do_phan_giai) 
+.................... { 
+.................... /*giao_thuc =1 hoac 0:che do 8 hoac 4 bit; 
+....................   so_dong =1 hoac 0:che do hien thi 2 hoac 1 dong 
+....................   do_phangiai =1 hoac 0:hien thi 5x10 hoac 5x8 diem anh 
+.................... Chu y:trong che do hient hi 2 hang thi khong the hien thi che do 5x10 diem anh*/ 
+.................... delay_ms(40);   //doi 40ms de cho LCD dat toi 4.5V 
+.................... data=0x20+(giao_thuc<<4)+(so_dong<<3)+(do_phan_giai<<2);   //data phai duoc dinh nghia truoc trong chuong trinh chinh 
+.................... command(); 
+.................... } 
+.................... /*****Xoa man hinh tro ve dau dong*****/ 
+.................... void clear(void) 
+.................... { 
+.................... data=0x01; 
+.................... command(); 
+.................... } 
+.................... /******di chuyen con tro ve dau dong*******/ 
+.................... void return_home(void) 
+.................... { 
+.................... data=0x02; 
+.................... command(); 
+.................... } 
+.................... /*******Hien thi con tro********/ 
+.................... void cursor(int1 manhinh,int1 contro,int1 kieu_contro) 
+.................... { 
+.................... /*manhinh = 1 hoac bang 0:hien thi man hinh hoac khong hien thi man hinh 
+....................   contro  = 1 hoac bang 0:hien thi con tro hoac khong hien thi con tro 
+....................   kieu_contro =1 hoac bang 0:2 che do hien thi con tro*/ 
+.................... data=0x08+(manhinh<<2)+(contro<<1)+(kieu_contro); 
+.................... command(); 
+.................... } 
+.................... /******Dua con tro toi 1 toa do cho truoc*******/ 
+.................... void moveto(unsigned char dong,unsigned char vitri) 
+.................... { 
+.................... /*nguoi dung se nhap toa do cua vi tri can hien thi tren LCD,cu the la dong 1 
+.................... hay dong 2,vi tri cua con tro can hien thi 1 to 16*/ 
+.................... if(dong==1)data=0x80+(vitri-1);  //dong 1 co dia chi bat dau tu 0x80 
+.................... else data=0xC0+(vitri-1);        //dog 2 co dia chi bat dau tu 0x0C 
+.................... command(); 
+.................... } 
+.................... /********Di chuyen con tro va ki tu********/ 
+.................... void motion(int1 contents,int1 trend) 
+.................... { 
+.................... /* contents = 0 hoac 1:chon con tro hoac ca con tro & van ban 
+....................    trend = 0 hoac 1: chon huong sang trai hoac sang phai voi con tro,van ban theo 
+....................    chieu nguoc lai 0 hoac 1 sang phai hoac sang trai 
+....................    Chu y: neu o che do hien thi 2 hang thi khi het dong dong dau tien thi se 
+....................    tu dong chuyen xuong duong thu 2,du lieu hang dau va hang 2 cung dich 1 luc*/  
+.................... data=0x10+(contents<<3)+(trend<<2); 
+.................... command(); 
+.................... } 
+.................... /******thiet lap thong so hien thi******/ 
+.................... void modeset(int1 trend,int1 mode) 
+.................... { 
+.................... /* trend = 0 hoac 1 :dich sang phai hoac trai 
+....................    mode  = 0 hoac 1 :khong dich hoac dich hien thi*/ 
+.................... data=0x04+(trend<<1)+mode; 
+.................... command(); 
+.................... } 
+.................... #endif 
+.................... /*================================================================*/ 
+.................... /*===========================The End==============================*/ 
+.................... /*================================================================*/ 
+.................... #ifdef lcd_4bit   //Neu tu dau chuong trinh dinh nghia la lcd_4bit thi bien dich doan ma sau: 
+.................... /******Dinh nghia cac chan su dung trong chuomg trinh******/ 
+.................... #bit RS = 0x08.0 
+.................... #bit RW = 0x08.1 
+.................... #bit E  = 0x08.2 
+.................... #bit d0 = 0x08.3   //| 
+.................... #bit d1 = 0x08.4   //|cac duong data(d0-d3) 
+.................... #bit d2 = 0x08.5   //|cua LCD 
+.................... #bit d3 = 0x08.6   //| 
+.................... /*--------------------------------------------------------------------*/ 
+.................... extern unsigned int8 data; 
+.................... unsigned int8 read(void) 
+.................... { 
+.................... unsigned int8 read1,read2; 
+.................... Set_tris_d(0x78);  //3 chan dau+chan cuoi la chan ra con lai la chan vao 
+039F:  MOVLW  78
+03A0:  BSF    03.5
+03A1:  MOVWF  08
+.................... RW=1;RS=0; 
+03A2:  BCF    03.5
+03A3:  BSF    08.1
+03A4:  BCF    08.0
+.................... E=0;E=1; 
+03A5:  BCF    08.2
+03A6:  BSF    08.2
+.................... delay_cycles(1); 
+03A7:  NOP
+.................... read1=(d3<<7)|(d2<<6)|(d1<<5)|(d0<<4); 
+03A8:  MOVLW  00
+03A9:  BTFSC  08.6
+03AA:  MOVLW  01
+03AB:  MOVWF  77
+03AC:  CLRF   45
+03AD:  BTFSC  77.0
+03AE:  BSF    45.7
+03AF:  MOVLW  00
+03B0:  BTFSC  08.5
+03B1:  MOVLW  01
+03B2:  MOVWF  77
+03B3:  SWAPF  77,F
+03B4:  RLF    77,F
+03B5:  RLF    77,F
+03B6:  MOVLW  C0
+03B7:  ANDWF  77,F
+03B8:  MOVF   77,W
+03B9:  IORWF  45,W
+03BA:  MOVWF  47
+03BB:  MOVLW  00
+03BC:  BTFSC  08.4
+03BD:  MOVLW  01
+03BE:  MOVWF  77
+03BF:  SWAPF  77,F
+03C0:  RLF    77,F
+03C1:  MOVLW  E0
+03C2:  ANDWF  77,F
+03C3:  MOVF   77,W
+03C4:  IORWF  47,W
+03C5:  MOVWF  49
+03C6:  MOVLW  00
+03C7:  BTFSC  08.3
+03C8:  MOVLW  01
+03C9:  MOVWF  77
+03CA:  SWAPF  77,F
+03CB:  MOVLW  F0
+03CC:  ANDWF  77,F
+03CD:  MOVF   77,W
+03CE:  IORWF  49,W
+03CF:  MOVWF  42
+.................... E=0;E=1; 
+03D0:  BCF    08.2
+03D1:  BSF    08.2
+.................... delay_us(1); 
+03D2:  GOTO   3D3
+03D3:  GOTO   3D4
+03D4:  NOP
+.................... read2=(d3<<3)|(d2<<2)|(d1<<1)|d0; 
+03D5:  MOVLW  00
+03D6:  BTFSC  08.6
+03D7:  MOVLW  01
+03D8:  MOVWF  77
+03D9:  RLF    77,W
+03DA:  MOVWF  45
+03DB:  RLF    45,F
+03DC:  RLF    45,F
+03DD:  MOVLW  F8
+03DE:  ANDWF  45,F
+03DF:  MOVLW  00
+03E0:  BTFSC  08.5
+03E1:  MOVLW  01
+03E2:  MOVWF  77
+03E3:  RLF    77,F
+03E4:  RLF    77,F
+03E5:  MOVLW  FC
+03E6:  ANDWF  77,F
+03E7:  MOVF   77,W
+03E8:  IORWF  45,W
+03E9:  MOVWF  47
+03EA:  MOVLW  00
+03EB:  BTFSC  08.4
+03EC:  MOVLW  01
+03ED:  MOVWF  77
+03EE:  BCF    03.0
+03EF:  RLF    77,F
+03F0:  MOVF   77,W
+03F1:  IORWF  47,W
+03F2:  MOVWF  49
+03F3:  MOVLW  00
+03F4:  BTFSC  08.3
+03F5:  MOVLW  01
+03F6:  IORWF  49,W
+03F7:  MOVWF  43
+.................... RW=0; 
+03F8:  BCF    08.1
+.................... set_tris_d(0); 
+03F9:  MOVLW  00
+03FA:  BSF    03.5
+03FB:  MOVWF  08
+.................... return (read1|read2); 
+03FC:  BCF    03.5
+03FD:  MOVF   42,W
+03FE:  IORWF  43,W
+03FF:  MOVWF  78
+.................... } 
+0400:  RETLW  00
+.................... /*----------------------------*/ 
+.................... void command(void) 
+.................... { 
+.................... /*chon thanh ghi va chon che do read/write*/ 
+.................... while(bit_test(read(),7)); 
+0401:  CALL   39F
+0402:  MOVF   78,W
+0403:  MOVWF  42
+0404:  BTFSC  42.7
+0405:  GOTO   401
+.................... d0=bit_test(data,4); 
+0406:  BTFSS  28.4
+0407:  BCF    08.3
+0408:  BTFSC  28.4
+0409:  BSF    08.3
+.................... d1=bit_test(data,5); 
+040A:  BTFSS  28.5
+040B:  BCF    08.4
+040C:  BTFSC  28.5
+040D:  BSF    08.4
+.................... d2=bit_test(data,6); 
+040E:  BTFSS  28.6
+040F:  BCF    08.5
+0410:  BTFSC  28.6
+0411:  BSF    08.5
+.................... d3=bit_test(data,7); 
+0412:  BTFSS  28.7
+0413:  BCF    08.6
+0414:  BTFSC  28.7
+0415:  BSF    08.6
+.................... delay_cycles(1); 
+0416:  NOP
+.................... E=1;E=0; 
+0417:  BSF    08.2
+0418:  BCF    08.2
+.................... d0=bit_test(data,0); 
+0419:  BTFSS  28.0
+041A:  BCF    08.3
+041B:  BTFSC  28.0
+041C:  BSF    08.3
+.................... d1=bit_test(data,1); 
+041D:  BTFSS  28.1
+041E:  BCF    08.4
+041F:  BTFSC  28.1
+0420:  BSF    08.4
+.................... d2=bit_test(data,2); 
+0421:  BTFSS  28.2
+0422:  BCF    08.5
+0423:  BTFSC  28.2
+0424:  BSF    08.5
+.................... d3=bit_test(data,3); 
+0425:  BTFSS  28.3
+0426:  BCF    08.6
+0427:  BTFSC  28.3
+0428:  BSF    08.6
+.................... E=1;E=0; 
+0429:  BSF    08.2
+042A:  BCF    08.2
+.................... } 
+042B:  RETLW  00
+.................... void display(void) 
+.................... { 
+.................... while(bit_test(read(),7)); 
+*
+045B:  CALL   39F
+045C:  MOVF   78,W
+045D:  MOVWF  40
+045E:  BTFSC  40.7
+045F:  GOTO   45B
+.................... RS=1; 
+0460:  BSF    08.0
+.................... d0=bit_test(data,4); 
+0461:  BTFSS  28.4
+0462:  BCF    08.3
+0463:  BTFSC  28.4
+0464:  BSF    08.3
+.................... d1=bit_test(data,5); 
+0465:  BTFSS  28.5
+0466:  BCF    08.4
+0467:  BTFSC  28.5
+0468:  BSF    08.4
+.................... d2=bit_test(data,6); 
+0469:  BTFSS  28.6
+046A:  BCF    08.5
+046B:  BTFSC  28.6
+046C:  BSF    08.5
+.................... d3=bit_test(data,7); 
+046D:  BTFSS  28.7
+046E:  BCF    08.6
+046F:  BTFSC  28.7
+0470:  BSF    08.6
+.................... delay_cycles(1); 
+0471:  NOP
+.................... E=1;E=0; 
+0472:  BSF    08.2
+0473:  BCF    08.2
+.................... d0=bit_test(data,0); 
+0474:  BTFSS  28.0
+0475:  BCF    08.3
+0476:  BTFSC  28.0
+0477:  BSF    08.3
+.................... d1=bit_test(data,1); 
+0478:  BTFSS  28.1
+0479:  BCF    08.4
+047A:  BTFSC  28.1
+047B:  BSF    08.4
+.................... d2=bit_test(data,2); 
+047C:  BTFSS  28.2
+047D:  BCF    08.5
+047E:  BTFSC  28.2
+047F:  BSF    08.5
+.................... d3=bit_test(data,3); 
+0480:  BTFSS  28.3
+0481:  BCF    08.6
+0482:  BTFSC  28.3
+0483:  BSF    08.6
+.................... delay_cycles(1); 
+0484:  NOP
+.................... E=1;E=0; 
+0485:  BSF    08.2
+0486:  BCF    08.2
+.................... } 
+0487:  RETLW  00
+.................... /********khoi tao,khai bao cac thong so hoat dong cho LCD**********/ 
+.................... void khoitao(int1 so_dong,int1 do_phan_giai) 
+.................... { 
+.................... /*so_dong =1 hoac 0:che do hien thi 2 hoac 1 dong 
+....................   do_phangiai =1 hoac 0:hien thi 5x10 hoac 5x8 diem anh 
+.................... Chu y:trong che do hient hi 2 hang thi khong the hien thi che do 5x10 diem anh 
+.................... va ban dau luc cap nguon cho LCD mac dinh se hoat dong o che do 8 bit nen 
+.................... khong the thuc hien cac lenh dat giao thuc cho LCD bang giao thuc 4 bit nen  
+.................... phai send 4 bit cao truoc de chuyen bi giao thuc 4 bit roi moi thuc hien nhung 
+.................... thiet dat tiep theo va cac lenh tiep theo se duoc thuc hien theo giao thuc 4 bit*/ 
+.................... delay_ms(40);   //doi 40ms de cho LCD dat toi 4.5V 
+*
+042C:  MOVLW  28
+042D:  MOVWF  41
+042E:  CALL   38B
+.................... RS=0; //chon thanh ghi:RS=0:chon IR;RS=1:chon thanh ghi DR 
+042F:  BCF    08.0
+.................... RW=0; //chon che do:RW=0:chon che do ghi;RW=1:chon che do doc 
+0430:  BCF    08.1
+.................... d3=0;d2=0;d1=1;d0=0; 
+0431:  BCF    08.6
+0432:  BCF    08.5
+0433:  BSF    08.4
+0434:  BCF    08.3
+.................... E=1;E=0; //1 xung E 1=>0 dung de kich hoat lenh 
+0435:  BSF    08.2
+0436:  BCF    08.2
+.................... data=0x20|(so_dong<<3)|(do_phan_giai<<2); 
+0437:  RLF    36,W
+0438:  MOVWF  77
+0439:  RLF    77,F
+043A:  RLF    77,F
+043B:  MOVLW  F8
+043C:  ANDWF  77,F
+043D:  MOVF   77,W
+043E:  IORLW  20
+043F:  MOVWF  38
+0440:  RLF    37,W
+0441:  MOVWF  77
+0442:  RLF    77,F
+0443:  MOVLW  FC
+0444:  ANDWF  77,F
+0445:  MOVF   77,W
+0446:  IORWF  38,W
+0447:  MOVWF  28
+.................... command(); 
+0448:  CALL   401
+.................... } 
+0449:  BSF    0A.3
+044A:  BCF    0A.4
+044B:  GOTO   4D2 (RETURN)
+.................... /*****Xoa man hinh tro ve dau dong*****/ 
+.................... void clear(void) 
+.................... { 
+.................... data=0x01; 
+*
+04BE:  MOVLW  01
+04BF:  MOVWF  28
+.................... command(); 
+04C0:  CALL   401
+.................... } 
+04C1:  RETLW  00
+.................... /******di chuyen con tro ve dau dong*******/ 
+.................... void return_home(void) 
+.................... { 
+.................... data=0x02; 
+.................... command(); 
+.................... } 
+.................... /*******Hien thi con tro********/ 
+.................... void cursor(int1 manhinh,int1 contro,int1 kieu_contro) 
+.................... { 
+.................... /*manhinh = 1 hoac bang 0:hien thi man hinh hoac khong hien thi man hinh 
+....................   contro  = 1 hoac bang 0:hien thi con tro hoac khong hien thi con tro 
+....................   kieu_contro =1 hoac bang 0:2 che do hien thi con tro*/ 
+.................... data=0x08|(manhinh<<2)|(contro<<1)|(kieu_contro); 
+*
+044C:  RLF    3A,W
+044D:  MOVWF  77
+044E:  RLF    77,F
+044F:  MOVLW  FC
+0450:  ANDWF  77,F
+0451:  MOVF   77,W
+0452:  IORLW  08
+0453:  MOVWF  3D
+0454:  BCF    03.0
+0455:  RLF    3B,W
+0456:  IORWF  3D,W
+0457:  IORWF  3C,W
+0458:  MOVWF  28
+.................... command(); 
+0459:  CALL   401
+.................... } 
+045A:  RETLW  00
+.................... /******Dua con tro toi 1 toa do cho truoc*******/ 
+.................... void moveto(unsigned char dong,unsigned char vitri) 
+.................... { 
+.................... /*nguoi dung se nhap toa do cua vi tri can hien thi tren LCD,cu the la dong 1 
+.................... hay dong 2,vi tri cua con tro can hien thi 1 to 16*/ 
+.................... if(dong==1)data=0x80|(vitri-1);  //dong 1 co dia chi bat dau tu 0x80 
+*
+0488:  DECFSZ 40,W
+0489:  GOTO   48F
+048A:  MOVLW  01
+048B:  SUBWF  41,W
+048C:  IORLW  80
+048D:  MOVWF  28
+.................... else data=0xC0|(vitri-1);        //dog 2 co dia chi bat dau tu 0x0C 
+048E:  GOTO   493
+048F:  MOVLW  01
+0490:  SUBWF  41,W
+0491:  IORLW  C0
+0492:  MOVWF  28
+.................... command(); 
+0493:  CALL   401
+.................... } 
+0494:  RETLW  00
+.................... /******Set CGRAM address********/ 
+.................... void cgramadd(unsigned int8 vitri,unsigned int8 add) 
+.................... { 
+.................... data=0x40|data|vitri<<3; 
+*
+096B:  MOVF   28,W
+096C:  IORLW  40
+096D:  MOVWF  42
+096E:  RLF    40,W
+096F:  MOVWF  77
+0970:  RLF    77,F
+0971:  RLF    77,F
+0972:  MOVLW  F8
+0973:  ANDWF  77,F
+0974:  MOVF   77,W
+0975:  IORWF  42,W
+0976:  MOVWF  28
+.................... command(); 
+0977:  BCF    0A.3
+0978:  CALL   401
+0979:  BSF    0A.3
+.................... } 
+.................... /********Di chuyen con tro va ki tu********/ 
+.................... void motion(int1 contents,int1 trend) 
+.................... { 
+.................... /* contents = 0 hoac 1:chon con tro hoac ca con tro & van ban 
+....................    trend = 0 hoac 1: chon huong sang trai hoac sang phai voi con tro,van ban theo 
+....................    chieu nguoc lai 0 hoac 1 sang phai hoac sang trai 
+....................    Chu y: neu o che do hien thi 2 hang thi khi het dong dong dau tien thi se 
+....................    tu dong chuyen xuong duong thu 2,du lieu hang dau va hang 2 cung dich 1 luc*/  
+.................... data=0x10|(contents<<3)|(trend<<2); 
+.................... command(); 
+.................... } 
+.................... /******thiet lap thong so hien thi******/ 
+.................... void modeset(int1 trend,int1 mode) 
+.................... { 
+.................... /* trend = 0 hoac 1 :dich sang phai hoac trai 
+....................    mode  = 0 hoac 1 :khong dich hoac dich hien thi*/ 
+.................... data=0x04|(trend<<1)|mode; 
+.................... command(); 
+.................... } 
+.................... #endif 
+.................... /*================================================================*/ 
+.................... /*===========================The End==============================*/ 
+.................... /*================================================================*/ 
+....................  
+.................... #include <menu_list.c> 
+.................... /*-----------------Khai bao bien su dung trong chuong trinh---------------*/ 
+.................... extern unsigned int8 a,b,data; 
+.................... /*--------------------------------------*/ 
+.................... const unsigned char menu[32][8]={   //ko duoc SD vuot qua 256 
+....................       {"Meter 1"} {"(SMS) 2"} {"Timer 3"} {"Calc  4"} 
+....................       {"SAG_DON"} {"CDMS  6"} {"OFDM  7"} {"FPGA  8"} 
+....................       {"(PCM) 9"} {"(PWM)10"} {"(PAM)11"} {"(POW)12"} 
+....................       {"menu 13"} {"menu 14"} {"menu 15"} {"menu 16"} 
+....................       {"menu 17"} {"menu 18"} {"menu 19"} {"menu 20"} 
+....................       {"menu 21"} {"menu 22"} {"menu 23"} {"menu 24"} 
+....................       {"menu 25"} {"menu 26"} {"menu 27"} {"menu 28"} 
+....................       {"opt1 29"} {"opt2 30"} {"opASK31"} {"opHOM32"} 
+.................... }; 
+.................... /*-----------------------------------------------------------------------*/ 
+.................... /*-----------------------------------------------------------------------*/ 
+.................... void menu_display(unsigned int8 page){ 
+.................... b=page<<2; 
+*
+04C2:  RLF    36,W
+04C3:  MOVWF  2A
+04C4:  RLF    2A,F
+04C5:  MOVLW  FC
+04C6:  ANDWF  2A,F
+.................... moveto(1,2);for(a=0;menu[b][a]!='\0';++a){data=menu[b][a];display();} 
+04C7:  MOVLW  01
+04C8:  MOVWF  40
+04C9:  MOVLW  02
+04CA:  MOVWF  41
+04CB:  CALL   488
+04CC:  CLRF   29
+04CD:  RLF    2A,W
+04CE:  MOVWF  37
+04CF:  CLRF   38
+04D0:  RLF    38,F
+04D1:  RLF    37,F
+04D2:  RLF    38,F
+04D3:  RLF    37,F
+04D4:  RLF    38,F
+04D5:  MOVLW  F8
+04D6:  ANDWF  37,F
+04D7:  MOVF   29,W
+04D8:  ADDWF  37,W
+04D9:  MOVWF  78
+04DA:  MOVF   38,W
+04DB:  MOVWF  7A
+04DC:  BTFSC  03.0
+04DD:  INCF   7A,F
+04DE:  MOVF   78,W
+04DF:  CALL   04C
+04E0:  XORLW  00
+04E1:  BTFSC  03.2
+04E2:  GOTO   4FB
+04E3:  RLF    2A,W
+04E4:  MOVWF  37
+04E5:  CLRF   38
+04E6:  RLF    38,F
+04E7:  RLF    37,F
+04E8:  RLF    38,F
+04E9:  RLF    37,F
+04EA:  RLF    38,F
+04EB:  MOVLW  F8
+04EC:  ANDWF  37,F
+04ED:  MOVF   29,W
+04EE:  ADDWF  37,W
+04EF:  MOVWF  78
+04F0:  MOVF   38,W
+04F1:  MOVWF  7A
+04F2:  BTFSC  03.0
+04F3:  INCF   7A,F
+04F4:  MOVF   78,W
+04F5:  CALL   04C
+04F6:  MOVWF  78
+04F7:  MOVWF  28
+04F8:  CALL   45B
+04F9:  INCF   29,F
+04FA:  GOTO   4CD
+.................... moveto(1,10);for(a=0;menu[b+1][a]!='\0';++a){data=menu[b+1][a];display();} 
+04FB:  MOVLW  01
+04FC:  MOVWF  40
+04FD:  MOVLW  0A
+04FE:  MOVWF  41
+04FF:  CALL   488
+0500:  CLRF   29
+0501:  MOVLW  01
+0502:  ADDWF  2A,W
+0503:  MOVWF  79
+0504:  RLF    79,W
+0505:  MOVWF  38
+0506:  CLRF   39
+0507:  RLF    39,F
+0508:  RLF    38,F
+0509:  RLF    39,F
+050A:  RLF    38,F
+050B:  RLF    39,F
+050C:  MOVLW  F8
+050D:  ANDWF  38,F
+050E:  MOVF   29,W
+050F:  ADDWF  38,W
+0510:  MOVWF  78
+0511:  MOVF   39,W
+0512:  MOVWF  7A
+0513:  BTFSC  03.0
+0514:  INCF   7A,F
+0515:  MOVF   78,W
+0516:  CALL   04C
+0517:  XORLW  00
+0518:  BTFSC  03.2
+0519:  GOTO   535
+051A:  MOVLW  01
+051B:  ADDWF  2A,W
+051C:  MOVWF  79
+051D:  RLF    79,W
+051E:  MOVWF  38
+051F:  CLRF   39
+0520:  RLF    39,F
+0521:  RLF    38,F
+0522:  RLF    39,F
+0523:  RLF    38,F
+0524:  RLF    39,F
+0525:  MOVLW  F8
+0526:  ANDWF  38,F
+0527:  MOVF   29,W
+0528:  ADDWF  38,W
+0529:  MOVWF  78
+052A:  MOVF   39,W
+052B:  MOVWF  7A
+052C:  BTFSC  03.0
+052D:  INCF   7A,F
+052E:  MOVF   78,W
+052F:  CALL   04C
+0530:  MOVWF  78
+0531:  MOVWF  28
+0532:  CALL   45B
+0533:  INCF   29,F
+0534:  GOTO   501
+.................... moveto(2,2);for(a=0;menu[b+2][a]!='\0';++a){data=menu[b+2][a];display();} 
+0535:  MOVLW  02
+0536:  MOVWF  40
+0537:  MOVWF  41
+0538:  CALL   488
+0539:  CLRF   29
+053A:  MOVLW  02
+053B:  ADDWF  2A,W
+053C:  MOVWF  79
+053D:  RLF    79,W
+053E:  MOVWF  38
+053F:  CLRF   39
+0540:  RLF    39,F
+0541:  RLF    38,F
+0542:  RLF    39,F
+0543:  RLF    38,F
+0544:  RLF    39,F
+0545:  MOVLW  F8
+0546:  ANDWF  38,F
+0547:  MOVF   29,W
+0548:  ADDWF  38,W
+0549:  MOVWF  78
+054A:  MOVF   39,W
+054B:  MOVWF  7A
+054C:  BTFSC  03.0
+054D:  INCF   7A,F
+054E:  MOVF   78,W
+054F:  CALL   04C
+0550:  XORLW  00
+0551:  BTFSC  03.2
+0552:  GOTO   56E
+0553:  MOVLW  02
+0554:  ADDWF  2A,W
+0555:  MOVWF  79
+0556:  RLF    79,W
+0557:  MOVWF  38
+0558:  CLRF   39
+0559:  RLF    39,F
+055A:  RLF    38,F
+055B:  RLF    39,F
+055C:  RLF    38,F
+055D:  RLF    39,F
+055E:  MOVLW  F8
+055F:  ANDWF  38,F
+0560:  MOVF   29,W
+0561:  ADDWF  38,W
+0562:  MOVWF  78
+0563:  MOVF   39,W
+0564:  MOVWF  7A
+0565:  BTFSC  03.0
+0566:  INCF   7A,F
+0567:  MOVF   78,W
+0568:  CALL   04C
+0569:  MOVWF  78
+056A:  MOVWF  28
+056B:  CALL   45B
+056C:  INCF   29,F
+056D:  GOTO   53A
+.................... moveto(2,10);for(a=0;menu[b+3][a]!='\0';++a){data=menu[b+3][a];display();} 
+056E:  MOVLW  02
+056F:  MOVWF  40
+0570:  MOVLW  0A
+0571:  MOVWF  41
+0572:  CALL   488
+0573:  CLRF   29
+0574:  MOVLW  03
+0575:  ADDWF  2A,W
+0576:  MOVWF  79
+0577:  RLF    79,W
+0578:  MOVWF  38
+0579:  CLRF   39
+057A:  RLF    39,F
+057B:  RLF    38,F
+057C:  RLF    39,F
+057D:  RLF    38,F
+057E:  RLF    39,F
+057F:  MOVLW  F8
+0580:  ANDWF  38,F
+0581:  MOVF   29,W
+0582:  ADDWF  38,W
+0583:  MOVWF  78
+0584:  MOVF   39,W
+0585:  MOVWF  7A
+0586:  BTFSC  03.0
+0587:  INCF   7A,F
+0588:  MOVF   78,W
+0589:  CALL   04C
+058A:  XORLW  00
+058B:  BTFSC  03.2
+058C:  GOTO   5A8
+058D:  MOVLW  03
+058E:  ADDWF  2A,W
+058F:  MOVWF  79
+0590:  RLF    79,W
+0591:  MOVWF  38
+0592:  CLRF   39
+0593:  RLF    39,F
+0594:  RLF    38,F
+0595:  RLF    39,F
+0596:  RLF    38,F
+0597:  RLF    39,F
+0598:  MOVLW  F8
+0599:  ANDWF  38,F
+059A:  MOVF   29,W
+059B:  ADDWF  38,W
+059C:  MOVWF  78
+059D:  MOVF   39,W
+059E:  MOVWF  7A
+059F:  BTFSC  03.0
+05A0:  INCF   7A,F
+05A1:  MOVF   78,W
+05A2:  CALL   04C
+05A3:  MOVWF  78
+05A4:  MOVWF  28
+05A5:  CALL   45B
+05A6:  INCF   29,F
+05A7:  GOTO   574
+.................... } 
+05A8:  BSF    0A.3
+05A9:  BCF    0A.4
+05AA:  GOTO   4E7 (RETURN)
+.................... /*--------------------The end-------------------*/ 
+....................  
+....................  
+.................... #include <2416.c> 
+.................... /////////////////////////////////////////////////////////////////////////// 
+.................... ////   Library for a MicroChip 24LC16B                                 //// 
+.................... ////                                                                   //// 
+.................... ////   init_ext_eeprom();    Call before the other functions are used  //// 
+.................... ////                                                                   //// 
+.................... ////   write_ext_eeprom(a, d);  Write the byte d to the address a      //// 
+.................... ////                                                                   //// 
+.................... ////   d = read_ext_eeprom(a);  Read the byte d from the address a     //// 
+.................... ////                                                                   //// 
+.................... ////   b = ext_eeprom_ready();  Returns TRUE if the eeprom is ready    //// 
+.................... ////                            to receive opcodes                     //// 
+.................... ////                                                                   //// 
+.................... ////   The main program may define EEPROM_SDA                          //// 
+.................... ////   and EEPROM_SCL to override the defaults below.                  //// 
+.................... ////                                                                   //// 
+.................... ////                            Pin Layout                             //// 
+.................... ////   -----------------------------------------------------------     //// 
+.................... ////   |                                                         |     //// 
+.................... ////   | 1: NC   Not Connected | 8: VCC   +5V                    |     //// 
+.................... ////   |                       |                                 |     //// 
+.................... ////   | 2: NC   Not Connected | 7: WP    GND                    |     //// 
+.................... ////   |                       |                                 |     //// 
+.................... ////   | 3: NC   Not Connected | 6: SCL   EEPROM_SCL and Pull-Up |     //// 
+.................... ////   |                       |                                 |     //// 
+.................... ////   | 4: VSS  GND           | 5: SDA   EEPROM_SDA and Pull-Up |     //// 
+.................... ////   -----------------------------------------------------------     //// 
+.................... ////                                                                   //// 
+.................... /////////////////////////////////////////////////////////////////////////// 
+.................... ////        (C) Copyright 1996, 2003 Custom Computer Services          //// 
+.................... //// This source code may only be used by licensed users of the CCS C  //// 
+.................... //// compiler.  This source code may only be distributed to other      //// 
+.................... //// licensed users of the CCS C compiler.  No other use, reproduction //// 
+.................... //// or distribution is permitted without written permission.          //// 
+.................... //// Derivative programs created using this software in object code    //// 
+.................... //// form are not restricted in any way.                               //// 
+.................... /////////////////////////////////////////////////////////////////////////// 
+....................  
+....................  
+.................... #ifndef EEPROM_SDA 
+....................  
+.................... #define EEPROM_SDA  PIN_E0 
+.................... #define EEPROM_SCL  PIN_E1 
+....................  
+.................... #endif 
+....................  
+....................  
+.................... #use i2c(master, sda=EEPROM_SDA, scl=EEPROM_SCL) 
+*
+05E9:  MOVLW  08
+05EA:  MOVWF  78
+05EB:  MOVLW  04
+05EC:  MOVWF  77
+05ED:  DECFSZ 77,F
+05EE:  GOTO   5ED
+05EF:  BCF    09.1
+05F0:  BSF    03.5
+05F1:  BCF    09.1
+05F2:  MOVLW  03
+05F3:  MOVWF  77
+05F4:  DECFSZ 77,F
+05F5:  GOTO   5F4
+05F6:  BCF    03.5
+05F7:  RLF    3D,F
+05F8:  BCF    09.0
+05F9:  BTFSS  03.0
+05FA:  GOTO   5FE
+05FB:  BSF    03.5
+05FC:  BSF    09.0
+05FD:  BCF    03.5
+05FE:  BTFSC  03.0
+05FF:  GOTO   603
+0600:  BSF    03.5
+0601:  BCF    09.0
+0602:  BCF    03.5
+0603:  BSF    03.5
+0604:  BSF    09.1
+0605:  BCF    03.5
+0606:  BTFSS  09.1
+0607:  GOTO   606
+0608:  DECFSZ 78,F
+0609:  GOTO   5EB
+060A:  MOVLW  04
+060B:  MOVWF  77
+060C:  DECFSZ 77,F
+060D:  GOTO   60C
+060E:  BCF    09.1
+060F:  BSF    03.5
+0610:  BCF    09.1
+0611:  NOP
+0612:  BSF    09.0
+0613:  MOVLW  03
+0614:  MOVWF  77
+0615:  DECFSZ 77,F
+0616:  GOTO   615
+0617:  MOVLW  03
+0618:  MOVWF  77
+0619:  DECFSZ 77,F
+061A:  GOTO   619
+061B:  BSF    09.1
+061C:  BCF    03.5
+061D:  BTFSS  09.1
+061E:  GOTO   61D
+061F:  CLRF   78
+0620:  MOVLW  03
+0621:  MOVWF  77
+0622:  DECFSZ 77,F
+0623:  GOTO   622
+0624:  BTFSC  09.0
+0625:  BSF    78.0
+0626:  BCF    09.1
+0627:  BSF    03.5
+0628:  BCF    09.1
+0629:  BCF    03.5
+062A:  BCF    09.0
+062B:  BSF    03.5
+062C:  BCF    09.0
+062D:  BCF    03.5
+062E:  RETLW  00
+*
+0A78:  MOVLW  08
+0A79:  MOVWF  3C
+0A7A:  MOVF   77,W
+0A7B:  MOVWF  3D
+0A7C:  BSF    03.5
+0A7D:  BSF    09.0
+0A7E:  MOVLW  03
+0A7F:  MOVWF  77
+0A80:  DECFSZ 77,F
+0A81:  GOTO   280
+0A82:  BSF    09.1
+0A83:  BCF    03.5
+0A84:  BTFSS  09.1
+0A85:  GOTO   284
+0A86:  BTFSC  09.0
+0A87:  BSF    03.0
+0A88:  BTFSS  09.0
+0A89:  BCF    03.0
+0A8A:  RLF    78,F
+0A8B:  MOVLW  04
+0A8C:  MOVWF  77
+0A8D:  DECFSZ 77,F
+0A8E:  GOTO   28D
+0A8F:  BSF    03.5
+0A90:  BCF    09.1
+0A91:  BCF    03.5
+0A92:  BCF    09.1
+0A93:  DECFSZ 3C,F
+0A94:  GOTO   27C
+0A95:  BSF    03.5
+0A96:  BSF    09.0
+0A97:  MOVLW  03
+0A98:  MOVWF  77
+0A99:  DECFSZ 77,F
+0A9A:  GOTO   299
+0A9B:  BCF    03.5
+0A9C:  BCF    09.0
+0A9D:  MOVF   3D,W
+0A9E:  BTFSC  03.2
+0A9F:  GOTO   2A3
+0AA0:  BSF    03.5
+0AA1:  BCF    09.0
+0AA2:  BCF    03.5
+0AA3:  NOP
+0AA4:  BSF    03.5
+0AA5:  BSF    09.1
+0AA6:  BCF    03.5
+0AA7:  BTFSS  09.1
+0AA8:  GOTO   2A7
+0AA9:  MOVLW  04
+0AAA:  MOVWF  77
+0AAB:  DECFSZ 77,F
+0AAC:  GOTO   2AB
+0AAD:  BCF    09.1
+0AAE:  BSF    03.5
+0AAF:  BCF    09.1
+0AB0:  MOVLW  03
+0AB1:  MOVWF  77
+0AB2:  DECFSZ 77,F
+0AB3:  GOTO   2B2
+0AB4:  BCF    03.5
+0AB5:  BCF    09.0
+0AB6:  BSF    03.5
+0AB7:  BCF    09.0
+....................  
+.................... #define EEPROM_ADDRESS unsigned int16 
+.................... #define EEPROM_SIZE    1024 
+....................  
+.................... void init_ext_eeprom() { 
+....................    output_float(EEPROM_SCL); 
+*
+099C:  BSF    03.5
+099D:  BSF    09.1
+....................    output_float(EEPROM_SDA); 
+099E:  BSF    09.0
+.................... } 
+....................  
+.................... int1 ext_eeprom_ready() { 
+....................    int1 ack; 
+....................    i2c_start();            // If the write command is acknowledged, 
+*
+062F:  BSF    03.5
+0630:  BSF    09.0
+0631:  MOVLW  04
+0632:  MOVWF  77
+0633:  DECFSZ 77,F
+0634:  GOTO   633
+0635:  BSF    09.1
+0636:  MOVLW  03
+0637:  MOVWF  77
+0638:  DECFSZ 77,F
+0639:  GOTO   638
+063A:  BCF    03.5
+063B:  BCF    09.0
+063C:  BSF    03.5
+063D:  BCF    09.0
+063E:  MOVLW  04
+063F:  MOVWF  77
+0640:  DECFSZ 77,F
+0641:  GOTO   640
+0642:  BCF    03.5
+0643:  BCF    09.1
+0644:  BSF    03.5
+0645:  BCF    09.1
+....................    ack = i2c_write(0xa0);  // then the device is ready. 
+0646:  MOVLW  A0
+0647:  BCF    03.5
+0648:  MOVWF  3D
+0649:  CALL   5E9
+064A:  MOVF   78,W
+064B:  BCF    3B.0
+064C:  BTFSC  78.0
+064D:  BSF    3B.0
+....................    i2c_stop(); 
+064E:  BSF    03.5
+064F:  BCF    09.0
+0650:  NOP
+0651:  BSF    09.1
+0652:  BCF    03.5
+0653:  BTFSS  09.1
+0654:  GOTO   653
+0655:  MOVLW  04
+0656:  MOVWF  77
+0657:  DECFSZ 77,F
+0658:  GOTO   657
+0659:  GOTO   65A
+065A:  NOP
+065B:  BSF    03.5
+065C:  BSF    09.0
+065D:  MOVLW  04
+065E:  MOVWF  77
+065F:  DECFSZ 77,F
+0660:  GOTO   65F
+....................    return !ack; 
+0661:  MOVLW  00
+0662:  BCF    03.5
+0663:  BTFSS  3B.0
+0664:  MOVLW  01
+0665:  MOVWF  78
+.................... } 
+0666:  RETLW  00
+....................  
+.................... void write_ext_eeprom(EEPROM_ADDRESS address, BYTE data) { 
+....................    while(!ext_eeprom_ready()); 
+*
+09A9:  BCF    0A.3
+09AA:  CALL   62F
+09AB:  BSF    0A.3
+09AC:  MOVF   78,F
+09AD:  BTFSC  03.2
+09AE:  GOTO   1A9
+....................    i2c_start(); 
+09AF:  BSF    03.5
+09B0:  BSF    09.0
+09B1:  MOVLW  04
+09B2:  MOVWF  77
+09B3:  DECFSZ 77,F
+09B4:  GOTO   1B3
+09B5:  BSF    09.1
+09B6:  MOVLW  03
+09B7:  MOVWF  77
+09B8:  DECFSZ 77,F
+09B9:  GOTO   1B8
+09BA:  BCF    03.5
+09BB:  BCF    09.0
+09BC:  BSF    03.5
+09BD:  BCF    09.0
+09BE:  MOVLW  04
+09BF:  MOVWF  77
+09C0:  DECFSZ 77,F
+09C1:  GOTO   1C0
+09C2:  BCF    03.5
+09C3:  BCF    09.1
+09C4:  BSF    03.5
+09C5:  BCF    09.1
+....................    i2c_write((0xa0|(BYTE)(address>>7))&0xfe); 
+09C6:  BCF    03.5
+09C7:  RRF    39,W
+09C8:  MOVWF  7A
+09C9:  RRF    38,W
+09CA:  MOVWF  79
+09CB:  RRF    7A,F
+09CC:  RRF    79,F
+09CD:  RRF    7A,F
+09CE:  RRF    79,F
+09CF:  RRF    7A,F
+09D0:  RRF    79,F
+09D1:  RRF    7A,F
+09D2:  RRF    79,F
+09D3:  RRF    7A,F
+09D4:  RRF    79,F
+09D5:  RRF    7A,F
+09D6:  RRF    79,F
+09D7:  MOVLW  01
+09D8:  ANDWF  7A,F
+09D9:  MOVF   79,W
+09DA:  IORLW  A0
+09DB:  ANDLW  FE
+09DC:  MOVWF  3C
+09DD:  MOVWF  3D
+09DE:  BCF    0A.3
+09DF:  CALL   5E9
+09E0:  BSF    0A.3
+....................    i2c_write(address); 
+09E1:  MOVF   38,W
+09E2:  MOVWF  3D
+09E3:  BCF    0A.3
+09E4:  CALL   5E9
+09E5:  BSF    0A.3
+....................    i2c_write(data); 
+09E6:  MOVF   3A,W
+09E7:  MOVWF  3D
+09E8:  BCF    0A.3
+09E9:  CALL   5E9
+09EA:  BSF    0A.3
+....................    i2c_stop(); 
+09EB:  BSF    03.5
+09EC:  BCF    09.0
+09ED:  NOP
+09EE:  BSF    09.1
+09EF:  BCF    03.5
+09F0:  BTFSS  09.1
+09F1:  GOTO   1F0
+09F2:  MOVLW  04
+09F3:  MOVWF  77
+09F4:  DECFSZ 77,F
+09F5:  GOTO   1F4
+09F6:  GOTO   1F7
+09F7:  NOP
+09F8:  BSF    03.5
+09F9:  BSF    09.0
+09FA:  MOVLW  04
+09FB:  MOVWF  77
+09FC:  DECFSZ 77,F
+09FD:  GOTO   1FC
+.................... } 
+....................  
+....................  
+.................... BYTE read_ext_eeprom(EEPROM_ADDRESS address) { 
+....................    BYTE data; 
+....................  
+....................    while(!ext_eeprom_ready()); 
+*
+0A06:  BCF    0A.3
+0A07:  CALL   62F
+0A08:  BSF    0A.3
+0A09:  MOVF   78,F
+0A0A:  BTFSC  03.2
+0A0B:  GOTO   206
+....................    i2c_start(); 
+0A0C:  BSF    03.5
+0A0D:  BSF    09.0
+0A0E:  MOVLW  04
+0A0F:  MOVWF  77
+0A10:  DECFSZ 77,F
+0A11:  GOTO   210
+0A12:  BSF    09.1
+0A13:  MOVLW  03
+0A14:  MOVWF  77
+0A15:  DECFSZ 77,F
+0A16:  GOTO   215
+0A17:  BCF    03.5
+0A18:  BCF    09.0
+0A19:  BSF    03.5
+0A1A:  BCF    09.0
+0A1B:  MOVLW  04
+0A1C:  MOVWF  77
+0A1D:  DECFSZ 77,F
+0A1E:  GOTO   21D
+0A1F:  BCF    03.5
+0A20:  BCF    09.1
+0A21:  BSF    03.5
+0A22:  BCF    09.1
+....................    i2c_write((0xa0|(BYTE)(address>>7))&0xfe); 
+0A23:  BCF    03.5
+0A24:  RRF    39,W
+0A25:  MOVWF  7A
+0A26:  RRF    38,W
+0A27:  MOVWF  79
+0A28:  RRF    7A,F
+0A29:  RRF    79,F
+0A2A:  RRF    7A,F
+0A2B:  RRF    79,F
+0A2C:  RRF    7A,F
+0A2D:  RRF    79,F
+0A2E:  RRF    7A,F
+0A2F:  RRF    79,F
+0A30:  RRF    7A,F
+0A31:  RRF    79,F
+0A32:  RRF    7A,F
+0A33:  RRF    79,F
+0A34:  MOVLW  01
+0A35:  ANDWF  7A,F
+0A36:  MOVF   79,W
+0A37:  IORLW  A0
+0A38:  ANDLW  FE
+0A39:  MOVWF  3C
+0A3A:  MOVWF  3D
+0A3B:  BCF    0A.3
+0A3C:  CALL   5E9
+0A3D:  BSF    0A.3
+....................    i2c_write(address); 
+0A3E:  MOVF   38,W
+0A3F:  MOVWF  3D
+0A40:  BCF    0A.3
+0A41:  CALL   5E9
+0A42:  BSF    0A.3
+....................    i2c_start(); 
+0A43:  BSF    03.5
+0A44:  BSF    09.0
+0A45:  MOVLW  04
+0A46:  MOVWF  77
+0A47:  DECFSZ 77,F
+0A48:  GOTO   247
+0A49:  BSF    09.1
+0A4A:  MOVLW  03
+0A4B:  MOVWF  77
+0A4C:  DECFSZ 77,F
+0A4D:  GOTO   24C
+0A4E:  BCF    03.5
+0A4F:  BTFSS  09.1
+0A50:  GOTO   24F
+0A51:  BCF    09.0
+0A52:  BSF    03.5
+0A53:  BCF    09.0
+0A54:  MOVLW  04
+0A55:  MOVWF  77
+0A56:  DECFSZ 77,F
+0A57:  GOTO   256
+0A58:  BCF    03.5
+0A59:  BCF    09.1
+0A5A:  BSF    03.5
+0A5B:  BCF    09.1
+....................    i2c_write((0xa0|(BYTE)(address>>7))|1); 
+0A5C:  BCF    03.5
+0A5D:  RRF    39,W
+0A5E:  MOVWF  7A
+0A5F:  RRF    38,W
+0A60:  MOVWF  79
+0A61:  RRF    7A,F
+0A62:  RRF    79,F
+0A63:  RRF    7A,F
+0A64:  RRF    79,F
+0A65:  RRF    7A,F
+0A66:  RRF    79,F
+0A67:  RRF    7A,F
+0A68:  RRF    79,F
+0A69:  RRF    7A,F
+0A6A:  RRF    79,F
+0A6B:  RRF    7A,F
+0A6C:  RRF    79,F
+0A6D:  MOVLW  01
+0A6E:  ANDWF  7A,F
+0A6F:  MOVF   79,W
+0A70:  IORLW  A0
+0A71:  IORLW  01
+0A72:  MOVWF  3C
+0A73:  MOVWF  3D
+0A74:  BCF    0A.3
+0A75:  CALL   5E9
+0A76:  BSF    0A.3
+....................    data=i2c_read(0); 
+0A77:  CLRF   77
+*
+0AB8:  MOVF   78,W
+0AB9:  BCF    03.5
+0ABA:  MOVWF  3A
+....................    i2c_stop(); 
+0ABB:  BSF    03.5
+0ABC:  BCF    09.0
+0ABD:  NOP
+0ABE:  BSF    09.1
+0ABF:  BCF    03.5
+0AC0:  BTFSS  09.1
+0AC1:  GOTO   2C0
+0AC2:  MOVLW  04
+0AC3:  MOVWF  77
+0AC4:  DECFSZ 77,F
+0AC5:  GOTO   2C4
+0AC6:  GOTO   2C7
+0AC7:  NOP
+0AC8:  BSF    03.5
+0AC9:  BSF    09.0
+0ACA:  MOVLW  04
+0ACB:  MOVWF  77
+0ACC:  DECFSZ 77,F
+0ACD:  GOTO   2CC
+....................    return(data); 
+0ACE:  BCF    03.5
+0ACF:  MOVF   3A,W
+0AD0:  MOVWF  78
+.................... } 
+....................  
+.................... #fuses NOWDT,HS,NOPUT,NOPROTECT,NODEBUG,NOBROWNOUT,NOLVP,NOCPD,NOWRT 
+.................... #priority int_timer2,int_timer0  //thiet dat uu tien ngat 
+.................... /**************Ket thuc khai bao*****************/ 
+.................... #bit OE = 0x08.7   //chan d7(chot du lieu) 
+.................... /*----------*/ 
+.................... #bit c0 = 0x07.0 
+.................... #bit c1 = 0x07.1 
+.................... #bit c2 = 0x07.2 
+.................... #bit c3 = 0x07.3 
+.................... #bit c4 = 0x07.4 
+.................... #bit c5 = 0x07.5 
+.................... #bit c6 = 0x07.6 
+.................... #bit c7 = 0x07.7 
+.................... /*--------------*/ 
+.................... #byte portB=0x06 
+.................... #byte portC=0x07 
+.................... #byte portD=0x08 
+.................... /*---------Dinh nghia Marco------------*/ 
+.................... #define kiemtra (c4+(c5<<1)+(c6<<2)+(c7<<3)) 
+.................... #define start_quetphim enable_interrupts(int_timer2) 
+.................... #define stop_quetphim disable_interrupts(int_timer2) 
+.................... /*---------------------------------------------*/ 
+.................... unsigned int1 chon_play; 
+.................... unsigned int8 a,b;   //bien da nang,su dung lam gi cung duoc 
+.................... unsigned int8 phim,chon_ct,chon_page,backup; 
+.................... unsigned int8 data;  //bien toan cuc co trong moi file khi link cac file *.c de complier 
+.................... const unsigned char msg_ask[]={"  YES 1  NO 2  "}; 
+.................... /*-----------------------------------------------------------------*/ 
+.................... /*----------------------cac chuong trinh con-----------------------*/ 
+.................... /*-----------------------------------------------------------------*/ 
+.................... void muiten(void){data=0x7e;display();}    //bieu tuong con tro (->) 
+*
+05B0:  MOVLW  7E
+05B1:  MOVWF  28
+05B2:  CALL   45B
+.................... void eraser(void){data=' ';display();}   //ki tu rong(xoa ki tu) 
+*
+05BB:  MOVLW  20
+05BC:  MOVWF  28
+05BD:  CALL   45B
+.................... /*----------------------*/ 
+.................... void contro(unsigned int8 dong,cot){ 
+.................... moveto(dong,cot);muiten(); 
+*
+05AB:  MOVF   39,W
+05AC:  MOVWF  40
+05AD:  MOVF   3A,W
+05AE:  MOVWF  41
+05AF:  CALL   488
+.................... delay_ms(20); 
+*
+05B3:  MOVLW  14
+05B4:  MOVWF  41
+05B5:  CALL   38B
+.................... moveto(dong,cot);eraser(); 
+05B6:  MOVF   39,W
+05B7:  MOVWF  40
+05B8:  MOVF   3A,W
+05B9:  MOVWF  41
+05BA:  CALL   488
+.................... delay_ms(20); 
+*
+05BE:  MOVLW  14
+05BF:  MOVWF  41
+05C0:  CALL   38B
+.................... } 
+05C1:  RETLW  00
+.................... /*-----Loi Chao------*/ 
+.................... void wellcome(void){ 
+.................... const unsigned char msg1[]={"BAN QUYEN SP CUA"}; 
+.................... const unsigned char msg2[]={"Slowlove-(29/06)"}; 
+.................... for(a=0;msg1[a]!='\0';++a){data=msg1[a];display();} 
+*
+0495:  CLRF   29
+0496:  MOVF   29,W
+0497:  CALL   167
+0498:  XORLW  00
+0499:  BTFSC  03.2
+049A:  GOTO   4A2
+049B:  MOVF   29,W
+049C:  CALL   167
+049D:  MOVWF  78
+049E:  MOVWF  28
+049F:  CALL   45B
+04A0:  INCF   29,F
+04A1:  GOTO   496
+.................... moveto(2,1); 
+04A2:  MOVLW  02
+04A3:  MOVWF  40
+04A4:  MOVLW  01
+04A5:  MOVWF  41
+04A6:  CALL   488
+.................... for(a=0;msg2[a]!='\0';++a){data=msg2[a];display();} 
+04A7:  CLRF   29
+04A8:  MOVF   29,W
+04A9:  CALL   17C
+04AA:  XORLW  00
+04AB:  BTFSC  03.2
+04AC:  GOTO   4B4
+04AD:  MOVF   29,W
+04AE:  CALL   17C
+04AF:  MOVWF  78
+04B0:  MOVWF  28
+04B1:  CALL   45B
+04B2:  INCF   29,F
+04B3:  GOTO   4A8
+.................... delay_ms(800); 
+04B4:  MOVLW  04
+04B5:  MOVWF  36
+04B6:  MOVLW  C8
+04B7:  MOVWF  41
+04B8:  CALL   38B
+04B9:  DECFSZ 36,F
+04BA:  GOTO   4B6
+.................... } 
+04BB:  BSF    0A.3
+04BC:  BCF    0A.4
+04BD:  GOTO   4DC (RETURN)
+.................... /*------------------*/ 
+.................... void cau_hoi_xac_nhan(void){ 
+.................... const unsigned char msg1[]={"Co muon chay CT?"}; 
+.................... clear(); 
+*
+05C2:  CALL   4BE
+.................... for(a=0;msg1[a]!='\0';++a){data=msg1[a];display();} 
+05C3:  CLRF   29
+05C4:  MOVF   29,W
+05C5:  CALL   191
+05C6:  XORLW  00
+05C7:  BTFSC  03.2
+05C8:  GOTO   5D0
+05C9:  MOVF   29,W
+05CA:  CALL   191
+05CB:  MOVWF  78
+05CC:  MOVWF  28
+05CD:  CALL   45B
+05CE:  INCF   29,F
+05CF:  GOTO   5C4
+.................... moveto(2,1); 
+05D0:  MOVLW  02
+05D1:  MOVWF  40
+05D2:  MOVLW  01
+05D3:  MOVWF  41
+05D4:  CALL   488
+.................... for(a=0;msg_ask[a]!='\0';++a){data=msg_ask[a];display();} 
+05D5:  CLRF   29
+05D6:  MOVF   29,W
+05D7:  CALL   153
+05D8:  XORLW  00
+05D9:  BTFSC  03.2
+05DA:  GOTO   5E2
+05DB:  MOVF   29,W
+05DC:  CALL   153
+05DD:  MOVWF  78
+05DE:  MOVWF  28
+05DF:  CALL   45B
+05E0:  INCF   29,F
+05E1:  GOTO   5D6
+.................... } 
+05E2:  BSF    0A.3
+05E3:  BCF    0A.4
+05E4:  GOTO   574 (RETURN)
+.................... /*------------------*/ 
+.................... void thong_bao_complete(void){ 
+.................... const unsigned char msg[]={"Complete !"}; 
+.................... clear();moveto(1,4); 
+*
+0667:  CALL   4BE
+0668:  MOVLW  01
+0669:  MOVWF  40
+066A:  MOVLW  04
+066B:  MOVWF  41
+066C:  CALL   488
+.................... for(a=0;msg[a]!='\0';++a){data=msg[a];display();}   //Complete 
+066D:  CLRF   29
+066E:  MOVF   29,W
+066F:  CALL   1A6
+0670:  XORLW  00
+0671:  BTFSC  03.2
+0672:  GOTO   67A
+0673:  MOVF   29,W
+0674:  CALL   1A6
+0675:  MOVWF  78
+0676:  MOVWF  28
+0677:  CALL   45B
+0678:  INCF   29,F
+0679:  GOTO   66E
+.................... delay_ms(200); 
+067A:  MOVLW  C8
+067B:  MOVWF  41
+067C:  CALL   38B
+.................... } 
+067D:  BSF    0A.3
+067E:  BCF    0A.4
+067F:  GOTO   5F6 (RETURN)
+.................... void thong_bao_resetpage(void){ 
+.................... const unsigned char msg1[]={"GO \"BEGIN_PAGE\" ?"}; 
+.................... clear(); 
+0680:  CALL   4BE
+.................... for(a=0;msg1[a]!='\0';++a){data=msg1[a];display();} 
+0681:  CLRF   29
+0682:  MOVF   29,W
+0683:  CALL   1B5
+0684:  XORLW  00
+0685:  BTFSC  03.2
+0686:  GOTO   68E
+0687:  MOVF   29,W
+0688:  CALL   1B5
+0689:  MOVWF  78
+068A:  MOVWF  28
+068B:  CALL   45B
+068C:  INCF   29,F
+068D:  GOTO   682
+.................... moveto(2,1); 
+068E:  MOVLW  02
+068F:  MOVWF  40
+0690:  MOVLW  01
+0691:  MOVWF  41
+0692:  CALL   488
+.................... for(a=0;msg_ask[a]!='\0';++a){data=msg_ask[a];display();} 
+0693:  CLRF   29
+0694:  MOVF   29,W
+0695:  CALL   153
+0696:  XORLW  00
+0697:  BTFSC  03.2
+0698:  GOTO   6A0
+0699:  MOVF   29,W
+069A:  CALL   153
+069B:  MOVWF  78
+069C:  MOVWF  28
+069D:  CALL   45B
+069E:  INCF   29,F
+069F:  GOTO   694
+.................... } 
+06A0:  BSF    0A.3
+06A1:  BCF    0A.4
+06A2:  GOTO   60C (RETURN)
+.................... /*----------------------------------------------------------------------------*/ 
+.................... /*-----------------------------Chuong trinh chinh-----------------------------*/ 
+.................... /*----------------------------------------------------------------------------*/ 
+.................... #include <program.c> 
+.................... extern unsigned int8 a,data,phim; 
+.................... /*----------------------------------------------------------------------------*/ 
+.................... /*----------------------Cac chuong trinh can thuc hien-----------------------*/ 
+.................... /*----------------------------------------------------------------------------*/ 
+.................... void vach(void){data=0xff;display();}   //vach % qua trinh xu li 
+*
+05E5:  MOVLW  FF
+05E6:  MOVWF  28
+05E7:  CALL   45B
+05E8:  RETLW  00
+.................... /*------------------------*/ 
+.................... void chuongtrinh1(void){ 
+.................... const unsigned char msg[]={"Process..."}; 
+.................... clear();   //xoa man hinh de chuan bi hien thi thong tin qua trinh xu li 
+*
+0807:  BCF    0A.3
+0808:  CALL   4BE
+0809:  BSF    0A.3
+.................... for(a=0;msg[a]!='\0';++a){data=msg[a];display();}   //Process... 
+080A:  CLRF   29
+080B:  MOVF   29,W
+080C:  BCF    0A.3
+080D:  CALL   1CB
+080E:  BSF    0A.3
+080F:  XORLW  00
+0810:  BTFSC  03.2
+0811:  GOTO   01D
+0812:  MOVF   29,W
+0813:  BCF    0A.3
+0814:  CALL   1CB
+0815:  BSF    0A.3
+0816:  MOVWF  78
+0817:  MOVWF  28
+0818:  BCF    0A.3
+0819:  CALL   45B
+081A:  BSF    0A.3
+081B:  INCF   29,F
+081C:  GOTO   00B
+.................... moveto(2,1); 
+081D:  MOVLW  02
+081E:  MOVWF  40
+081F:  MOVLW  01
+0820:  MOVWF  41
+0821:  BCF    0A.3
+0822:  CALL   488
+0823:  BSF    0A.3
+.................... for(a=0;bit_test(a,4)==0;++a){vach();delay_ms(100);} 
+0824:  CLRF   29
+0825:  BTFSC  29.4
+0826:  GOTO   031
+0827:  BCF    0A.3
+0828:  CALL   5E5
+0829:  BSF    0A.3
+082A:  MOVLW  64
+082B:  MOVWF  41
+082C:  BCF    0A.3
+082D:  CALL   38B
+082E:  BSF    0A.3
+082F:  INCF   29,F
+0830:  GOTO   025
+.................... } 
+.................... /*--------------------------------------*/ 
+.................... void chuongtrinh2(void){ 
+.................... const unsigned char msg[]={"Love_You_Forever"}; 
+.................... clear(); 
+*
+0832:  BCF    0A.3
+0833:  CALL   4BE
+0834:  BSF    0A.3
+.................... for(a=0;msg[a]!='\0';++a){data=msg[a];display();}  
+0835:  CLRF   29
+0836:  MOVF   29,W
+0837:  BCF    0A.3
+0838:  CALL   1DA
+0839:  BSF    0A.3
+083A:  XORLW  00
+083B:  BTFSC  03.2
+083C:  GOTO   048
+083D:  MOVF   29,W
+083E:  BCF    0A.3
+083F:  CALL   1DA
+0840:  BSF    0A.3
+0841:  MOVWF  78
+0842:  MOVWF  28
+0843:  BCF    0A.3
+0844:  CALL   45B
+0845:  BSF    0A.3
+0846:  INCF   29,F
+0847:  GOTO   036
+.................... moveto(2,1); 
+0848:  MOVLW  02
+0849:  MOVWF  40
+084A:  MOVLW  01
+084B:  MOVWF  41
+084C:  BCF    0A.3
+084D:  CALL   488
+084E:  BSF    0A.3
+.................... for(a=0;bit_test(a,4)==0;++a){vach();delay_ms(100);} 
+084F:  CLRF   29
+0850:  BTFSC  29.4
+0851:  GOTO   05C
+0852:  BCF    0A.3
+0853:  CALL   5E5
+0854:  BSF    0A.3
+0855:  MOVLW  64
+0856:  MOVWF  41
+0857:  BCF    0A.3
+0858:  CALL   38B
+0859:  BSF    0A.3
+085A:  INCF   29,F
+085B:  GOTO   050
+.................... } 
+.................... /*--------------------------------------*/ 
+.................... void chuongtrinh3(void){ 
+.................... const unsigned char msg[]={"Slowlove_Winner!"}; 
+.................... clear(); 
+*
+085D:  BCF    0A.3
+085E:  CALL   4BE
+085F:  BSF    0A.3
+.................... for(a=0;msg[a]!='\0';++a){data=msg[a];display();}  
+0860:  CLRF   29
+0861:  MOVF   29,W
+0862:  BCF    0A.3
+0863:  CALL   1EF
+0864:  BSF    0A.3
+0865:  XORLW  00
+0866:  BTFSC  03.2
+0867:  GOTO   073
+0868:  MOVF   29,W
+0869:  BCF    0A.3
+086A:  CALL   1EF
+086B:  BSF    0A.3
+086C:  MOVWF  78
+086D:  MOVWF  28
+086E:  BCF    0A.3
+086F:  CALL   45B
+0870:  BSF    0A.3
+0871:  INCF   29,F
+0872:  GOTO   061
+.................... moveto(2,1); 
+0873:  MOVLW  02
+0874:  MOVWF  40
+0875:  MOVLW  01
+0876:  MOVWF  41
+0877:  BCF    0A.3
+0878:  CALL   488
+0879:  BSF    0A.3
+.................... for(a=0;bit_test(a,4)==0;++a){vach();delay_ms(100);} 
+087A:  CLRF   29
+087B:  BTFSC  29.4
+087C:  GOTO   087
+087D:  BCF    0A.3
+087E:  CALL   5E5
+087F:  BSF    0A.3
+0880:  MOVLW  64
+0881:  MOVWF  41
+0882:  BCF    0A.3
+0883:  CALL   38B
+0884:  BSF    0A.3
+0885:  INCF   29,F
+0886:  GOTO   07B
+.................... } 
+.................... /*--------------------------------------*/ 
+.................... void chuongtrinh4(void){ 
+.................... const unsigned char msg[]={"--29/06/2008--"}; 
+.................... clear(); 
+*
+0888:  BCF    0A.3
+0889:  CALL   4BE
+088A:  BSF    0A.3
+.................... for(a=0;msg[a]!='\0';++a){data=msg[a];display();}  
+088B:  CLRF   29
+088C:  MOVF   29,W
+088D:  BCF    0A.3
+088E:  CALL   207
+088F:  BSF    0A.3
+0890:  XORLW  00
+0891:  BTFSC  03.2
+0892:  GOTO   09E
+0893:  MOVF   29,W
+0894:  BCF    0A.3
+0895:  CALL   207
+0896:  BSF    0A.3
+0897:  MOVWF  78
+0898:  MOVWF  28
+0899:  BCF    0A.3
+089A:  CALL   45B
+089B:  BSF    0A.3
+089C:  INCF   29,F
+089D:  GOTO   08C
+.................... moveto(2,1); 
+089E:  MOVLW  02
+089F:  MOVWF  40
+08A0:  MOVLW  01
+08A1:  MOVWF  41
+08A2:  BCF    0A.3
+08A3:  CALL   488
+08A4:  BSF    0A.3
+.................... for(a=0;bit_test(a,4)==0;++a){vach();delay_ms(100);} 
+08A5:  CLRF   29
+08A6:  BTFSC  29.4
+08A7:  GOTO   0B2
+08A8:  BCF    0A.3
+08A9:  CALL   5E5
+08AA:  BSF    0A.3
+08AB:  MOVLW  64
+08AC:  MOVWF  41
+08AD:  BCF    0A.3
+08AE:  CALL   38B
+08AF:  BSF    0A.3
+08B0:  INCF   29,F
+08B1:  GOTO   0A6
+.................... } 
+.................... /*--------------------------------------*/ 
+.................... void chuongtrinh5(void){ 
+.................... const unsigned char msg1[]={"CHUONG TRINH LED"}; 
+.................... const unsigned char msg2[]={"\"SANG DON\""}; 
+.................... unsigned int8 a,b,c=0; 
+*
+08B3:  CLRF   39
+.................... clear();cursor(1,1,0); 
+08B4:  BCF    0A.3
+08B5:  CALL   4BE
+08B6:  BSF    0A.3
+08B7:  MOVLW  01
+08B8:  MOVWF  3A
+08B9:  MOVWF  3B
+08BA:  CLRF   3C
+08BB:  BCF    0A.3
+08BC:  CALL   44C
+08BD:  BSF    0A.3
+.................... moveto(1,1);for(a=0;msg1[a]!='\0';++a){data=msg1[a];display();delay_ms(50);} 
+08BE:  MOVLW  01
+08BF:  MOVWF  40
+08C0:  MOVWF  41
+08C1:  BCF    0A.3
+08C2:  CALL   488
+08C3:  BSF    0A.3
+08C4:  CLRF   37
+08C5:  MOVF   37,W
+08C6:  BCF    0A.3
+08C7:  CALL   21A
+08C8:  BSF    0A.3
+08C9:  XORLW  00
+08CA:  BTFSC  03.2
+08CB:  GOTO   0DC
+08CC:  MOVF   37,W
+08CD:  BCF    0A.3
+08CE:  CALL   21A
+08CF:  BSF    0A.3
+08D0:  MOVWF  78
+08D1:  MOVWF  28
+08D2:  BCF    0A.3
+08D3:  CALL   45B
+08D4:  BSF    0A.3
+08D5:  MOVLW  32
+08D6:  MOVWF  41
+08D7:  BCF    0A.3
+08D8:  CALL   38B
+08D9:  BSF    0A.3
+08DA:  INCF   37,F
+08DB:  GOTO   0C5
+.................... moveto(2,4);for(a=0;msg2[a]!='\0';++a){data=msg2[a];display();delay_ms(50);} 
+08DC:  MOVLW  02
+08DD:  MOVWF  40
+08DE:  MOVLW  04
+08DF:  MOVWF  41
+08E0:  BCF    0A.3
+08E1:  CALL   488
+08E2:  BSF    0A.3
+08E3:  CLRF   37
+08E4:  MOVF   37,W
+08E5:  BCF    0A.3
+08E6:  CALL   22F
+08E7:  BSF    0A.3
+08E8:  XORLW  00
+08E9:  BTFSC  03.2
+08EA:  GOTO   0FB
+08EB:  MOVF   37,W
+08EC:  BCF    0A.3
+08ED:  CALL   22F
+08EE:  BSF    0A.3
+08EF:  MOVWF  78
+08F0:  MOVWF  28
+08F1:  BCF    0A.3
+08F2:  CALL   45B
+08F3:  BSF    0A.3
+08F4:  MOVLW  32
+08F5:  MOVWF  41
+08F6:  BCF    0A.3
+08F7:  CALL   38B
+08F8:  BSF    0A.3
+08F9:  INCF   37,F
+08FA:  GOTO   0E4
+.................... for(a=0;a<5;++a){cursor(0,0,0);delay_ms(300);cursor(1,0,0);delay_ms(300);} 
+08FB:  CLRF   37
+08FC:  MOVF   37,W
+08FD:  SUBLW  04
+08FE:  BTFSS  03.0
+08FF:  GOTO   121
+0900:  CLRF   3A
+0901:  CLRF   3B
+0902:  CLRF   3C
+0903:  BCF    0A.3
+0904:  CALL   44C
+0905:  BSF    0A.3
+0906:  MOVLW  02
+0907:  MOVWF  3A
+0908:  MOVLW  96
+0909:  MOVWF  41
+090A:  BCF    0A.3
+090B:  CALL   38B
+090C:  BSF    0A.3
+090D:  DECFSZ 3A,F
+090E:  GOTO   108
+090F:  MOVLW  01
+0910:  MOVWF  3A
+0911:  CLRF   3B
+0912:  CLRF   3C
+0913:  BCF    0A.3
+0914:  CALL   44C
+0915:  BSF    0A.3
+0916:  MOVLW  02
+0917:  MOVWF  3A
+0918:  MOVLW  96
+0919:  MOVWF  41
+091A:  BCF    0A.3
+091B:  CALL   38B
+091C:  BSF    0A.3
+091D:  DECFSZ 3A,F
+091E:  GOTO   118
+091F:  INCF   37,F
+0920:  GOTO   0FC
+.................... set_tris_b(0); //tat ca port b la dau ra 
+0921:  MOVLW  00
+0922:  BSF    03.5
+0923:  MOVWF  06
+.................... for(a=0;a<8;++a) 
+0924:  BCF    03.5
+0925:  CLRF   37
+0926:  MOVF   37,W
+0927:  SUBLW  07
+0928:  BTFSS  03.0
+0929:  GOTO   156
+....................    { 
+....................       for(b=0;b<=(7-a);++b) 
+092A:  CLRF   38
+092B:  MOVF   37,W
+092C:  SUBLW  07
+092D:  SUBWF  38,W
+092E:  BTFSC  03.2
+092F:  GOTO   132
+0930:  BTFSC  03.0
+0931:  GOTO   146
+....................          { 
+....................             portB=(1<<b)+c; 
+0932:  MOVLW  01
+0933:  MOVWF  77
+0934:  MOVF   38,W
+0935:  MOVWF  78
+0936:  BTFSC  03.2
+0937:  GOTO   13C
+0938:  BCF    03.0
+0939:  RLF    77,F
+093A:  DECFSZ 78,F
+093B:  GOTO   138
+093C:  MOVF   77,W
+093D:  ADDWF  39,W
+093E:  MOVWF  06
+....................             delay_ms(200); 
+093F:  MOVLW  C8
+0940:  MOVWF  41
+0941:  BCF    0A.3
+0942:  CALL   38B
+0943:  BSF    0A.3
+....................          } 
+0944:  INCF   38,F
+0945:  GOTO   12B
+....................          c=c+(1<<(7-a)); 
+0946:  MOVF   37,W
+0947:  SUBLW  07
+0948:  MOVWF  78
+0949:  MOVLW  01
+094A:  MOVWF  77
+094B:  MOVF   78,F
+094C:  BTFSC  03.2
+094D:  GOTO   152
+094E:  BCF    03.0
+094F:  RLF    77,F
+0950:  DECFSZ 78,F
+0951:  GOTO   14E
+0952:  MOVF   77,W
+0953:  ADDWF  39,F
+....................    } 
+0954:  INCF   37,F
+0955:  GOTO   126
+.................... } 
+.................... void chuongtrinh6(void){} 
+.................... void chuongtrinh7(void){} 
+.................... void chuongtrinh8(void){} 
+.................... void chuongtrinh9(void){ 
+.................... unsigned int m; 
+.................... unsigned int n[]={9,9,9,9,9,9,9,9}; 
+*
+095A:  MOVLW  09
+095B:  MOVWF  38
+095C:  MOVWF  39
+095D:  MOVWF  3A
+095E:  MOVWF  3B
+095F:  MOVWF  3C
+0960:  MOVWF  3D
+0961:  MOVWF  3E
+0962:  MOVWF  3F
+.................... for(m=0;m<8;++m) 
+0963:  CLRF   37
+0964:  MOVF   37,W
+0965:  SUBLW  07
+0966:  BTFSS  03.0
+0967:  GOTO   185
+.................... { 
+.................... cgramadd(0,m); 
+0968:  CLRF   40
+0969:  MOVF   37,W
+096A:  MOVWF  41
+.................... data=n[m];display(); 
+*
+097A:  MOVLW  38
+097B:  ADDWF  37,W
+097C:  MOVWF  04
+097D:  BCF    03.7
+097E:  MOVF   00,W
+097F:  MOVWF  28
+0980:  BCF    0A.3
+0981:  CALL   45B
+0982:  BSF    0A.3
+.................... } 
+0983:  INCF   37,F
+0984:  GOTO   164
+.................... clear();moveto(1,1); 
+0985:  BCF    0A.3
+0986:  CALL   4BE
+0987:  BSF    0A.3
+0988:  MOVLW  01
+0989:  MOVWF  40
+098A:  MOVWF  41
+098B:  BCF    0A.3
+098C:  CALL   488
+098D:  BSF    0A.3
+.................... data=0;display();delay_ms(1000); 
+098E:  CLRF   28
+098F:  BCF    0A.3
+0990:  CALL   45B
+0991:  BSF    0A.3
+0992:  MOVLW  04
+0993:  MOVWF  40
+0994:  MOVLW  FA
+0995:  MOVWF  41
+0996:  BCF    0A.3
+0997:  CALL   38B
+0998:  BSF    0A.3
+0999:  DECFSZ 40,F
+099A:  GOTO   194
+.................... } 
+.................... void chuongtrinh10(void){ 
+.................... unsigned int8 buffer; 
+.................... init_ext_eeprom(); 
+.................... delay_ms(100); 
+*
+099F:  MOVLW  64
+09A0:  BCF    03.5
+09A1:  MOVWF  41
+09A2:  BCF    0A.3
+09A3:  CALL   38B
+09A4:  BSF    0A.3
+.................... write_ext_eeprom(0x00,0xaa); 
+09A5:  CLRF   39
+09A6:  CLRF   38
+09A7:  MOVLW  AA
+09A8:  MOVWF  3A
+.................... delay_ms(100); 
+*
+09FE:  MOVLW  64
+09FF:  BCF    03.5
+0A00:  MOVWF  41
+0A01:  BCF    0A.3
+0A02:  CALL   38B
+0A03:  BSF    0A.3
+.................... buffer=read_ext_eeprom(0x00); 
+0A04:  CLRF   39
+0A05:  CLRF   38
+*
+0AD1:  MOVF   78,W
+0AD2:  MOVWF  37
+.................... delay_ms(100); 
+0AD3:  MOVLW  64
+0AD4:  MOVWF  41
+0AD5:  BCF    0A.3
+0AD6:  CALL   38B
+0AD7:  BSF    0A.3
+.................... clear();moveto(2,1); 
+0AD8:  BCF    0A.3
+0AD9:  CALL   4BE
+0ADA:  BSF    0A.3
+0ADB:  MOVLW  02
+0ADC:  MOVWF  40
+0ADD:  MOVLW  01
+0ADE:  MOVWF  41
+0ADF:  BCF    0A.3
+0AE0:  CALL   488
+0AE1:  BSF    0A.3
+.................... data=buffer;display();delay_ms(1000); 
+0AE2:  MOVF   37,W
+0AE3:  MOVWF  28
+0AE4:  BCF    0A.3
+0AE5:  CALL   45B
+0AE6:  BSF    0A.3
+0AE7:  MOVLW  04
+0AE8:  MOVWF  38
+0AE9:  MOVLW  FA
+0AEA:  MOVWF  41
+0AEB:  BCF    0A.3
+0AEC:  CALL   38B
+0AED:  BSF    0A.3
+0AEE:  DECFSZ 38,F
+0AEF:  GOTO   2E9
+.................... } 
+.................... void chuongtrinh11(void){} 
+.................... void chuongtrinh12(void){} 
+.................... void chuongtrinh13(void){} 
+.................... void chuongtrinh14(void){} 
+.................... void chuongtrinh15(void){} 
+.................... void chuongtrinh16(void){} 
+.................... void chuongtrinh17(void){} 
+.................... void chuongtrinh18(void){} 
+.................... void chuongtrinh19(void){} 
+.................... void chuongtrinh20(void){} 
+.................... void chuongtrinh21(void){} 
+.................... void chuongtrinh22(void){} 
+.................... void chuongtrinh23(void){} 
+.................... void chuongtrinh24(void){} 
+.................... void chuongtrinh25(void){} 
+.................... void chuongtrinh26(void){} 
+.................... void chuongtrinh27(void){} 
+.................... void chuongtrinh28(void){} 
+.................... void chuongtrinh29(void){} 
+.................... void chuongtrinh30(void){} 
+.................... void chuongtrinh31(void){ 
+.................... unsigned int8 backup_chon31; 
+.................... unsigned int1 chon31; 
+.................... const unsigned char msg1[]={"Allway Ask Play?"}; 
+.................... clear(); 
+*
+0B05:  BCF    0A.3
+0B06:  CALL   4BE
+0B07:  BSF    0A.3
+.................... for(a=0;msg1[a]!='\0';++a){data=msg1[a];display();} 
+0B08:  CLRF   29
+0B09:  MOVF   29,W
+0B0A:  BCF    0A.3
+0B0B:  CALL   23E
+0B0C:  BSF    0A.3
+0B0D:  XORLW  00
+0B0E:  BTFSC  03.2
+0B0F:  GOTO   31B
+0B10:  MOVF   29,W
+0B11:  BCF    0A.3
+0B12:  CALL   23E
+0B13:  BSF    0A.3
+0B14:  MOVWF  78
+0B15:  MOVWF  28
+0B16:  BCF    0A.3
+0B17:  CALL   45B
+0B18:  BSF    0A.3
+0B19:  INCF   29,F
+0B1A:  GOTO   309
+.................... moveto(2,1); 
+0B1B:  MOVLW  02
+0B1C:  MOVWF  40
+0B1D:  MOVLW  01
+0B1E:  MOVWF  41
+0B1F:  BCF    0A.3
+0B20:  CALL   488
+0B21:  BSF    0A.3
+.................... for(a=0;msg_ask[a]!='\0';++a){data=msg_ask[a];display();} 
+0B22:  CLRF   29
+0B23:  MOVF   29,W
+0B24:  BCF    0A.3
+0B25:  CALL   153
+0B26:  BSF    0A.3
+0B27:  XORLW  00
+0B28:  BTFSC  03.2
+0B29:  GOTO   335
+0B2A:  MOVF   29,W
+0B2B:  BCF    0A.3
+0B2C:  CALL   153
+0B2D:  BSF    0A.3
+0B2E:  MOVWF  78
+0B2F:  MOVWF  28
+0B30:  BCF    0A.3
+0B31:  CALL   45B
+0B32:  BSF    0A.3
+0B33:  INCF   29,F
+0B34:  GOTO   323
+.................... start_quetphim; 
+0B35:  BSF    03.5
+0B36:  BSF    0C.1
+.................... while(phim==0);   //chong rung phim 
+0B37:  BCF    03.5
+0B38:  MOVF   2C,F
+0B39:  BTFSC  03.2
+0B3A:  GOTO   338
+.................... if(read_eeprom(1))backup_chon31=4; 
+0B3B:  MOVLW  01
+0B3C:  BSF    03.6
+0B3D:  MOVWF  0D
+0B3E:  BSF    03.5
+0B3F:  BCF    0C.7
+0B40:  BSF    0C.0
+0B41:  BCF    03.5
+0B42:  MOVF   0C,W
+0B43:  BTFSC  03.2
+0B44:  GOTO   34A
+0B45:  MOVLW  04
+0B46:  BCF    03.6
+0B47:  MOVWF  37
+.................... else backup_chon31=5; 
+0B48:  GOTO   34D
+0B49:  BSF    03.6
+0B4A:  MOVLW  05
+0B4B:  BCF    03.6
+0B4C:  MOVWF  37
+.................... while(true) 
+.................... { 
+.................... if(phim==0)break; 
+0B4D:  MOVF   2C,F
+0B4E:  BTFSC  03.2
+0B4F:  GOTO   380
+.................... switch(phim){ 
+0B50:  MOVF   2C,W
+0B51:  XORLW  04
+0B52:  BTFSC  03.2
+0B53:  GOTO   358
+0B54:  XORLW  01
+0B55:  BTFSC  03.2
+0B56:  GOTO   367
+0B57:  GOTO   378
+.................... case 4:stop_quetphim,backup_chon31=phim,chon31=0,contro(2,2),start_quetphim;break;   //YES 
+0B58:  BSF    03.5
+0B59:  BCF    0C.1
+0B5A:  BCF    03.5
+0B5B:  MOVF   2C,W
+0B5C:  MOVWF  37
+0B5D:  BCF    38.0
+0B5E:  MOVLW  02
+0B5F:  MOVWF  39
+0B60:  MOVWF  3A
+0B61:  BCF    0A.3
+0B62:  CALL   5AB
+0B63:  BSF    0A.3
+0B64:  BSF    03.5
+0B65:  BSF    0C.1
+0B66:  GOTO   37E
+.................... case 5:stop_quetphim,backup_chon31=phim,chon31=1,contro(2,9),start_quetphim;break;   //NO 
+0B67:  BSF    03.5
+0B68:  BCF    0C.1
+0B69:  BCF    03.5
+0B6A:  MOVF   2C,W
+0B6B:  MOVWF  37
+0B6C:  BSF    38.0
+0B6D:  MOVLW  02
+0B6E:  MOVWF  39
+0B6F:  MOVLW  09
+0B70:  MOVWF  3A
+0B71:  BCF    0A.3
+0B72:  CALL   5AB
+0B73:  BSF    0A.3
+0B74:  BSF    03.5
+0B75:  BSF    0C.1
+0B76:  GOTO   37E
+0B77:  BCF    03.5
+.................... default:stop_quetphim,phim=backup_chon31;} 
+0B78:  BSF    03.5
+0B79:  BCF    0C.1
+0B7A:  BCF    03.5
+0B7B:  MOVF   37,W
+0B7C:  MOVWF  2C
+0B7D:  BSF    03.5
+.................... } 
+0B7E:  BCF    03.5
+0B7F:  GOTO   34D
+.................... stop_quetphim;     
+0B80:  BSF    03.5
+0B81:  BCF    0C.1
+.................... if(chon31==0)write_eeprom(1,1); 
+0B82:  BCF    03.5
+0B83:  BTFSC  38.0
+0B84:  GOTO   3A0
+0B85:  MOVLW  01
+0B86:  BSF    03.6
+0B87:  MOVWF  0D
+0B88:  MOVWF  0C
+0B89:  BSF    03.5
+0B8A:  BCF    0C.7
+0B8B:  BSF    0C.2
+0B8C:  BCF    03.5
+0B8D:  BCF    03.6
+0B8E:  MOVF   0B,W
+0B8F:  MOVWF  77
+0B90:  BCF    0B.7
+0B91:  BSF    03.5
+0B92:  BSF    03.6
+0B93:  MOVLW  55
+0B94:  MOVWF  0D
+0B95:  MOVLW  AA
+0B96:  MOVWF  0D
+0B97:  BSF    0C.1
+0B98:  BTFSC  0C.1
+0B99:  GOTO   398
+0B9A:  BCF    0C.2
+0B9B:  MOVF   77,W
+0B9C:  BCF    03.5
+0B9D:  BCF    03.6
+0B9E:  IORWF  0B,F
+.................... else write_eeprom(1,0); 
+0B9F:  GOTO   3BA
+0BA0:  MOVLW  01
+0BA1:  BSF    03.6
+0BA2:  MOVWF  0D
+0BA3:  CLRF   0C
+0BA4:  BSF    03.5
+0BA5:  BCF    0C.7
+0BA6:  BSF    0C.2
+0BA7:  BCF    03.5
+0BA8:  BCF    03.6
+0BA9:  MOVF   0B,W
+0BAA:  MOVWF  77
+0BAB:  BCF    0B.7
+0BAC:  BSF    03.5
+0BAD:  BSF    03.6
+0BAE:  MOVLW  55
+0BAF:  MOVWF  0D
+0BB0:  MOVLW  AA
+0BB1:  MOVWF  0D
+0BB2:  BSF    0C.1
+0BB3:  BTFSC  0C.1
+0BB4:  GOTO   3B3
+0BB5:  BCF    0C.2
+0BB6:  MOVF   77,W
+0BB7:  BCF    03.5
+0BB8:  BCF    03.6
+0BB9:  IORWF  0B,F
+.................... } 
+.................... /*---------------------------------*/ 
+.................... void chuongtrinh32(void){ 
+.................... unsigned int8 backup_chon32; 
+.................... unsigned int1 chon32; 
+.................... const unsigned char msg1[]={"Allway AskGoHome"}; 
+.................... clear(); 
+*
+0BBB:  BCF    0A.3
+0BBC:  CALL   4BE
+0BBD:  BSF    0A.3
+.................... for(a=0;msg1[a]!='\0';++a){data=msg1[a];display();} 
+0BBE:  CLRF   29
+0BBF:  MOVF   29,W
+0BC0:  BCF    0A.3
+0BC1:  CALL   253
+0BC2:  BSF    0A.3
+0BC3:  XORLW  00
+0BC4:  BTFSC  03.2
+0BC5:  GOTO   3D1
+0BC6:  MOVF   29,W
+0BC7:  BCF    0A.3
+0BC8:  CALL   253
+0BC9:  BSF    0A.3
+0BCA:  MOVWF  78
+0BCB:  MOVWF  28
+0BCC:  BCF    0A.3
+0BCD:  CALL   45B
+0BCE:  BSF    0A.3
+0BCF:  INCF   29,F
+0BD0:  GOTO   3BF
+.................... moveto(2,1); 
+0BD1:  MOVLW  02
+0BD2:  MOVWF  40
+0BD3:  MOVLW  01
+0BD4:  MOVWF  41
+0BD5:  BCF    0A.3
+0BD6:  CALL   488
+0BD7:  BSF    0A.3
+.................... for(a=0;msg_ask[a]!='\0';++a){data=msg_ask[a];display();} 
+0BD8:  CLRF   29
+0BD9:  MOVF   29,W
+0BDA:  BCF    0A.3
+0BDB:  CALL   153
+0BDC:  BSF    0A.3
+0BDD:  XORLW  00
+0BDE:  BTFSC  03.2
+0BDF:  GOTO   3EB
+0BE0:  MOVF   29,W
+0BE1:  BCF    0A.3
+0BE2:  CALL   153
+0BE3:  BSF    0A.3
+0BE4:  MOVWF  78
+0BE5:  MOVWF  28
+0BE6:  BCF    0A.3
+0BE7:  CALL   45B
+0BE8:  BSF    0A.3
+0BE9:  INCF   29,F
+0BEA:  GOTO   3D9
+.................... start_quetphim; 
+0BEB:  BSF    03.5
+0BEC:  BSF    0C.1
+.................... while(phim==0);   //chong rung phim 
+0BED:  BCF    03.5
+0BEE:  MOVF   2C,F
+0BEF:  BTFSC  03.2
+0BF0:  GOTO   3EE
+.................... if(read_eeprom(0))backup_chon32=4; 
+0BF1:  BSF    03.6
+0BF2:  CLRF   0D
+0BF3:  BSF    03.5
+0BF4:  BCF    0C.7
+0BF5:  BSF    0C.0
+0BF6:  BCF    03.5
+0BF7:  MOVF   0C,W
+0BF8:  BTFSC  03.2
+0BF9:  GOTO   3FF
+0BFA:  MOVLW  04
+0BFB:  BCF    03.6
+0BFC:  MOVWF  37
+.................... else backup_chon32=5; 
+0BFD:  GOTO   402
+0BFE:  BSF    03.6
+0BFF:  MOVLW  05
+0C00:  BCF    03.6
+0C01:  MOVWF  37
+.................... while(true) 
+.................... { 
+.................... if(phim==0)break; 
+0C02:  MOVF   2C,F
+0C03:  BTFSC  03.2
+0C04:  GOTO   435
+.................... switch(phim){ 
+0C05:  MOVF   2C,W
+0C06:  XORLW  04
+0C07:  BTFSC  03.2
+0C08:  GOTO   40D
+0C09:  XORLW  01
+0C0A:  BTFSC  03.2
+0C0B:  GOTO   41C
+0C0C:  GOTO   42D
+.................... case 4:stop_quetphim,backup_chon32=phim,chon32=0,contro(2,2),start_quetphim;break;   //YES 
+0C0D:  BSF    03.5
+0C0E:  BCF    0C.1
+0C0F:  BCF    03.5
+0C10:  MOVF   2C,W
+0C11:  MOVWF  37
+0C12:  BCF    38.0
+0C13:  MOVLW  02
+0C14:  MOVWF  39
+0C15:  MOVWF  3A
+0C16:  BCF    0A.3
+0C17:  CALL   5AB
+0C18:  BSF    0A.3
+0C19:  BSF    03.5
+0C1A:  BSF    0C.1
+0C1B:  GOTO   433
+.................... case 5:stop_quetphim,backup_chon32=phim,chon32=1,contro(2,9),start_quetphim;break;   //NO 
+0C1C:  BSF    03.5
+0C1D:  BCF    0C.1
+0C1E:  BCF    03.5
+0C1F:  MOVF   2C,W
+0C20:  MOVWF  37
+0C21:  BSF    38.0
+0C22:  MOVLW  02
+0C23:  MOVWF  39
+0C24:  MOVLW  09
+0C25:  MOVWF  3A
+0C26:  BCF    0A.3
+0C27:  CALL   5AB
+0C28:  BSF    0A.3
+0C29:  BSF    03.5
+0C2A:  BSF    0C.1
+0C2B:  GOTO   433
+0C2C:  BCF    03.5
+.................... default:stop_quetphim,phim=backup_chon32;} 
+0C2D:  BSF    03.5
+0C2E:  BCF    0C.1
+0C2F:  BCF    03.5
+0C30:  MOVF   37,W
+0C31:  MOVWF  2C
+0C32:  BSF    03.5
+.................... } 
+0C33:  BCF    03.5
+0C34:  GOTO   402
+.................... stop_quetphim;     
+0C35:  BSF    03.5
+0C36:  BCF    0C.1
+.................... if(chon32==0)write_eeprom(0,1); 
+0C37:  BCF    03.5
+0C38:  BTFSC  38.0
+0C39:  GOTO   455
+0C3A:  BSF    03.6
+0C3B:  CLRF   0D
+0C3C:  MOVLW  01
+0C3D:  MOVWF  0C
+0C3E:  BSF    03.5
+0C3F:  BCF    0C.7
+0C40:  BSF    0C.2
+0C41:  BCF    03.5
+0C42:  BCF    03.6
+0C43:  MOVF   0B,W
+0C44:  MOVWF  77
+0C45:  BCF    0B.7
+0C46:  BSF    03.5
+0C47:  BSF    03.6
+0C48:  MOVLW  55
+0C49:  MOVWF  0D
+0C4A:  MOVLW  AA
+0C4B:  MOVWF  0D
+0C4C:  BSF    0C.1
+0C4D:  BTFSC  0C.1
+0C4E:  GOTO   44D
+0C4F:  BCF    0C.2
+0C50:  MOVF   77,W
+0C51:  BCF    03.5
+0C52:  BCF    03.6
+0C53:  IORWF  0B,F
+.................... else write_eeprom(0,0); 
+0C54:  GOTO   46E
+0C55:  BSF    03.6
+0C56:  CLRF   0D
+0C57:  CLRF   0C
+0C58:  BSF    03.5
+0C59:  BCF    0C.7
+0C5A:  BSF    0C.2
+0C5B:  BCF    03.5
+0C5C:  BCF    03.6
+0C5D:  MOVF   0B,W
+0C5E:  MOVWF  77
+0C5F:  BCF    0B.7
+0C60:  BSF    03.5
+0C61:  BSF    03.6
+0C62:  MOVLW  55
+0C63:  MOVWF  0D
+0C64:  MOVLW  AA
+0C65:  MOVWF  0D
+0C66:  BSF    0C.1
+0C67:  BTFSC  0C.1
+0C68:  GOTO   467
+0C69:  BCF    0C.2
+0C6A:  MOVF   77,W
+0C6B:  BCF    03.5
+0C6C:  BCF    03.6
+0C6D:  IORWF  0B,F
+.................... } 
+.................... /*------------Chuong trinh con phuc vu viec chon chuong trinh ---------------*/ 
+.................... void chay_chuongtrinh(unsigned int8 chuongtrinh){ 
+.................... switch(chuongtrinh){ 
+*
+0800:  MOVLW  01
+0801:  SUBWF  36,W
+0802:  ADDLW  E0
+0803:  BTFSC  03.0
+0804:  GOTO   46F
+0805:  ADDLW  20
+0806:  GOTO   472
+.................... case 1:chuongtrinh1();break; 
+*
+0831:  GOTO   46F
+.................... case 2:chuongtrinh2();break; 
+*
+085C:  GOTO   46F
+.................... case 3:chuongtrinh3();break; 
+*
+0887:  GOTO   46F
+.................... case 4:chuongtrinh4();break; 
+*
+08B2:  GOTO   46F
+.................... case 5:chuongtrinh5();break; 
+*
+0956:  GOTO   46F
+.................... case 6:chuongtrinh6();break; 
+0957:  GOTO   46F
+.................... case 7:chuongtrinh7();break; 
+0958:  GOTO   46F
+.................... case 8:chuongtrinh8();break; 
+0959:  GOTO   46F
+.................... case 9:chuongtrinh9();break; 
+*
+099B:  GOTO   46F
+.................... case 10:chuongtrinh10();break; 
+*
+0AF0:  GOTO   46F
+.................... case 11:chuongtrinh11();break; 
+0AF1:  GOTO   46F
+.................... case 12:chuongtrinh12();break; 
+0AF2:  GOTO   46F
+.................... case 13:chuongtrinh13();break; 
+0AF3:  GOTO   46F
+.................... case 14:chuongtrinh14();break; 
+0AF4:  GOTO   46F
+.................... case 15:chuongtrinh15();break; 
+0AF5:  GOTO   46F
+.................... case 16:chuongtrinh16();break; 
+0AF6:  GOTO   46F
+.................... case 17:chuongtrinh17();break; 
+0AF7:  GOTO   46F
+.................... case 18:chuongtrinh18();break; 
+0AF8:  GOTO   46F
+.................... case 19:chuongtrinh19();break; 
+0AF9:  GOTO   46F
+.................... case 20:chuongtrinh20();break; 
+0AFA:  GOTO   46F
+.................... case 21:chuongtrinh21();break; 
+0AFB:  GOTO   46F
+.................... case 22:chuongtrinh22();break; 
+0AFC:  GOTO   46F
+.................... case 23:chuongtrinh23();break; 
+0AFD:  GOTO   46F
+.................... case 24:chuongtrinh24();break; 
+0AFE:  GOTO   46F
+.................... case 25:chuongtrinh25();break; 
+0AFF:  GOTO   46F
+.................... case 26:chuongtrinh26();break; 
+0B00:  GOTO   46F
+.................... case 27:chuongtrinh27();break; 
+0B01:  GOTO   46F
+.................... case 28:chuongtrinh28();break; 
+0B02:  GOTO   46F
+.................... case 29:chuongtrinh29();break; 
+0B03:  GOTO   46F
+.................... case 30:chuongtrinh30();break; 
+0B04:  GOTO   46F
+.................... case 31:chuongtrinh31();break; 
+*
+0BBA:  GOTO   46F
+.................... case 32:chuongtrinh32();break;} 
+*
+0C6E:  GOTO   46F
+.................... } 
+0C6F:  BSF    0A.3
+0C70:  BCF    0A.4
+0C71:  GOTO   5F4 (RETURN)
+.................... /*------------The end------------*/ 
+....................  
+.................... void main(void){ 
+*
+0C96:  CLRF   04
+0C97:  BCF    03.7
+0C98:  MOVLW  1F
+0C99:  ANDWF  03,F
+0C9A:  BSF    03.5
+0C9B:  BSF    1F.0
+0C9C:  BSF    1F.1
+0C9D:  BSF    1F.2
+0C9E:  BCF    1F.3
+0C9F:  MOVLW  07
+0CA0:  MOVWF  1C
+.................... setup_timer_0(rtcc_internal|rtcc_div_256);  //thiet dat cac thong so cho timer 0 
+*
+0CA6:  BSF    03.5
+0CA7:  MOVF   01,W
+0CA8:  ANDLW  C0
+0CA9:  IORLW  07
+0CAA:  MOVWF  01
+.................... setup_timer_2(t2_div_by_16,255,8);  //sau khoang 6.5ms(200ns*16*255*8) thi xay ra ngat timer 2 
+0CAB:  MOVLW  38
+0CAC:  MOVWF  78
+0CAD:  IORLW  06
+0CAE:  BCF    03.5
+0CAF:  MOVWF  12
+0CB0:  MOVLW  FF
+0CB1:  BSF    03.5
+0CB2:  MOVWF  12
+.................... enable_interrupts(int_timer0); 
+0CB3:  BCF    03.5
+0CB4:  BSF    0B.5
+.................... disable_interrupts(int_timer2); 
+0CB5:  BSF    03.5
+0CB6:  BCF    0C.1
+.................... enable_interrupts(global); //cho phep ngat toan cuc hoat dong 
+0CB7:  MOVLW  C0
+0CB8:  BCF    03.5
+0CB9:  IORWF  0B,F
+.................... /*---------Cac lenh khoi tao ban dau-------*/ 
+.................... setup_adc_ports(no_analogs);  //chu y:doi voi port a thi phai thiet lap analog hay digital 
+0CBA:  BSF    03.5
+0CBB:  BSF    1F.0
+0CBC:  BSF    1F.1
+0CBD:  BSF    1F.2
+0CBE:  BCF    1F.3
+.................... set_tris_a(0);                //RA4 la chan cuc mang ho 
+0CBF:  MOVLW  00
+0CC0:  MOVWF  05
+.................... set_tris_c(0xf0); // 1/2la dau ra,con lai la dau vao 
+0CC1:  MOVLW  F0
+0CC2:  MOVWF  07
+0CC3:  BCF    03.5
+0CC4:  MOVWF  30
+.................... set_tris_d(0x00); //tat ca la dau ra 
+0CC5:  MOVLW  00
+0CC6:  BSF    03.5
+0CC7:  MOVWF  08
+.................... portC=portD=0; //tat toan bo ca 2 port 
+0CC8:  BCF    03.5
+0CC9:  CLRF   08
+0CCA:  MOVF   08,W
+0CCB:  MOVWF  07
+.................... OE=0; //mo chot 
+0CCC:  BCF    08.7
+.................... /*--------Cac lenh hien thi ban dau--------*/ 
+.................... khoitao(1,0); 
+0CCD:  MOVLW  01
+0CCE:  MOVWF  36
+0CCF:  CLRF   37
+0CD0:  BCF    0A.3
+0CD1:  GOTO   42C
+0CD2:  BSF    0A.3
+.................... cursor(1,0,0); 
+0CD3:  MOVLW  01
+0CD4:  MOVWF  3A
+0CD5:  CLRF   3B
+0CD6:  CLRF   3C
+0CD7:  BCF    0A.3
+0CD8:  CALL   44C
+0CD9:  BSF    0A.3
+.................... wellcome(); //loi chao dau tien 
+0CDA:  BCF    0A.3
+0CDB:  GOTO   495
+0CDC:  BSF    0A.3
+.................... /*****************phan xu li chinh cua chuong trinh*********************/ 
+.................... while(true){ 
+.................... clear(); //Xoa man hinh chuan bi cho hien thi chuong trinh 
+0CDD:  BCF    0A.3
+0CDE:  CALL   4BE
+0CDF:  BSF    0A.3
+.................... while(true) 
+....................    { 
+....................       start_quetphim;   //bat dau quet phim 
+0CE0:  BSF    03.5
+0CE1:  BSF    0C.1
+....................       menu_display(chon_page);   //hien thi cac trang menu de lua chon chuong trinh 
+0CE2:  BCF    03.5
+0CE3:  MOVF   2E,W
+0CE4:  MOVWF  36
+0CE5:  BCF    0A.3
+0CE6:  GOTO   4C2
+0CE7:  BSF    0A.3
+....................       while((phim==0)||(phim==1)||(phim==2));   //chong rung phim 
+0CE8:  MOVF   2C,F
+0CE9:  BTFSC  03.2
+0CEA:  GOTO   4E8
+0CEB:  DECFSZ 2C,W
+0CEC:  GOTO   4EE
+0CED:  GOTO   4E8
+0CEE:  MOVF   2C,W
+0CEF:  SUBLW  02
+0CF0:  BTFSC  03.2
+0CF1:  GOTO   4E8
+....................       phim=4;   //vi tri mac dinh cua -> la vi tri dau tien cua moi trang 
+0CF2:  MOVLW  04
+0CF3:  MOVWF  2C
+....................       while(true) 
+....................         { 
+....................             if((phim==1)||(phim==2))break;   //neu an tang hoac giam page thi thoat va thuc hien + hoac - page 
+0CF4:  DECFSZ 2C,W
+0CF5:  GOTO   4F7
+0CF6:  GOTO   4FA
+0CF7:  MOVF   2C,W
+0CF8:  SUBLW  02
+0CF9:  BTFSC  03.2
+0CFA:  GOTO   550
+....................             switch(phim){ 
+0CFB:  MOVF   2C,W
+0CFC:  BTFSC  03.2
+0CFD:  GOTO   50B
+0CFE:  XORLW  04
+0CFF:  BTFSC  03.2
+0D00:  GOTO   50C
+0D01:  XORLW  01
+0D02:  BTFSC  03.2
+0D03:  GOTO   51A
+0D04:  XORLW  03
+0D05:  BTFSC  03.2
+0D06:  GOTO   529
+0D07:  XORLW  0E
+0D08:  BTFSC  03.2
+0D09:  GOTO   538
+0D0A:  GOTO   548
+....................             case 0:goto thuc_hien_chuong_trinh; //nhay han ra khoi vong lap kep va thuc hien chuong trinh 
+0D0B:  GOTO   561
+....................             case 4:stop_quetphim,backup=phim,contro(1,1),start_quetphim;break; 
+0D0C:  BSF    03.5
+0D0D:  BCF    0C.1
+0D0E:  BCF    03.5
+0D0F:  MOVF   2C,W
+0D10:  MOVWF  2F
+0D11:  MOVLW  01
+0D12:  MOVWF  39
+0D13:  MOVWF  3A
+0D14:  BCF    0A.3
+0D15:  CALL   5AB
+0D16:  BSF    0A.3
+0D17:  BSF    03.5
+0D18:  BSF    0C.1
+0D19:  GOTO   54E
+....................             case 5:stop_quetphim,backup=phim,contro(1,9),start_quetphim;break; 
+0D1A:  BSF    03.5
+0D1B:  BCF    0C.1
+0D1C:  BCF    03.5
+0D1D:  MOVF   2C,W
+0D1E:  MOVWF  2F
+0D1F:  MOVLW  01
+0D20:  MOVWF  39
+0D21:  MOVLW  09
+0D22:  MOVWF  3A
+0D23:  BCF    0A.3
+0D24:  CALL   5AB
+0D25:  BSF    0A.3
+0D26:  BSF    03.5
+0D27:  BSF    0C.1
+0D28:  GOTO   54E
+....................             case 6:stop_quetphim,backup=phim,contro(2,1),start_quetphim;break; 
+0D29:  BSF    03.5
+0D2A:  BCF    0C.1
+0D2B:  BCF    03.5
+0D2C:  MOVF   2C,W
+0D2D:  MOVWF  2F
+0D2E:  MOVLW  02
+0D2F:  MOVWF  39
+0D30:  MOVLW  01
+0D31:  MOVWF  3A
+0D32:  BCF    0A.3
+0D33:  CALL   5AB
+0D34:  BSF    0A.3
+0D35:  BSF    03.5
+0D36:  BSF    0C.1
+0D37:  GOTO   54E
+....................             case 8:stop_quetphim,backup=phim,contro(2,9),start_quetphim;break; 
+0D38:  BSF    03.5
+0D39:  BCF    0C.1
+0D3A:  BCF    03.5
+0D3B:  MOVF   2C,W
+0D3C:  MOVWF  2F
+0D3D:  MOVLW  02
+0D3E:  MOVWF  39
+0D3F:  MOVLW  09
+0D40:  MOVWF  3A
+0D41:  BCF    0A.3
+0D42:  CALL   5AB
+0D43:  BSF    0A.3
+0D44:  BSF    03.5
+0D45:  BSF    0C.1
+0D46:  GOTO   54E
+0D47:  BCF    03.5
+....................             default:stop_quetphim,phim=backup;} 
+0D48:  BSF    03.5
+0D49:  BCF    0C.1
+0D4A:  BCF    03.5
+0D4B:  MOVF   2F,W
+0D4C:  MOVWF  2C
+0D4D:  BSF    03.5
+....................         } 
+0D4E:  BCF    03.5
+0D4F:  GOTO   4F4
+....................       stop_quetphim; 
+0D50:  BSF    03.5
+0D51:  BCF    0C.1
+....................       if(phim==2)++chon_page;   //an phim(=) de chon trang khac 
+0D52:  BCF    03.5
+0D53:  MOVF   2C,W
+0D54:  SUBLW  02
+0D55:  BTFSC  03.2
+0D56:  INCF   2E,F
+....................       if((phim==1)&&(chon_page>0))--chon_page;  //nhan phim 0 de lui ve trang truoc do 
+0D57:  DECFSZ 2C,W
+0D58:  GOTO   55C
+0D59:  MOVF   2E,F
+0D5A:  BTFSS  03.2
+0D5B:  DECF   2E,F
+....................       if(chon_page==8)chon_page=0;   //den trang cuoi cung thi tro ve trang dau 
+0D5C:  MOVF   2E,W
+0D5D:  SUBLW  08
+0D5E:  BTFSC  03.2
+0D5F:  CLRF   2E
+....................    } 
+0D60:  GOTO   4E0
+.................... /*-----------------------------------------------------------------------------*/ 
+.................... thuc_hien_chuong_trinh: 
+.................... if(chon_page<7&&read_eeprom(1)) 
+0D61:  MOVF   2E,W
+0D62:  SUBLW  06
+0D63:  BTFSS  03.0
+0D64:  GOTO   5B0
+0D65:  MOVLW  01
+0D66:  BSF    03.6
+0D67:  MOVWF  0D
+0D68:  BSF    03.5
+0D69:  BCF    0C.7
+0D6A:  BSF    0C.0
+0D6B:  BCF    03.5
+0D6C:  MOVF   0C,W
+0D6D:  BTFSS  03.2
+0D6E:  GOTO   571
+0D6F:  BCF    03.6
+0D70:  GOTO   5B0
+.................... { 
+.................... unsigned int8 backup_chon; 
+.................... cau_hoi_xac_nhan();   //hien thi cau hoi truoc khi chay chuong trinh 
+0D71:  BCF    0A.3
+0D72:  BCF    03.6
+0D73:  GOTO   5C2
+0D74:  BSF    0A.3
+.................... while(phim==0);   //chong rung phim 
+0D75:  MOVF   2C,F
+0D76:  BTFSC  03.2
+0D77:  GOTO   575
+.................... stop_quetphim; 
+0D78:  BSF    03.5
+0D79:  BCF    0C.1
+.................... backup_chon=4;   //vi tri mac dinh cua con tro 
+0D7A:  MOVLW  04
+0D7B:  BCF    03.5
+0D7C:  MOVWF  33
+.................... while(true)   //hien thi con tro tai vi tri YES cho toi khi nao bam phim OK hoac di chuyen     
+....................    { 
+....................       if(phim==0)break;   //neu bam phim OK thi thoat khoi vong lap va chay chuong trinh duoc chi dinh 
+0D7D:  MOVF   2C,F
+0D7E:  BTFSC  03.2
+0D7F:  GOTO   5B0
+....................       switch(phim){ 
+0D80:  MOVF   2C,W
+0D81:  XORLW  04
+0D82:  BTFSC  03.2
+0D83:  GOTO   588
+0D84:  XORLW  01
+0D85:  BTFSC  03.2
+0D86:  GOTO   597
+0D87:  GOTO   5A8
+....................       case 4:stop_quetphim,backup_chon=phim,chon_play=0,contro(2,2),start_quetphim;break;   //YES 
+0D88:  BSF    03.5
+0D89:  BCF    0C.1
+0D8A:  BCF    03.5
+0D8B:  MOVF   2C,W
+0D8C:  MOVWF  33
+0D8D:  BCF    2B.0
+0D8E:  MOVLW  02
+0D8F:  MOVWF  39
+0D90:  MOVWF  3A
+0D91:  BCF    0A.3
+0D92:  CALL   5AB
+0D93:  BSF    0A.3
+0D94:  BSF    03.5
+0D95:  BSF    0C.1
+0D96:  GOTO   5AE
+....................       case 5:stop_quetphim,backup_chon=phim,chon_play=1,contro(2,9),start_quetphim;break;   //NO 
+0D97:  BSF    03.5
+0D98:  BCF    0C.1
+0D99:  BCF    03.5
+0D9A:  MOVF   2C,W
+0D9B:  MOVWF  33
+0D9C:  BSF    2B.0
+0D9D:  MOVLW  02
+0D9E:  MOVWF  39
+0D9F:  MOVLW  09
+0DA0:  MOVWF  3A
+0DA1:  BCF    0A.3
+0DA2:  CALL   5AB
+0DA3:  BSF    0A.3
+0DA4:  BSF    03.5
+0DA5:  BSF    0C.1
+0DA6:  GOTO   5AE
+0DA7:  BCF    03.5
+....................       default:stop_quetphim,phim=backup_chon;} 
+0DA8:  BSF    03.5
+0DA9:  BCF    0C.1
+0DAA:  BCF    03.5
+0DAB:  MOVF   33,W
+0DAC:  MOVWF  2C
+0DAD:  BSF    03.5
+....................    }   
+0DAE:  BCF    03.5
+0DAF:  GOTO   57D
+.................... } 
+.................... stop_quetphim; //dung quet phim khi khong can dung den phim bam nua 
+0DB0:  BSF    03.5
+0DB1:  BCF    0C.1
+.................... if(chon_play==0||read_eeprom(1)==0||chon_page==7)//neu chon NO ,hoac thuc hien xong chuong trinh,dat che do khong hoi khi chay thi tro ve tu dau 
+0DB2:  BCF    03.5
+0DB3:  BTFSS  2B.0
+0DB4:  GOTO   5C6
+0DB5:  MOVLW  01
+0DB6:  BSF    03.6
+0DB7:  MOVWF  0D
+0DB8:  BSF    03.5
+0DB9:  BCF    0C.7
+0DBA:  BSF    0C.0
+0DBB:  BCF    03.5
+0DBC:  MOVF   0C,W
+0DBD:  BTFSS  03.2
+0DBE:  GOTO   5C1
+0DBF:  BCF    03.6
+0DC0:  GOTO   5C6
+0DC1:  BCF    03.6
+0DC2:  MOVF   2E,W
+0DC3:  SUBLW  07
+0DC4:  BTFSS  03.2
+0DC5:  GOTO   64D
+....................    { 
+....................       switch(backup) 
+....................       { 
+0DC6:  MOVLW  04
+0DC7:  SUBWF  2F,W
+0DC8:  ADDLW  FB
+0DC9:  BTFSC  03.0
+0DCA:  GOTO   5F1
+0DCB:  ADDLW  05
+0DCC:  GOTO   64F
+....................          case 4:chon_ct=(chon_page<<2)+1;break; 
+0DCD:  RLF    2E,W
+0DCE:  MOVWF  77
+0DCF:  RLF    77,F
+0DD0:  MOVLW  FC
+0DD1:  ANDWF  77,F
+0DD2:  MOVF   77,W
+0DD3:  ADDLW  01
+0DD4:  MOVWF  2D
+0DD5:  GOTO   5F1
+....................          case 5:chon_ct=(chon_page<<2)+2;break; 
+0DD6:  RLF    2E,W
+0DD7:  MOVWF  77
+0DD8:  RLF    77,F
+0DD9:  MOVLW  FC
+0DDA:  ANDWF  77,F
+0DDB:  MOVF   77,W
+0DDC:  ADDLW  02
+0DDD:  MOVWF  2D
+0DDE:  GOTO   5F1
+....................          case 6:chon_ct=(chon_page<<2)+3;break; 
+0DDF:  RLF    2E,W
+0DE0:  MOVWF  77
+0DE1:  RLF    77,F
+0DE2:  MOVLW  FC
+0DE3:  ANDWF  77,F
+0DE4:  MOVF   77,W
+0DE5:  ADDLW  03
+0DE6:  MOVWF  2D
+0DE7:  GOTO   5F1
+....................          case 8:chon_ct=(chon_page<<2)+4;break; 
+0DE8:  RLF    2E,W
+0DE9:  MOVWF  77
+0DEA:  RLF    77,F
+0DEB:  MOVLW  FC
+0DEC:  ANDWF  77,F
+0DED:  MOVF   77,W
+0DEE:  ADDLW  04
+0DEF:  MOVWF  2D
+0DF0:  GOTO   5F1
+....................       } 
+....................       chay_chuongtrinh(chon_ct); 
+0DF1:  MOVF   2D,W
+0DF2:  MOVWF  36
+0DF3:  GOTO   000
+....................       thong_bao_complete();   //complete 
+0DF4:  BCF    0A.3
+0DF5:  GOTO   667
+0DF6:  BSF    0A.3
+....................       if(chon_page>0&&chon_page<7&&read_eeprom(0)) 
+0DF7:  MOVF   2E,F
+0DF8:  BTFSC  03.2
+0DF9:  GOTO   64D
+0DFA:  MOVF   2E,W
+0DFB:  SUBLW  06
+0DFC:  BTFSS  03.0
+0DFD:  GOTO   64D
+0DFE:  BSF    03.6
+0DFF:  CLRF   0D
+0E00:  BSF    03.5
+0E01:  BCF    0C.7
+0E02:  BSF    0C.0
+0E03:  BCF    03.5
+0E04:  MOVF   0C,W
+0E05:  BTFSS  03.2
+0E06:  GOTO   609
+0E07:  BCF    03.6
+0E08:  GOTO   64D
+....................          { 
+....................             unsigned int8 backup_chon; 
+....................             unsigned int1 chon_reset; 
+....................             thong_bao_resetpage(); 
+0E09:  BCF    0A.3
+0E0A:  BCF    03.6
+0E0B:  GOTO   680
+0E0C:  BSF    0A.3
+....................             start_quetphim; 
+0E0D:  BSF    03.5
+0E0E:  BSF    0C.1
+....................             while(phim==0); 
+0E0F:  BCF    03.5
+0E10:  MOVF   2C,F
+0E11:  BTFSC  03.2
+0E12:  GOTO   610
+....................             backup_chon=4;   //vi tri mac dinh cua con tro 
+0E13:  MOVLW  04
+0E14:  MOVWF  34
+....................             while(true) 
+....................                { 
+....................                   if(phim==0)break; 
+0E15:  MOVF   2C,F
+0E16:  BTFSC  03.2
+0E17:  GOTO   648
+....................                   switch(phim){ 
+0E18:  MOVF   2C,W
+0E19:  XORLW  04
+0E1A:  BTFSC  03.2
+0E1B:  GOTO   620
+0E1C:  XORLW  01
+0E1D:  BTFSC  03.2
+0E1E:  GOTO   62F
+0E1F:  GOTO   640
+....................                   case 4:stop_quetphim,backup_chon=phim,chon_reset=0,contro(2,2),start_quetphim;break;   //YES 
+0E20:  BSF    03.5
+0E21:  BCF    0C.1
+0E22:  BCF    03.5
+0E23:  MOVF   2C,W
+0E24:  MOVWF  34
+0E25:  BCF    35.0
+0E26:  MOVLW  02
+0E27:  MOVWF  39
+0E28:  MOVWF  3A
+0E29:  BCF    0A.3
+0E2A:  CALL   5AB
+0E2B:  BSF    0A.3
+0E2C:  BSF    03.5
+0E2D:  BSF    0C.1
+0E2E:  GOTO   646
+....................                   case 5:stop_quetphim,backup_chon=phim,chon_reset=1,contro(2,9),start_quetphim;break;   //NO 
+0E2F:  BSF    03.5
+0E30:  BCF    0C.1
+0E31:  BCF    03.5
+0E32:  MOVF   2C,W
+0E33:  MOVWF  34
+0E34:  BSF    35.0
+0E35:  MOVLW  02
+0E36:  MOVWF  39
+0E37:  MOVLW  09
+0E38:  MOVWF  3A
+0E39:  BCF    0A.3
+0E3A:  CALL   5AB
+0E3B:  BSF    0A.3
+0E3C:  BSF    03.5
+0E3D:  BSF    0C.1
+0E3E:  GOTO   646
+0E3F:  BCF    03.5
+....................                   default:stop_quetphim,phim=backup_chon;} 
+0E40:  BSF    03.5
+0E41:  BCF    0C.1
+0E42:  BCF    03.5
+0E43:  MOVF   34,W
+0E44:  MOVWF  2C
+0E45:  BSF    03.5
+....................                } 
+0E46:  BCF    03.5
+0E47:  GOTO   615
+....................             stop_quetphim;     
+0E48:  BSF    03.5
+0E49:  BCF    0C.1
+....................             if(chon_reset==0)chon_page=0; //Neu dong y tro ve BEGINPAGE 
+0E4A:  BCF    03.5
+0E4B:  BTFSS  35.0
+0E4C:  CLRF   2E
+....................          } 
+....................    } 
+.................... } 
+0E4D:  GOTO   4DD
+.................... } 
+.................... /*-----------------------------------------------------------------*/ 
+.................... /*------------Cac chuong trinh con phuc vu ngat timer--------------*/ 
+.................... /*-----------------------------------------------------------------*/ 
+.................... #int_ext 
+.................... void ext(void){} 
+0E4E:  SLEEP
+.................... /*--------------------------*/ 
+*
+0268:  BCF    0B.1
+0269:  BCF    0A.3
+026A:  BCF    0A.4
+026B:  GOTO   02D
+.................... #int_timer0 
+.................... void chose(void){ 
+.................... static unsigned int8 x,value0; 
+*
+0CA4:  CLRF   31
+0CA5:  CLRF   32
+.................... ++value0; 
+*
+026C:  INCF   32,F
+.................... if(value0==10){ 
+026D:  MOVF   32,W
+026E:  SUBLW  0A
+026F:  BTFSS  03.2
+0270:  GOTO   285
+.................... output_a(3<<x++); 
+0271:  MOVF   31,W
+0272:  INCF   31,F
+0273:  MOVWF  78
+0274:  MOVLW  03
+0275:  MOVWF  4B
+0276:  MOVF   78,F
+0277:  BTFSC  03.2
+0278:  GOTO   27D
+0279:  BCF    03.0
+027A:  RLF    4B,F
+027B:  DECFSZ 78,F
+027C:  GOTO   279
+027D:  BSF    03.5
+027E:  CLRF   05
+027F:  BCF    03.5
+0280:  MOVF   4B,W
+0281:  MOVWF  05
+.................... if(bit_test(x,3))x=0; 
+0282:  BTFSC  31.3
+0283:  CLRF   31
+.................... value0=0; 
+0284:  CLRF   32
+.................... } 
+.................... } 
+.................... /*--------------------------*/ 
+0285:  BCF    0B.2
+0286:  BCF    0A.3
+0287:  BCF    0A.4
+0288:  GOTO   02D
+.................... #int_timer1 
+.................... void timer1(void){} 
+.................... /*--------------------------*/ 
+0289:  BCF    0C.0
+028A:  BCF    0A.3
+028B:  BCF    0A.4
+028C:  GOTO   02D
+.................... #int_timer2 
+.................... void quet(void){ 
+.................... portC=1;   //mo toan bo hang 1 
+028D:  MOVLW  01
+028E:  MOVWF  07
+.................... switch(kiemtra){ 
+028F:  MOVLW  00
+0290:  BTFSC  07.4
+0291:  MOVLW  01
+0292:  MOVWF  4B
+0293:  MOVLW  00
+0294:  BTFSC  07.5
+0295:  MOVLW  01
+0296:  MOVWF  77
+0297:  BCF    03.0
+0298:  RLF    77,F
+0299:  MOVF   77,W
+029A:  ADDWF  4B,W
+029B:  MOVWF  4D
+029C:  MOVLW  00
+029D:  BTFSC  07.6
+029E:  MOVLW  01
+029F:  MOVWF  77
+02A0:  RLF    77,F
+02A1:  RLF    77,F
+02A2:  MOVLW  FC
+02A3:  ANDWF  77,F
+02A4:  MOVF   77,W
+02A5:  ADDWF  4D,W
+02A6:  MOVWF  4F
+02A7:  MOVLW  00
+02A8:  BTFSC  07.7
+02A9:  MOVLW  01
+02AA:  MOVWF  77
+02AB:  RLF    77,F
+02AC:  RLF    77,F
+02AD:  RLF    77,F
+02AE:  MOVLW  F8
+02AF:  ANDWF  77,F
+02B0:  MOVF   77,W
+02B1:  ADDWF  4F,W
+02B2:  XORLW  01
+02B3:  BTFSC  03.2
+02B4:  GOTO   2BF
+02B5:  XORLW  03
+02B6:  BTFSC  03.2
+02B7:  GOTO   2C2
+02B8:  XORLW  06
+02B9:  BTFSC  03.2
+02BA:  GOTO   2C5
+02BB:  XORLW  0C
+02BC:  BTFSC  03.2
+02BD:  GOTO   2C8
+02BE:  GOTO   2CB
+.................... case 1:phim=12;break; 
+02BF:  MOVLW  0C
+02C0:  MOVWF  2C
+02C1:  GOTO   2CD
+.................... case 2:phim=13;break; 
+02C2:  MOVLW  0D
+02C3:  MOVWF  2C
+02C4:  GOTO   2CD
+.................... case 4:phim=14;break; 
+02C5:  MOVLW  0E
+02C6:  MOVWF  2C
+02C7:  GOTO   2CD
+.................... case 8:phim=15;break; 
+02C8:  MOVLW  0F
+02C9:  MOVWF  2C
+02CA:  GOTO   2CD
+.................... default:phim=16;}   //neu khong co phim nao duoc an 
+02CB:  MOVLW  10
+02CC:  MOVWF  2C
+.................... portC=2; 
+02CD:  MOVLW  02
+02CE:  MOVWF  07
+.................... switch(kiemtra){ 
+02CF:  MOVLW  00
+02D0:  BTFSC  07.4
+02D1:  MOVLW  01
+02D2:  MOVWF  4B
+02D3:  MOVLW  00
+02D4:  BTFSC  07.5
+02D5:  MOVLW  01
+02D6:  MOVWF  77
+02D7:  BCF    03.0
+02D8:  RLF    77,F
+02D9:  MOVF   77,W
+02DA:  ADDWF  4B,W
+02DB:  MOVWF  4D
+02DC:  MOVLW  00
+02DD:  BTFSC  07.6
+02DE:  MOVLW  01
+02DF:  MOVWF  77
+02E0:  RLF    77,F
+02E1:  RLF    77,F
+02E2:  MOVLW  FC
+02E3:  ANDWF  77,F
+02E4:  MOVF   77,W
+02E5:  ADDWF  4D,W
+02E6:  MOVWF  4F
+02E7:  MOVLW  00
+02E8:  BTFSC  07.7
+02E9:  MOVLW  01
+02EA:  MOVWF  77
+02EB:  RLF    77,F
+02EC:  RLF    77,F
+02ED:  RLF    77,F
+02EE:  MOVLW  F8
+02EF:  ANDWF  77,F
+02F0:  MOVF   77,W
+02F1:  ADDWF  4F,W
+02F2:  XORLW  01
+02F3:  BTFSC  03.2
+02F4:  GOTO   2FF
+02F5:  XORLW  03
+02F6:  BTFSC  03.2
+02F7:  GOTO   302
+02F8:  XORLW  06
+02F9:  BTFSC  03.2
+02FA:  GOTO   305
+02FB:  XORLW  0C
+02FC:  BTFSC  03.2
+02FD:  GOTO   308
+02FE:  GOTO   30B
+.................... case 1:phim=8;break; 
+02FF:  MOVLW  08
+0300:  MOVWF  2C
+0301:  GOTO   30B
+.................... case 2:phim=9;break; 
+0302:  MOVLW  09
+0303:  MOVWF  2C
+0304:  GOTO   30B
+.................... case 4:phim=10;break; 
+0305:  MOVLW  0A
+0306:  MOVWF  2C
+0307:  GOTO   30B
+.................... case 8:phim=11;break;} 
+0308:  MOVLW  0B
+0309:  MOVWF  2C
+030A:  GOTO   30B
+.................... portC=4; 
+030B:  MOVLW  04
+030C:  MOVWF  07
+.................... switch(kiemtra){ 
+030D:  MOVLW  00
+030E:  BTFSC  07.4
+030F:  MOVLW  01
+0310:  MOVWF  4B
+0311:  MOVLW  00
+0312:  BTFSC  07.5
+0313:  MOVLW  01
+0314:  MOVWF  77
+0315:  BCF    03.0
+0316:  RLF    77,F
+0317:  MOVF   77,W
+0318:  ADDWF  4B,W
+0319:  MOVWF  4D
+031A:  MOVLW  00
+031B:  BTFSC  07.6
+031C:  MOVLW  01
+031D:  MOVWF  77
+031E:  RLF    77,F
+031F:  RLF    77,F
+0320:  MOVLW  FC
+0321:  ANDWF  77,F
+0322:  MOVF   77,W
+0323:  ADDWF  4D,W
+0324:  MOVWF  4F
+0325:  MOVLW  00
+0326:  BTFSC  07.7
+0327:  MOVLW  01
+0328:  MOVWF  77
+0329:  RLF    77,F
+032A:  RLF    77,F
+032B:  RLF    77,F
+032C:  MOVLW  F8
+032D:  ANDWF  77,F
+032E:  MOVF   77,W
+032F:  ADDWF  4F,W
+0330:  XORLW  01
+0331:  BTFSC  03.2
+0332:  GOTO   33D
+0333:  XORLW  03
+0334:  BTFSC  03.2
+0335:  GOTO   340
+0336:  XORLW  06
+0337:  BTFSC  03.2
+0338:  GOTO   343
+0339:  XORLW  0C
+033A:  BTFSC  03.2
+033B:  GOTO   346
+033C:  GOTO   349
+.................... case 1:phim=4;break; 
+033D:  MOVLW  04
+033E:  MOVWF  2C
+033F:  GOTO   349
+.................... case 2:phim=5;break; 
+0340:  MOVLW  05
+0341:  MOVWF  2C
+0342:  GOTO   349
+.................... case 4:phim=6;break; 
+0343:  MOVLW  06
+0344:  MOVWF  2C
+0345:  GOTO   349
+.................... case 8:phim=7;break;} 
+0346:  MOVLW  07
+0347:  MOVWF  2C
+0348:  GOTO   349
+.................... portC=8; 
+0349:  MOVLW  08
+034A:  MOVWF  07
+.................... switch(kiemtra){ 
+034B:  MOVLW  00
+034C:  BTFSC  07.4
+034D:  MOVLW  01
+034E:  MOVWF  4B
+034F:  MOVLW  00
+0350:  BTFSC  07.5
+0351:  MOVLW  01
+0352:  MOVWF  77
+0353:  BCF    03.0
+0354:  RLF    77,F
+0355:  MOVF   77,W
+0356:  ADDWF  4B,W
+0357:  MOVWF  4D
+0358:  MOVLW  00
+0359:  BTFSC  07.6
+035A:  MOVLW  01
+035B:  MOVWF  77
+035C:  RLF    77,F
+035D:  RLF    77,F
+035E:  MOVLW  FC
+035F:  ANDWF  77,F
+0360:  MOVF   77,W
+0361:  ADDWF  4D,W
+0362:  MOVWF  4F
+0363:  MOVLW  00
+0364:  BTFSC  07.7
+0365:  MOVLW  01
+0366:  MOVWF  77
+0367:  RLF    77,F
+0368:  RLF    77,F
+0369:  RLF    77,F
+036A:  MOVLW  F8
+036B:  ANDWF  77,F
+036C:  MOVF   77,W
+036D:  ADDWF  4F,W
+036E:  XORLW  01
+036F:  BTFSC  03.2
+0370:  GOTO   37B
+0371:  XORLW  03
+0372:  BTFSC  03.2
+0373:  GOTO   37D
+0374:  XORLW  06
+0375:  BTFSC  03.2
+0376:  GOTO   380
+0377:  XORLW  0C
+0378:  BTFSC  03.2
+0379:  GOTO   383
+037A:  GOTO   386
+.................... case 1:phim=0;break; 
+037B:  CLRF   2C
+037C:  GOTO   386
+.................... case 2:phim=1;break; 
+037D:  MOVLW  01
+037E:  MOVWF  2C
+037F:  GOTO   386
+.................... case 4:phim=2;break; 
+0380:  MOVLW  02
+0381:  MOVWF  2C
+0382:  GOTO   386
+.................... case 8:phim=3;break;} 
+0383:  MOVLW  03
+0384:  MOVWF  2C
+0385:  GOTO   386
+.................... portC=0; 
+0386:  CLRF   07
+.................... } 
+.................... /*--------------------------*/ 
+0387:  BCF    0C.1
+0388:  BCF    0A.3
+0389:  BCF    0A.4
+038A:  GOTO   02D
+
+Configuration Fuses:
+   Word  1: 3F3A   HS NOWDT NOPUT NODEBUG NOPROTECT NOBROWNOUT NOLVP NOCPD NOWRT

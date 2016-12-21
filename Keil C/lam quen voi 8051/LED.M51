@@ -1,0 +1,152 @@
+BL51 BANKED LINKER/LOCATER V6.02                                                        05/10/2008  15:29:45  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.02, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE dk led.obj, sau bo Thao viet.obj TO led
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  dk led.obj (DK_LED)
+  sau bo Thao viet.obj (SAU_BO_THAO_VIET)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  led (DK_LED)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         ?DT?MAIN?SAU_BO_THAO_VIET
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0046H     UNIT         ?PR?MAIN?DK_LED
+            CODE    0049H     0016H     UNIT         ?PR?_DELAY?DK_LED
+            CODE    005FH     0012H     UNIT         ?PR?_DELAY?SAU_BO_THAO_VIET
+            CODE    0071H     0011H     UNIT         ?PR?MAIN?SAU_BO_THAO_VIET
+            CODE    0082H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   led (DK_LED)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?DK_LED
+
+?PR?MAIN?DK_LED
+  +--> ?PR?_DELAY?DK_LED
+
+
+
+IGNORED SYMBOLS:
+   MAIN
+   _DELAY
+
+
+
+SYMBOL TABLE OF MODULE:  led (DK_LED)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+BL51 BANKED LINKER/LOCATER V6.02                                                      05/10/2008  15:29:45  PAGE 2
+
+
+
+  -------         MODULE        DK_LED
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  C:004DH         PUBLIC        _delay
+  C:0003H         PUBLIC        main
+  C:0049H         SYMBOL        L?0020
+  -------         PROC          L?0019
+  -------         ENDPROC       L?0019
+  C:0049H         SYMBOL        L?0020
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        time
+  -------         DO            
+  D:0004H         SYMBOL        n
+  -------         ENDDO         
+  C:004DH         LINE#         2
+  C:004DH         LINE#         3
+  C:004DH         LINE#         5
+  C:005EH         LINE#         6
+  -------         ENDPROC       _DELAY
+  -------         PROC          MAIN
+  -------         DO            
+  D:0003H         SYMBOL        a
+  D:0002H         SYMBOL        b
+  -------         ENDDO         
+  C:0003H         LINE#         7
+  C:0003H         LINE#         8
+  C:0005H         LINE#         10
+  C:0007H         LINE#         11
+  C:0016H         LINE#         12
+  C:001DH         LINE#         13
+  C:0025H         LINE#         14
+  C:0025H         LINE#         15
+  C:0027H         LINE#         16
+  C:0030H         LINE#         17
+  C:0038H         LINE#         18
+  C:003AH         LINE#         19
+  C:003DH         LINE#         20
+  C:0042H         LINE#         21
+  C:0048H         LINE#         22
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        DK_LED
+
+  -------         MODULE        SAU_BO_THAO_VIET
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  C:005FH         PUBLIC        _delay
+  C:0071H         PUBLIC        main
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        time
+  -------         DO            
+  D:0004H         SYMBOL        n
+  -------         ENDDO         
+  C:005FH         LINE#         2
+  C:005FH         LINE#         3
+  C:005FH         LINE#         5
+  C:0070H         LINE#         6
+BL51 BANKED LINKER/LOCATER V6.02                                                      05/10/2008  15:29:45  PAGE 3
+
+
+  -------         ENDPROC       _DELAY
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        a
+  D:0003H         SYMBOL        b
+  -------         ENDDO         
+  C:0071H         LINE#         7
+  C:0071H         LINE#         8
+  C:0071H         LINE#         10
+  C:0073H         LINE#         11
+  C:0073H         LINE#         12
+  C:0075H         LINE#         13
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        SAU_BO_THAO_VIET
+
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  MAIN
+    MODULE:  sau bo Thao viet.obj (SAU_BO_THAO_VIET)
+
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  _DELAY
+    MODULE:  sau bo Thao viet.obj (SAU_BO_THAO_VIET)
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?MAIN?SAU_BO_THAO_VIET
+
+Program Size: data=10.0 xdata=0 code=142
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  2 ERROR(S)

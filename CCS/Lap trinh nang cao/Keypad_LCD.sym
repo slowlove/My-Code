@@ -1,0 +1,123 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+004     @WRITE_PROGRAM_MEMORY8.P2
+007.0   c0
+007     Port_C
+007.1   c1
+007.2   c2
+007.3   c3
+007.4   c4
+007.5   c5
+007.6   c6
+007.7   c7
+008.0   RS
+008     PSP_DATA
+008.1   RW
+008.2   E
+008.3   d0
+008.4   d1
+008.5   d2
+008.6   d3
+008.7   OE
+015-016 CCP_1
+015     CCP_1_LOW
+016     CCP_1_HIGH
+01B-01C CCP_2
+01B     CCP_2_LOW
+01C     CCP_2_HIGH
+020     @INTERRUPT_AREA
+021     @INTERRUPT_AREA
+022     @INTERRUPT_AREA
+023     @INTERRUPT_AREA
+024     @INTERRUPT_AREA
+025     @INTERRUPT_AREA
+026     @INTERRUPT_AREA
+027     @INTERRUPT_AREA
+028     data
+029     phim
+02A     phimbam
+02B     a
+02C     @TRIS_C
+02D     cursor.manhinh
+02D     moveto.dong
+02D     khoitao.giao_thuc
+02D     MAIN.@SCRATCH1
+02E     @delay_ms2.P1
+02E     cursor.contro
+02E     moveto.vitri
+02E     khoitao.so_dong
+02F     khoitao.do_phan_giai
+02F     cursor.kieu_contro
+030     @delay_ms1.P1
+030     khoitao.@SCRATCH1
+030     cursor.@SCRATCH1
+031     khoitao.@SCRATCH2
+031     cursor.@SCRATCH2
+032     keyscan.@SCRATCH1
+033     keyscan.@SCRATCH2
+034     keyscan.@SCRATCH3
+035     keyscan.@SCRATCH4
+036     keyscan.@SCRATCH5
+037     keyscan.@SCRATCH6
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07B     @SCRATCH
+07F     @INTERRUPT_AREA
+09C.6   C1OUT
+09C.7   C2OUT
+0FF     @INTERRUPT_AREA
+10D-10E @WRITE_PROGRAM_MEMORY8.P1
+10D-10E @READ_PROGRAM_MEMORY8.P2
+17F     @INTERRUPT_AREA
+1FF     @INTERRUPT_AREA
+27F     @INTERRUPT_AREA
+2FF     @INTERRUPT_AREA
+37F     @INTERRUPT_AREA
+3FF     @INTERRUPT_AREA
+
+ROM Allocation:
+018C  @delay_ms1
+015D  enable
+0165  command
+01E5  display
+018A  khoitao
+0220  clear
+01D4  cursor
+0224  moveto
+020A  @delay_ms2
+0033  str1
+0047  str2
+005B  keyscan
+0233  MAIN
+0312  @goto10299
+0233  @cinit
+
+Project Directory:
+    G:\Lap trinh C\CCS\Lap trinh nang cao\
+
+Project Files:
+    Keypad_LCD.c
+    C:\Program Files\PICC\devices\16F877A.h
+    lcd4b_lib.c
+
+Units:
+    G:\Lap trinh C\CCS\Lap trinh nang cao\Keypad_LCD.c (main)
+
+Compiler Settings:
+    Processor:      PIC16F877A
+    Pointer Size:   16
+    ADC Range:      0-1023
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      Keypad_LCD.err
+    Ext Symbols: Keypad_LCD.esym
+    INHX8:       Keypad_LCD.hex
+    Symbols:     Keypad_LCD.sym
+    List:        Keypad_LCD.lst
+    Debug/COFF:  Keypad_LCD.cof
+    Project:     Keypad_LCD.PJT

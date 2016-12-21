@@ -1,0 +1,225 @@
+CCS PCM C Compiler, Version 4.068, 47139               12-th7-08 17:25
+
+               Filename: G:\Lap trinh C\CCS\Lam quen voi 16F877A\Led 7 doan_II.lst
+
+               ROM used: 173 words (2%)
+                         Largest free fragment is 2048
+               RAM used: 11 (3%) at main() level
+                         17 (5%) worst case
+               Stack:    3 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   07E
+0003:  NOP
+.................... #include <16F877A.h> 
+.................... //////// Standard Header file for the PIC16F877A device //////////////// 
+.................... #device PIC16F877A 
+.................... #list 
+....................  
+.................... #device *=16   //khong duoc di chuyen dong lenh nay boi vi chuong trinh 
+....................                //se bao loi,mac du khong biet loi o cho nao ,,(*.*),. 
+.................... #include <convert_lib.c>   //dich them file nguon tu dinh nghia 
+.................... /********Cac ham chuyen doi ma va ki tu cua Slowlove*********/ 
+.................... /*xay dung 04/06/2008*/ 
+....................  /* chu y: 
+....................    Ta co the them bien toan cuc o moi luc,moi noi khi viet chong trinh duoc chua trinh duoc chua trong 
+.................... 1 tep.Song neu cac ham duoc viet chua trong cac tep rieng re thi van de lai thay doi:khong truy  
+.................... cap duoc. 
+....................    De gai quyet van de nay ,C chi phep khai bao cac bien toan cuc nay lai 1 lan nua trong tat ca cac  
+.................... tep.Tuy nhien chi 1 trong so cac tep nay co cac khai bao nhu binh thuong.Trang cac tep khac chung ta 
+.................... su dung bien nay thi khai bao co them tu khoa  extern 
+.................... VD: 
+....................    extern int bien_toan_cuc; 
+.................... tu khoa extern thong bao rang bien_toan_cuc khong phai la bien moi,no da duoc dinh nghia va khia bao o 
+.................... nhung cho khac va dung(khong) cap bo nho cho bien_toan_cuc o trong tep nay.Chuong trinh ket noi se tim  
+.................... ra khai bao bien nay voi dk no duoc khai bao trong 1 va chi 1 trong cac tep duoc ket noi 
+....................  */ 
+....................  /***********Program conver data on port to led 7 seg***********/ 
+....................  unsigned char toled7seg(unsigned char n) 
+....................  { 
+....................  const unsigned char ma_so[10]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};   // ma cua so 0-->9 duoi dang hex de hien thi tra led 7 doan 
+....................  // {0x40,0x79,0x24,0x30,0x19,0x12,0x02,0x78,0x00,0x10};   ma led 7 SD dau cham dong 
+....................  return ma_so[n]; 
+*
+003B:  MOVF   27,W
+003C:  CALL   004
+003D:  MOVWF  78
+003E:  MOVWF  78
+....................  } 
+003F:  RETLW  00
+....................  /*********Chuyen doi sang ma Led 7 doan su dung con tro************/ 
+....................   
+....................  
+.................... #fuses NOWDT,HS,NOPUT,NOPROTECT,NODEBUG,NOBROWNOUT,NOLVP,NOCPD,NOWRT      //khai bao cac thiet dat cho PIC 
+.................... #use delay(clock=20000000)                               //khai bao su dung thach anh 20MHz de su dung ham delay cua chuong trinh 
+*
+0012:  MOVLW  27
+0013:  MOVWF  04
+0014:  BCF    03.7
+0015:  MOVF   00,W
+0016:  BTFSC  03.2
+0017:  GOTO   025
+0018:  MOVLW  06
+0019:  MOVWF  78
+001A:  CLRF   77
+001B:  DECFSZ 77,F
+001C:  GOTO   01B
+001D:  DECFSZ 78,F
+001E:  GOTO   01A
+001F:  MOVLW  7B
+0020:  MOVWF  77
+0021:  DECFSZ 77,F
+0022:  GOTO   021
+0023:  DECFSZ 00,F
+0024:  GOTO   018
+0025:  RETLW  00
+.................... /****************************Ket thuc phan khai bao****************************/ 
+....................  unsigned char a,b; 
+....................  /****************Chuong trinh tach so**************************/ 
+....................  /**** Chuong trinh su dung thuat toan chia lay phan du co  ****/ 
+....................  /**** the dung lenh div() ho tro boi CCS_Help de thuc hien ****/ 
+....................  void tachso(unsigned char value) 
+....................  { 
+....................  a=value/10;   //gia tri hang chuc luu vao a 
+*
+0042:  MOVF   27,W
+0043:  MOVWF  28
+0044:  MOVLW  0A
+0045:  MOVWF  29
+0046:  CALL   026
+0047:  MOVF   78,W
+0048:  MOVWF  20
+....................  b=value%10;   //gia tri hang don vi luu vao b_thuat taoan chia lay phan du 
+0049:  MOVF   27,W
+004A:  MOVWF  28
+004B:  MOVLW  0A
+004C:  MOVWF  29
+004D:  CALL   026
+004E:  MOVF   77,W
+004F:  MOVWF  21
+....................  } 
+....................  /***************Chuong trinh hien thi bang phuong phap quet led**************/ 
+....................  void hienthi(unsigned char display,unsigned char loop)   //bien display the hien so can hien thi,bien loop the hien so lan quet 1 led 7 doan 
+....................  { 
+....................  unsigned char m; 
+....................  tachso(display);                  //thuc hien cong doan tach so truoc khi dua vao xu li 
+*
+0040:  MOVF   24,W
+0041:  MOVWF  27
+....................  for(m=0;m<loop;m++) 
+*
+0050:  CLRF   26
+0051:  MOVF   25,W
+0052:  SUBWF  26,W
+0053:  BTFSC  03.0
+0054:  GOTO   07B
+....................  { 
+....................  output_b(toled7seg(b)); 
+0055:  MOVF   21,W
+0056:  MOVWF  27
+0057:  CALL   03B
+0058:  BSF    03.5
+0059:  CLRF   06
+005A:  BCF    03.5
+005B:  MOVF   78,W
+005C:  MOVWF  06
+....................  output_c(0x01); 
+005D:  MOVLW  00
+005E:  MOVWF  22
+005F:  BSF    03.5
+0060:  CLRF   07
+0061:  MOVLW  01
+0062:  BCF    03.5
+0063:  MOVWF  07
+....................  delay_ms(50); 
+0064:  MOVLW  32
+0065:  MOVWF  27
+0066:  CALL   012
+....................  output_b(toled7seg(a)); 
+0067:  MOVF   20,W
+0068:  MOVWF  27
+0069:  CALL   03B
+006A:  BSF    03.5
+006B:  CLRF   06
+006C:  BCF    03.5
+006D:  MOVF   78,W
+006E:  MOVWF  06
+....................  output_c(0x02); 
+006F:  MOVLW  00
+0070:  MOVWF  22
+0071:  BSF    03.5
+0072:  CLRF   07
+0073:  MOVLW  02
+0074:  BCF    03.5
+0075:  MOVWF  07
+....................  delay_ms(50); 
+0076:  MOVLW  32
+0077:  MOVWF  27
+0078:  CALL   012
+....................  } 
+0079:  INCF   26,F
+007A:  GOTO   051
+....................  } 
+007B:  BCF    0A.3
+007C:  BCF    0A.4
+007D:  GOTO   0AB (RETURN)
+....................  /*****************Chuong trinh chinh*****************/ 
+....................  void main(unsigned char x) 
+....................  { 
+007E:  CLRF   04
+007F:  BCF    03.7
+0080:  MOVLW  1F
+0081:  ANDWF  03,F
+0082:  BSF    03.5
+0083:  BSF    1F.0
+0084:  BSF    1F.1
+0085:  BSF    1F.2
+0086:  BCF    1F.3
+0087:  MOVLW  07
+0088:  MOVWF  1C
+....................  x=0; 
+*
+008C:  CLRF   23
+....................  while(true){ 
+....................  if((input(pin_d0)==0)&&(x<99)){delay_ms(25);x++;}   //neu co phim duoc an se tang len 1 va se tang lien tiep den 99 thi dung lai 
+008D:  BSF    03.5
+008E:  BSF    08.0
+008F:  BCF    03.5
+0090:  BTFSC  08.0
+0091:  GOTO   09A
+0092:  MOVF   23,W
+0093:  SUBLW  62
+0094:  BTFSS  03.0
+0095:  GOTO   09A
+0096:  MOVLW  19
+0097:  MOVWF  27
+0098:  CALL   012
+0099:  INCF   23,F
+....................  if((input(pin_d1)==0)&&(x>0)){delay_ms(25);x--;}   //tuong tu nhung nguoc lai 
+009A:  BSF    03.5
+009B:  BSF    08.1
+009C:  BCF    03.5
+009D:  BTFSC  08.1
+009E:  GOTO   0A6
+009F:  MOVF   23,F
+00A0:  BTFSC  03.2
+00A1:  GOTO   0A6
+00A2:  MOVLW  19
+00A3:  MOVWF  27
+00A4:  CALL   012
+00A5:  DECF   23,F
+....................  hienthi(x,1);   //goi chuong trinh hien thi 
+00A6:  MOVF   23,W
+00A7:  MOVWF  24
+00A8:  MOVLW  01
+00A9:  MOVWF  25
+00AA:  GOTO   040
+....................  } 
+00AB:  GOTO   08D
+....................  } 
+00AC:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F3A   HS NOWDT NOPUT NODEBUG NOPROTECT NOBROWNOUT NOLVP NOCPD NOWRT

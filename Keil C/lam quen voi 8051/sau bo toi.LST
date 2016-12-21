@@ -1,0 +1,55 @@
+A51 MACRO ASSEMBLER  SAU_BO_TOI                                                           10/31/2007 21:11:48 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.00b
+OBJECT MODULE PLACED IN sau bo toi.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE sau bo toi.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     org 0h
+0000                   2     main:
+0000 758000            3     mov p0,#0
+0003 759000            4     mov p1,#0
+0006 75A000            5     mov p2,#0
+0009 75B000            6     mov p3,#0
+000C 7407              7     mov a,#7h
+000E                   8     xoay:
+000E 23                9     rl a
+000F C9               10     xch a,r1
+0010 8980             11     mov p0,r1
+0012 120019           12     lcall tre
+0015 70F7             13     jnz xoay
+0017 80E7             14     sjmp main
+                      15     ;;;;;;;;;;;;;; chuong trinh tao tre;;;;;;;;;;;;;
+0019                  16     tre:
+0019 7FFF             17          mov r7,#0ffh
+001B 7EFF             18     kt1: mov r6,#0ffh
+001D DEFE             19     kt2: djnz r6,kt2
+001F DFFA             20          djnz r7,kt1
+0021 22               21              ret
+                      22     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      23     end
+A51 MACRO ASSEMBLER  SAU_BO_TOI                                                           10/31/2007 21:11:48 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+KT1. . . . . . . .  C ADDR   001BH   A   
+KT2. . . . . . . .  C ADDR   001DH   A   
+MAIN . . . . . . .  C ADDR   0000H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+TRE. . . . . . . .  C ADDR   0019H   A   
+XOAY . . . . . . .  C ADDR   000EH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

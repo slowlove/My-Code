@@ -1,0 +1,62 @@
+A51 MACRO ASSEMBLER  SAU_BO_VONG                                                          11/16/2007 21:03:15 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.00b
+OBJECT MODULE PLACED IN sau bo vong.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE sau bo vong.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1                     org 0h
+0000 758000            2     mov p0,#0
+0003 759000            3     mov p1,#0
+0006 75A000            4     mov p2,#0
+0009 75B000            5     mov p3,#0
+000C 7407              6     mov a,#7h
+000E                   7     main:
+000E 120020            8     lcall xoay
+0011 8980              9     mov p0,r1
+0013 120023           10     lcall tre
+                      11     
+                      12     
+0016 858090           13     mov p1,p0
+0019 120023           14     lcall tre
+001C 70F0             15     jnz main
+001E 80EE             16     sjmp main
+                      17     ;;;;;;;;;;;;;;chuong trinh xoay;;;;;;;;;;;;;;;;
+0020                  18     xoay:
+0020 23               19     rl a
+0021 F9               20     mov r1,a
+0022 22               21     ret
+                      22     ;;;;;;;;;;;;;;chuong trinh tao tre;;;;;;;;;;;;;
+0023                  23     tre:
+0023 7FFF             24          mov r7,#0ffh
+0025 7EFF             25     kt1: mov r6,#0ffh
+0027 DEFE             26     kt2: djnz r6,kt2
+0029 DFFA             27          djnz r7,kt1
+002B 22               28              ret
+                      29     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      30     end
+A51 MACRO ASSEMBLER  SAU_BO_VONG                                                          11/16/2007 21:03:15 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+KT1. . . . . . . .  C ADDR   0025H   A   
+KT2. . . . . . . .  C ADDR   0027H   A   
+MAIN . . . . . . .  C ADDR   000EH   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+TRE. . . . . . . .  C ADDR   0023H   A   
+XOAY . . . . . . .  C ADDR   0020H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

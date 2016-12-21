@@ -1,0 +1,85 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+004     @WRITE_PROGRAM_MEMORY8.P2
+006     led1
+007     led2
+008     PSP_DATA
+008     data
+015     CCP_1_LOW
+015-016 CCP_1
+016     CCP_1_HIGH
+01B     CCP_2_LOW
+01B-01C CCP_2
+01C     CCP_2_HIGH
+020     @INTERRUPT_AREA
+021     @INTERRUPT_AREA
+022     @INTERRUPT_AREA
+023     @INTERRUPT_AREA
+024     @INTERRUPT_AREA
+025     @INTERRUPT_AREA
+026     @INTERRUPT_AREA
+027     @INTERRUPT_AREA
+028     dong
+029     kitu
+02A     m
+02B     x
+02C     @TRIS_C
+02D     quet_led.gt
+02E     main.@SCRATCH1
+02F     @delay_ms1.P1
+030     quet_led.@SCRATCH1
+031     quet_led.@SCRATCH2
+032     quet_led.@SCRATCH3
+033     quet_led.@SCRATCH4
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+07B     @SCRATCH
+07F     @INTERRUPT_AREA
+09C.6   C1OUT
+09C.7   C2OUT
+0FF     @INTERRUPT_AREA
+10D-10E @READ_PROGRAM_MEMORY8.P1
+10D-10E @WRITE_PROGRAM_MEMORY8.P2
+17F     @INTERRUPT_AREA
+1FF     @INTERRUPT_AREA
+27F     @INTERRUPT_AREA
+2FF     @INTERRUPT_AREA
+37F     @INTERRUPT_AREA
+3FF     @INTERRUPT_AREA
+
+ROM Allocation:
+0191  @delay_ms1
+0035  ma_kitu
+01A5  main
+0206  @goto10057
+013C  quet_led
+01A5  @cinit
+
+Project Directory:
+    G:\Lap trinh C\CCS\Lap trinh nang cao\
+
+Project Files:
+    led matrix II.c
+    C:\Program Files\PICC\devices\16F877A.h
+
+Units:
+    G:\Lap trinh C\CCS\Lap trinh nang cao\led matrix II.c (main)
+
+Compiler Settings:
+    Processor:      PIC16F877A
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      led matrix II.err
+    Ext Symbols: led matrix II.esym
+    INHX8:       led matrix II.hex
+    Symbols:     led matrix II.sym
+    List:        led matrix II.lst
+    Debug/COFF:  led matrix II.cof
+    Project:     led matrix II.PJT

@@ -1,0 +1,58 @@
+[PROJECT]
+Target=LCD_temp_LCD_4 bit.hex
+Development_Mode=
+Processor_Text=PIC16F877A
+ToolSuite=CCS
+Processor=0x877A
+[LCD_temp_LCD_4 bit]
+Type=4
+Path=
+FileList=
+BuildTool=
+OptionString=
+AdditionalOptionString=
+[mru-list]
+1=LCD_temp_LCD_4 bit.c
+[Windows]
+0=0000 %S 0 0 796 451 3 0
+[Directories]
+Include=C:\Program Files\PICC\devices\;C:\Program Files\PICC\drivers\;
+Library=
+LinkerScript=
+[defines]
+enabled=0
+D1=
+V1=
+[fileformats]
+forcecoff=0
+debug=4
+error=2
+object=0
+list=0
+scratch=0
+sta=0
+tre=0
+allerrors=1
+allwarnings=1
+stayupne=0
+stayupoe=0
+[Target Data]
+BuildTool=C-COMPILER
+OptionString=+FM
+AdditionalOptionString=
+BuildRequired=1
+FileList=G:\Lap trinh C\CCS\Lap trinh nang cao\LCD_temp_LCD_4 bit.c
+[LCD_temp_LCD_4 bit.c]
+Type=4
+Path=
+FileList=
+BuildTool=
+OptionString=
+AdditionalOptionString=
+[Opened Files]
+1=G:\Lap trinh C\CCS\Lap trinh nang cao\LCD_temp_LCD_4 bit.c
+2=
+3=
+[Units]
+Count=1
+1=LCD_temp_LCD_4 bit.c (main)

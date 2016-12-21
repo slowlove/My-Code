@@ -1,0 +1,197 @@
+C51 COMPILER V8.05a   ROBOT                                                                03/27/2008 00:31:51 PAGE 1   
+
+
+C51 COMPILER V8.05a, COMPILATION OF MODULE ROBOT
+OBJECT MODULE PLACED IN robot.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE robot.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <P89V51RD2.h>
+   2          /*************dinh nghia cac gia tri ban dau*************/
+   3          #define thang    0x18
+   4          #define ra_ngoai 0x00
+   5          /*********************/
+   6          #define lechtrai1 0x08
+   7          #define lechtrai2 0x0c
+   8          #define lechtrai3 0x04
+   9          #define lechtrai4 0x06
+  10          #define lechtrai5 0x02
+  11          #define lechtrai6 0x03
+  12          #define lechtrai7 0x01
+  13          /*********************/
+  14          #define lechphai1 0x10
+  15          #define lechphai2 0x30
+  16          #define lechphai3 0x20
+  17          #define lechphai4 0x60
+  18          #define lechphai5 0x40
+  19          #define lechphai6 0xc0
+  20          #define lechphai7 0x80
+  21          /*****DK role de dao chieu dong co*******/ 
+  22          sbit dctrai=P1^3;                 //mopde =1 banh xe se quay xuoi va nguoc lai
+  23          sbit dcphai=P1^2;
+  24          /********Cam bien********/
+  25           sbit led1 = P0^0; 
+  26           sbit led2 = P0^1; 
+  27           sbit led3 = P0^2; 
+  28           sbit led4 = P0^3; 
+  29           sbit led5 = P0^4; 
+  30           sbit led6 = P0^5; 
+  31           sbit led7 = P0^6; 
+  32           sbit led8 = P0^7;
+  33          /******DN 2 banh la dau ra cua 2 chan dieu xung PWM********/
+  34          void banhtrai(unsigned char duty){
+  35   1      CCAP4H=duty;}
+  36          void banhphai(unsigned char duty){
+  37   1      CCAP3H=duty;}
+  38          /*****Chuong trinh delay******/
+  39          void delay(unsigned int time){
+  40   1      unsigned int a;
+  41   1      for(a=0;a<time;a++);
+  42   1      }
+  43          /********van toc rieng cho tung vung*******/
+  44          void v_thang(void){
+  45   1      banhtrai(244);
+  46   1      banhphai(255);}
+  47          /***************************/
+  48          void v_trai1(void){
+  49   1      banhtrai(244);
+  50   1      banhphai(250);}
+  51          void v_trai2(void){
+  52   1      banhtrai(244);
+  53   1      banhphai(240);}
+  54          void v_trai3(void){
+  55   1      banhtrai(244);
+C51 COMPILER V8.05a   ROBOT                                                                03/27/2008 00:31:51 PAGE 2   
+
+  56   1      banhphai(225);}
+  57          void v_trai4(void){
+  58   1      banhtrai(244);
+  59   1      banhphai(205);}
+  60          void v_trai5(void){
+  61   1      banhtrai(246);
+  62   1      banhphai(180);}
+  63          void v_trai6(void){
+  64   1      banhtrai(248);
+  65   1      banhphai(150);}
+  66          void v_trai7(void){
+  67   1      banhtrai(250);
+  68   1      banhphai(115);}
+  69          /*****************************/
+  70          void v_phai1(void){
+  71   1      banhtrai(240);
+  72   1      banhphai(255);}
+  73          void v_phai2(void){
+  74   1      banhtrai(232);
+  75   1      banhphai(255);}
+  76          void v_phai3(void){
+  77   1      banhtrai(220);
+  78   1      banhphai(255);}
+  79          void v_phai4(void){
+  80   1      banhtrai(210);
+  81   1      banhphai(255);}
+  82          void v_phai5(void){
+  83   1      banhtrai(190);
+  84   1      banhphai(255);}
+  85          void v_phai6(void){
+  86   1      banhtrai(168);
+  87   1      banhphai(255);}
+  88          void v_phai7(void){
+  89   1      banhtrai(140);
+  90   1      banhphai(255);}
+  91          /*********van toc goc cua trai hoac phai************/
+  92          void v_re(void){
+  93   1      banhtrai(190);
+  94   1      banhphai(200);}
+  95          /*********chuong trinh stop************/
+  96          void stop(void){
+  97   1      banhtrai(0);
+  98   1      banhphai(0);}
+  99          /********Chuong trinh KT qua vach ngang********/
+ 100          unsigned char sensor(void){
+ 101   1      unsigned char total;
+ 102   1      total=((led1==1)+(led2==1)+(led3==1)+(led4==1)+(led5==1)+(led6==1)+(led7==1)+(led8==1));        //trong cung 1 rt
+             -hoi diem ma co 
+ 103   1      return(total);}                                                                                                                                                         //>=5 mat nhan dc vach thi coi nhu qua vach
+ 104          /********chuong trinh con chay thang*******/
+ 105          void chaythang(unsigned char vach){
+ 106   1      dctrai=dcphai=1;delay(800);               //thiet lap chieu cua 2 dong co
+ 107   1      while(P0==ra_ngoai)stop();
+ 108   1      do{
+ 109   2      do{
+ 110   3      switch(P0){
+ 111   4      case lechtrai1:v_trai1();break;
+ 112   4      case lechtrai2:v_trai2();break;
+ 113   4      case lechtrai3:v_trai3();break;
+ 114   4      case lechtrai4:v_trai4();break;
+ 115   4      case lechtrai5:v_trai5();break;
+ 116   4      case lechtrai6:v_trai6();break;
+C51 COMPILER V8.05a   ROBOT                                                                03/27/2008 00:31:51 PAGE 3   
+
+ 117   4      case lechtrai7:v_trai7();break;
+ 118   4      case lechphai1:v_phai1();break;
+ 119   4      case lechphai2:v_phai2();break;
+ 120   4      case lechphai3:v_phai3();break;
+ 121   4      case lechphai4:v_phai4();break;
+ 122   4      case lechphai5:v_phai5();break;
+ 123   4      case lechphai6:v_phai6();break;
+ 124   4      case lechphai7:v_phai7();break;
+ 125   4      default:v_thang();break;}
+ 126   3      }
+ 127   2      while(sensor()<5);
+ 128   2      while(sensor()>=5)v_thang();
+ 129   2      --vach;
+ 130   2      }
+ 131   1      while(vach!=0);
+ 132   1      v_thang();delay(30000);
+ 133   1      }
+ 134          /*******Chuong trinh re trai*******/
+ 135          void retrai(void){
+ 136   1      dctrai=0;dcphai=1;delay(800);
+ 137   1      while(P0!=lechphai7)v_re();
+ 138   1      dctrai=1;dcphai=0;delay(800);
+ 139   1      v_re();delay(8000);     //phanh 
+ 140   1      }
+ 141          /*******chuong trinh re phai********/
+ 142          void rephai(void){
+ 143   1      dctrai=1;dcphai=0;delay(800);
+ 144   1      while(P0!=lechtrai7)v_re();
+ 145   1      dctrai=0;dcphai=1;delay(800);
+ 146   1      v_re();delay(8000);       //phanh
+ 147   1      }
+ 148          /********chuong trinh chinh*********/
+ 149          void main(void){
+ 150   1      unsigned char x;
+ 151   1      /**************Setup****************/
+ 152   1      CMOD=0;           //che do 6 chu ky xung nhip=1/2 chu ky may
+ 153   1      CR=1;             //cho phep PCA hoat dong
+ 154   1      CCAPM1=0x42;  //Thiet lap chan P1.4 lam chan PWM 8 bit
+ 155   1      CCAPM2=0x42;  //```````````````P1.5```````````````````
+ 156   1      CCAPM3=0x42;  //```````````````P1.6```````````````````
+ 157   1      CCAPM4=0x42;  //```````````````P1.7```````````````````
+ 158   1      /*********chuong trinh dieu khien robot*************/
+ 159   1      for(x=5;x!=0;x--){
+ 160   2      chaythang(x);
+ 161   2      retrai();chaythang(1);
+ 162   2      retrai();
+ 163   2      }
+ 164   1      rephai();rephai();
+ 165   1      chaythang(2);
+ 166   1      while(1){stop();delay(65000);}
+ 167   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    604    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+C51 COMPILER V8.05a   ROBOT                                                                03/27/2008 00:31:51 PAGE 4   
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

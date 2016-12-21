@@ -1,0 +1,123 @@
+
+ROM used: 2115 (26%)
+          2440 (30%) including unused fragments
+
+          2 Average locations per line
+          5 Average locations per statement
+
+RAM used: 27 (7%) at main() level
+          37 (10%) worst case
+
+Stack used: 5 worst case (out of 7 total available)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+  214   188  48  main.c
+  313     0   0  C:\Program Files\PICC\devices\16F877A.h
+  227    58  15  lcd_lib.c
+   28    21   5  menu_list.c
+  130   125  32  program.c
+----- -----
+  912   392 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0     20   1   1             @delay_ms1
+0      4   0   0    56  1.6  enable
+0     46   2   0   502  2.4  command
+0     46   2   0   502  2.4  display
+0     56   3   5   524  3.5  khoitao
+0      4   0   0    33  1.3  clear
+0     17   1   5   132  3.5  cursor
+0     13   1   2   171  5.0  moveto
+0    326  15   0             @const93
+0    233  11   5  1147  5.9  menu_display
+0     15   1   0             @const98
+ Inline        1   401  4.6  chuongtrinh1
+0     21   1   0             @const101
+ Inline        1   401  4.6  chuongtrinh2
+0     21   1   0             @const104
+ Inline        1   401  4.6  chuongtrinh3
+0     20   1   0             @const107
+ Inline        1   401  4.6  chuongtrinh4
+ Inline        0     5  1.0  chuongtrinh5
+ Inline        0     5  1.0  chuongtrinh6
+ Inline        0     5  1.0  chuongtrinh7
+ Inline        0     5  1.0  chuongtrinh8
+ Inline        0     5  1.0  chuongtrinh9
+ Inline        0     5  1.0  chuongtrinh10
+ Inline        0     5  1.0  chuongtrinh11
+ Inline        0     5  1.0  chuongtrinh12
+ Inline        0     5  1.0  chuongtrinh13
+ Inline        0     5  1.0  chuongtrinh14
+ Inline        0     5  1.0  chuongtrinh15
+ Inline        0     5  1.0  chuongtrinh16
+ Inline        0     5  1.0  chuongtrinh17
+ Inline        0     5  1.0  chuongtrinh18
+ Inline        0     5  1.0  chuongtrinh19
+ Inline        0     5  1.0  chuongtrinh20
+ Inline        0     5  1.0  chuongtrinh21
+ Inline        0     5  1.0  chuongtrinh22
+ Inline        0     5  1.0  chuongtrinh23
+ Inline        0     5  1.0  chuongtrinh24
+ Inline        0     5  1.0  chuongtrinh25
+ Inline        0     5  1.0  chuongtrinh26
+ Inline        0     5  1.0  chuongtrinh27
+ Inline        0     5  1.0  chuongtrinh28
+ Inline        0     5  1.0  chuongtrinh29
+ Inline        0     5  1.0  chuongtrinh30
+ Inline        0     5  1.0  chuongtrinh31
+ Inline        0     5  1.0  chuongtrinh32
+ Inline        0     5  1.0  chuongtrinh33
+ Inline        0     5  1.0  chuongtrinh34
+ Inline        0     5  1.0  chuongtrinh35
+ Inline        0     5  1.0  chuongtrinh36
+ Inline        0     5  1.0  chuongtrinh37
+ Inline        0     5  1.0  chuongtrinh38
+ Inline        0     5  1.0  chuongtrinh39
+ Inline        0     5  1.0  chuongtrinh40
+0    186   9   1  2151  3.4  chay_chuongtrinh
+0     44   2   0             @goto10458
+ Inline        0    33  1.3  muiten
+ Inline        0    33  1.3  eraser
+0     23   1   2   147  1.8  contro
+0     21   1   0             @const171
+0     24   1   0             @const173
+0     41   2   1   434  4.5  wellcome
+0     21   1   0             @const176
+0     20   1   0             @const178
+0     35   2   1   426  4.5  cau_hoi_xac_nhan
+0     15   1   0             @const181
+0     29   1   1   249  4.0  thong_bao_complete
+0     20   1   0             @const184
+0     35   2   1   426  4.5  thong_bao_resetpage
+1    383  18   1  4359 10.9  MAIN
+1      9   0   0             @goto10645
+0      4   0   0     5  1.0  ext
+0     29   1   1   201  4.1  chose
+0      4   0   0     5  1.0  timer1
+0    254  12   6  1688  5.4  quet
+
+Program metrics:
+    Functions               61
+    Statements              392
+    Comments                224
+    Volume (V)              25363
+    Difficilty (D)          126.7
+    Effort to implement (E) 3213344
+    Time to implement (T)   49 hours, 35 minutes
+    Est Delivered Bugs (B)  7
+    Cyclomatic Complexity   103
+    Maintainability (MI)    118
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00003     4  0  
+00004-0004B    72  0  
+0004C-007FF  1647  325  
+00800-00FFF   392  1656  
+01000-017FF     0  2048  
+01800-01FFF     0  2048  
+
+
+

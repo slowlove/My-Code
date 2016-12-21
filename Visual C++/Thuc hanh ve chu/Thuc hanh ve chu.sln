@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Thuc hanh ve chu", "Thuc hanh ve chu.vcproj", "{481DF2D6-15F8-435A-9033-A1DF59DF935A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{481DF2D6-15F8-435A-9033-A1DF59DF935A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{481DF2D6-15F8-435A-9033-A1DF59DF935A}.Debug|Win32.Build.0 = Debug|Win32
+		{481DF2D6-15F8-435A-9033-A1DF59DF935A}.Release|Win32.ActiveCfg = Release|Win32
+		{481DF2D6-15F8-435A-9033-A1DF59DF935A}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,728 @@
+CCS PCM C Compiler, Version 4.068, 53086               15-th6-08 19:25
+
+               Filename: G:\Lap trinh C\CCS\Lap trinh nang cao\LCD 16x2.lst
+
+               ROM used: 658 words (8%)
+                         Largest free fragment is 2048
+               RAM used: 15 (4%) at main() level
+                         20 (5%) worst case
+               Stack:    2 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   13E
+0003:  NOP
+.................... #include <16F877A.h> 
+.................... //////// Standard Header file for the PIC16F877A device //////////////// 
+.................... #device PIC16F877A 
+.................... #list 
+....................  
+.................... #device*=16 
+.................... #include <lcd_lib.c> 
+.................... /*********Thu vien cac ham dung cho LCD cua Slowlove**********/ 
+.................... /* xay dung:04/06/2008*/ 
+.................... /*Luu y:truoc khi dung thu vien nay phai dong bo cac bien va cac gia tri khai bao trong chuong trinh*/ 
+.................... /*===========================================================================================*/ 
+.................... #use delay(clock=20000000)   //khai bao tan so thach anh su dung trong chuong trinh 
+*
+0088:  MOVLW  2A
+0089:  MOVWF  04
+008A:  BCF    03.7
+008B:  MOVF   00,W
+008C:  BTFSC  03.2
+008D:  GOTO   09B
+008E:  MOVLW  06
+008F:  MOVWF  78
+0090:  CLRF   77
+0091:  DECFSZ 77,F
+0092:  GOTO   091
+0093:  DECFSZ 78,F
+0094:  GOTO   090
+0095:  MOVLW  7B
+0096:  MOVWF  77
+0097:  DECFSZ 77,F
+0098:  GOTO   097
+0099:  DECFSZ 00,F
+009A:  GOTO   08E
+.................... /******Dinh nghia cac chan su dung trong chuomg trinh******/ 
+.................... #bit E   = 0x09.0 //chan e0 
+.................... #bit RW  = 0x09.1 //chan e1 
+.................... #bit RS  = 0x09.2 //chan e2 
+.................... #bit BF  = 0x08.7 //chan d7 
+.................... #byte data = 0x08 //port D 
+.................... /*============================================================================================*/ 
+.................... /*******cac trang thai tin hieu dieu khien*********/ 
+.................... void command(void) 
+.................... { 
+.................... /*chon thanh ghi va chon che do read/write*/ 
+.................... E=1; 
+*
+007D:  BSF    09.0
+.................... RS=0; //chon thanh ghi:RS=0:chon IR;RS=1:chon thanh ghi DR 
+007E:  BCF    09.2
+.................... RW=0; //chon che do:RW=0:chon che do ghi;RW=1:chon che do doc 
+007F:  BCF    09.1
+.................... E=0; //1 xung E 1=>0 dung de kich hoat lenh 
+0080:  BCF    09.0
+.................... delay_us(50);   //doi 50us de thuc hien xong lenh 
+0081:  MOVLW  53
+0082:  MOVWF  77
+0083:  DECFSZ 77,F
+0084:  GOTO   083
+.................... } 
+0085:  RETLW  00
+.................... void display(void) 
+.................... { 
+.................... E=1; 
+*
+00EB:  BSF    09.0
+.................... RS=1; 
+00EC:  BSF    09.2
+.................... RW=0; 
+00ED:  BCF    09.1
+.................... E=0; //1 xung E 1=>0 
+00EE:  BCF    09.0
+.................... delay_us(50);   //doi 50us de thuc hien xong lenh 
+00EF:  MOVLW  53
+00F0:  MOVWF  77
+00F1:  DECFSZ 77,F
+00F2:  GOTO   0F1
+.................... } 
+00F3:  RETLW  00
+.................... /********khoi tao,khai bao cac thong so hoat dong cho LCD**********/ 
+.................... void khoitao(int1 giao_thuc,int1 so_dong,int1 do_phan_giai) 
+.................... { 
+.................... /*giao_thuc =1 hoac 0:che do 8 hoac 4 bit; 
+....................   so_dong =1 hoac 0:che do hien thi 2 hoac 1 dong 
+....................   do_phangiai =1 hoac 0:hien thi 5x10 hoac 5x8 diem anh 
+.................... Chu y:trong che do hient hi 2 hang thi khong the hien thi che do 5x10 diem anh*/ 
+.................... delay_ms(40);   //doi 40ms de cho LCD dat toi 4.5V 
+*
+0086:  MOVLW  28
+0087:  MOVWF  2A
+.................... data=0x20+(giao_thuc<<4)+(so_dong<<3)+(do_phan_giai<<2);   //data phai duoc dinh nghia truoc trong chuong trinh chinh 
+*
+009B:  SWAPF  27,W
+009C:  MOVWF  77
+009D:  MOVLW  F0
+009E:  ANDWF  77,F
+009F:  MOVF   77,W
+00A0:  ADDLW  20
+00A1:  MOVWF  2A
+00A2:  RLF    28,W
+00A3:  MOVWF  77
+00A4:  RLF    77,F
+00A5:  RLF    77,F
+00A6:  MOVLW  F8
+00A7:  ANDWF  77,F
+00A8:  MOVF   77,W
+00A9:  ADDWF  2A,W
+00AA:  MOVWF  2B
+00AB:  RLF    29,W
+00AC:  MOVWF  77
+00AD:  RLF    77,F
+00AE:  MOVLW  FC
+00AF:  ANDWF  77,F
+00B0:  MOVF   77,W
+00B1:  ADDWF  2B,W
+00B2:  MOVWF  08
+.................... command(); 
+00B3:  CALL   07D
+.................... } 
+00B4:  BCF    0A.3
+00B5:  BCF    0A.4
+00B6:  GOTO   154 (RETURN)
+.................... /*****Xoa man hinh tro ve dau dong*****/ 
+.................... void clear(void) 
+.................... { 
+.................... data=0x01; 
+*
+00C6:  MOVLW  01
+00C7:  MOVWF  08
+.................... command(); 
+00C8:  CALL   07D
+.................... } 
+00C9:  RETLW  00
+.................... /******di chuyen con tro ve dau dong*******/ 
+.................... void return_home(void) 
+.................... { 
+.................... data=0x02; 
+.................... command(); 
+.................... } 
+.................... /*******Hien thi con tro********/ 
+.................... void cursor(int1 manhinh,int1 contro,int1 kieu_contro) 
+.................... { 
+.................... /*manhinh = 1 hoac bang 0:hien thi man hinh hoac khong hien thi man hinh 
+....................   contro  = 1 hoac bang 0:hien thi con tro hoac khong hien thi con tro 
+....................   kieu_contro =1 hoac bang 0:2 che do hien thi con tro*/ 
+.................... data=0x08+(manhinh<<2)+(contro<<1)+(kieu_contro); 
+*
+00B7:  RLF    28,W
+00B8:  MOVWF  77
+00B9:  RLF    77,F
+00BA:  MOVLW  FC
+00BB:  ANDWF  77,F
+00BC:  MOVF   77,W
+00BD:  ADDLW  08
+00BE:  MOVWF  2B
+00BF:  BCF    03.0
+00C0:  RLF    29,W
+00C1:  ADDWF  2B,W
+00C2:  ADDWF  2A,W
+00C3:  MOVWF  08
+.................... command(); 
+00C4:  CALL   07D
+.................... } 
+00C5:  RETLW  00
+.................... /******Dua con tro toi 1 toa do cho truoc*******/ 
+.................... void moveto(unsigned char dong,unsigned char vitri) 
+.................... { 
+.................... /*nguoi dung se nhap toa do cua vi tri can hien thi tren LCD,cu the la dong 1 
+.................... hay dong 2,vi tri cua con tro can hien thi 1 to 16*/ 
+.................... if(dong==1)data=0x80+(vitri-1);  //dong 1 co dia chi bat dau tu 0x80 
+*
+00CA:  DECFSZ 27,W
+00CB:  GOTO   0D1
+00CC:  MOVLW  01
+00CD:  SUBWF  28,W
+00CE:  ADDLW  80
+00CF:  MOVWF  08
+.................... else data=0xC0+(vitri-1);        //dog 2 co dia chi bat dau tu 0x0C 
+00D0:  GOTO   0D5
+00D1:  MOVLW  01
+00D2:  SUBWF  28,W
+00D3:  ADDLW  C0
+00D4:  MOVWF  08
+.................... command(); 
+00D5:  CALL   07D
+.................... } 
+00D6:  RETLW  00
+.................... /********Di chuyen con tro va ki tu********/ 
+.................... void motion(int1 contents,int1 trend) 
+.................... { 
+.................... /* contents = 0 hoac 1:chon con tro hoac ca con tro & van ban 
+....................    trend = 0 hoac 1: chon huong sang trai hoac sang phai voi con tro,van ban theo 
+....................    chieu nguoc lai 0 hoac 1 sang phai hoac sang trai 
+....................    Chu y: neu o che do hien thi 2 hang thi khi het dong dong dau tien thi se 
+....................    tu dong chuyen xuong duong thu 2,du lieu hang dau va hang 2 cung dich 1 luc*/  
+.................... data=0x10+(contents<<=3)+(trend<<=2); 
+*
+0108:  RLF    27,F
+0109:  RLF    27,F
+010A:  RLF    27,F
+010B:  MOVLW  F8
+010C:  ANDWF  27,F
+010D:  MOVLW  10
+010E:  ADDWF  27,W
+010F:  MOVWF  29
+0110:  RLF    28,F
+0111:  RLF    28,F
+0112:  MOVLW  FC
+0113:  ANDWF  28,F
+0114:  MOVF   28,W
+0115:  ADDWF  29,W
+0116:  MOVWF  08
+.................... command(); 
+0117:  CALL   07D
+.................... } 
+0118:  RETLW  00
+.................... /******thiet lap thong so hien thi******/ 
+.................... void modeset(int1 trend,int1 mode) 
+.................... { 
+.................... /* trend = 0 hoac 1 :dich sang phai hoac trai 
+....................    mode  = 0 hoac 1 :khong dich hoac dich hien thi*/ 
+.................... data=0x04+(trend<<1)+mode; 
+.................... command(); 
+.................... } 
+.................... /*===========================The End==============================*/ 
+....................  
+.................... #fuses NOWDT,HS,NOPUT,NOPROTECT,NODEBUG,NOBROWNOUT,NOLVP,NOCPD,NOWRT      //khai bao cac thiet dat cho PIC 
+.................... #use delay(clock=20000000)  //khai bao su dung thach anh 20MHz de su dung ham delay cua chuong trinh 
+*
+00D7:  MOVLW  28
+00D8:  MOVWF  04
+00D9:  BCF    03.7
+00DA:  MOVF   00,W
+00DB:  BTFSC  03.2
+00DC:  GOTO   0EA
+00DD:  MOVLW  06
+00DE:  MOVWF  78
+00DF:  CLRF   77
+00E0:  DECFSZ 77,F
+00E1:  GOTO   0E0
+00E2:  DECFSZ 78,F
+00E3:  GOTO   0DF
+00E4:  MOVLW  7B
+00E5:  MOVWF  77
+00E6:  DECFSZ 77,F
+00E7:  GOTO   0E6
+00E8:  DECFSZ 00,F
+00E9:  GOTO   0DD
+00EA:  RETLW  00
+.................... /****************************Ket thuc phan khai bao****************************/ 
+.................... #bit E   = 0x09.0 //chan e0 
+.................... #bit RW  = 0x09.1 //chan e1 
+.................... #bit RS  = 0x09.2 //chan e2 
+.................... #bit BF  = 0x08.7 //chan d7 
+.................... #byte data = 0x08 //port D 
+.................... /*******khai bao hang va bien******/ 
+.................... int16 number; 
+.................... const unsigned char str1[]={"--I_Love_You !--"}; 
+.................... const unsigned char str2[]={"==Slow_in_love=="}; 
+.................... const unsigned char str3[]={"love_You,Forever"}; 
+.................... const unsigned char str4[]={"nhiet do:"}; 
+.................... const unsigned char str5[]={"nhiet do dat toi,MUC NGUY HIEM,DANGER !"}; 
+.................... unsigned char str_n[3]; 
+....................  
+.................... /********Chuong trinh dem so luong ki tu trong chuoi ki tu*********/ 
+.................... int16 demkitu(void) 
+.................... { 
+.................... int16 count=0; 
+*
+00F4:  CLRF   27
+00F5:  CLRF   28
+.................... while(str2[count] != '\0')count++; 
+00F6:  MOVF   28,W
+00F7:  MOVWF  7A
+00F8:  MOVF   27,W
+00F9:  CALL   019
+00FA:  XORLW  00
+00FB:  BTFSC  03.2
+00FC:  GOTO   101
+00FD:  INCF   27,F
+00FE:  BTFSC  03.2
+00FF:  INCF   28,F
+0100:  GOTO   0F6
+.................... return count; 
+0101:  MOVF   27,W
+0102:  MOVWF  78
+0103:  MOVF   28,W
+0104:  MOVWF  79
+.................... } 
+0105:  BCF    0A.3
+0106:  BCF    0A.4
+0107:  GOTO   18F (RETURN)
+.................... int16 demkitu2(void) 
+.................... { 
+.................... int16 count=0; 
+.................... while(str3[count] != '\0')count++; 
+.................... return count; 
+.................... } 
+.................... /*****************************************/ 
+.................... void main(void) 
+.................... { 
+*
+013E:  CLRF   04
+013F:  BCF    03.7
+0140:  MOVLW  1F
+0141:  ANDWF  03,F
+0142:  BSF    03.5
+0143:  BSF    1F.0
+0144:  BSF    1F.1
+0145:  BSF    1F.2
+0146:  BCF    1F.3
+0147:  MOVLW  07
+0148:  MOVWF  1C
+.................... unsigned char a; 
+.................... int1 b; 
+.................... set_tris_e(0x00); //tat ca cac chan tren port E deu la dau ra 
+0149:  BCF    09.0
+014A:  BCF    09.1
+014B:  BCF    09.2
+.................... set_tris_d(0x00); //tat ca cac chan tren port D deu la dau ra 
+014C:  MOVLW  00
+014D:  MOVWF  08
+.................... khoitao(1,1,0);   //che do 8 bit,2 dong,kieu 5x8 
+014E:  MOVLW  01
+014F:  BCF    03.5
+0150:  MOVWF  27
+0151:  MOVWF  28
+0152:  CLRF   29
+0153:  GOTO   086
+.................... cursor(1,1,0); 
+0154:  MOVLW  01
+0155:  MOVWF  28
+0156:  MOVWF  29
+0157:  CLRF   2A
+0158:  CALL   0B7
+.................... while(true){ 
+.................... cursor(1,1,0);clear();moveto(1,1); 
+0159:  MOVLW  01
+015A:  MOVWF  28
+015B:  MOVWF  29
+015C:  CLRF   2A
+015D:  CALL   0B7
+015E:  CALL   0C6
+015F:  MOVLW  01
+0160:  MOVWF  27
+0161:  MOVWF  28
+0162:  CALL   0CA
+.................... for(a=0;str2[a]!='\0';a++){ 
+0163:  CLRF   25
+0164:  MOVF   25,W
+0165:  CALL   019
+0166:  XORLW  00
+0167:  BTFSC  03.2
+0168:  GOTO   173
+.................... delay_ms(100); 
+0169:  MOVLW  64
+016A:  MOVWF  28
+016B:  CALL   0D7
+.................... data=str2[a]; 
+016C:  MOVF   25,W
+016D:  CALL   019
+016E:  MOVWF  78
+016F:  MOVWF  08
+.................... display();} 
+0170:  CALL   0EB
+0171:  INCF   25,F
+0172:  GOTO   164
+.................... moveto(2,1); 
+0173:  MOVLW  02
+0174:  MOVWF  27
+0175:  MOVLW  01
+0176:  MOVWF  28
+0177:  CALL   0CA
+.................... for(a=0;str3[a]!='\0';a++){ 
+0178:  CLRF   25
+0179:  MOVF   25,W
+017A:  CALL   02E
+017B:  XORLW  00
+017C:  BTFSC  03.2
+017D:  GOTO   188
+.................... delay_ms(100); 
+017E:  MOVLW  64
+017F:  MOVWF  28
+0180:  CALL   0D7
+.................... data=str3[a]; 
+0181:  MOVF   25,W
+0182:  CALL   02E
+0183:  MOVWF  78
+0184:  MOVWF  08
+.................... display();} 
+0185:  CALL   0EB
+0186:  INCF   25,F
+0187:  GOTO   179
+.................... moveto(1,17); 
+0188:  MOVLW  01
+0189:  MOVWF  27
+018A:  MOVLW  11
+018B:  MOVWF  28
+018C:  CALL   0CA
+.................... for(a=0;a<=demkitu();a++){ //xoa dan cac ki tu 
+018D:  CLRF   25
+018E:  GOTO   0F4
+018F:  MOVF   79,W
+0190:  MOVWF  7A
+0191:  MOVF   78,W
+0192:  MOVF   7A,F
+0193:  BTFSS  03.2
+0194:  GOTO   199
+0195:  MOVF   25,W
+0196:  SUBWF  78,W
+0197:  BTFSS  03.0
+0198:  GOTO   1A6
+.................... motion(0,0); 
+0199:  CLRF   27
+019A:  CLRF   28
+019B:  CALL   108
+.................... data='\0';display(); 
+019C:  CLRF   08
+019D:  CALL   0EB
+.................... motion(0,0); 
+019E:  CLRF   27
+019F:  CLRF   28
+01A0:  CALL   108
+.................... delay_ms(100);} 
+01A1:  MOVLW  64
+01A2:  MOVWF  28
+01A3:  CALL   0D7
+01A4:  INCF   25,F
+01A5:  GOTO   18E
+.................... moveto(1,1); 
+01A6:  MOVLW  01
+01A7:  MOVWF  27
+01A8:  MOVWF  28
+01A9:  CALL   0CA
+.................... for(a=0;a<=16;a++){ 
+01AA:  CLRF   25
+01AB:  MOVF   25,W
+01AC:  SUBLW  10
+01AD:  BTFSS  03.0
+01AE:  GOTO   1B9
+.................... delay_ms(100); 
+01AF:  MOVLW  64
+01B0:  MOVWF  28
+01B1:  CALL   0D7
+.................... data=str1[a]; 
+01B2:  MOVF   25,W
+01B3:  CALL   004
+01B4:  MOVWF  78
+01B5:  MOVWF  08
+.................... display();} 
+01B6:  CALL   0EB
+01B7:  INCF   25,F
+01B8:  GOTO   1AB
+.................... delay_ms(500); 
+01B9:  MOVLW  02
+01BA:  MOVWF  27
+01BB:  MOVLW  FA
+01BC:  MOVWF  28
+01BD:  CALL   0D7
+01BE:  DECFSZ 27,F
+01BF:  GOTO   1BB
+.................... /*************Ket thuc man chao hoi*****************/ 
+.................... clear();cursor(1,0,0); 
+01C0:  CALL   0C6
+01C1:  MOVLW  01
+01C2:  MOVWF  28
+01C3:  CLRF   29
+01C4:  CLRF   2A
+01C5:  CALL   0B7
+.................... for(a=0;a<=9;a++){data=str4[a];display();delay_ms(80);} 
+01C6:  CLRF   25
+01C7:  MOVF   25,W
+01C8:  SUBLW  09
+01C9:  BTFSS  03.0
+01CA:  GOTO   1D5
+01CB:  MOVF   25,W
+01CC:  CALL   043
+01CD:  MOVWF  78
+01CE:  MOVWF  08
+01CF:  CALL   0EB
+01D0:  MOVLW  50
+01D1:  MOVWF  28
+01D2:  CALL   0D7
+01D3:  INCF   25,F
+01D4:  GOTO   1C7
+.................... moveto(1,13);data=0xdf;display();data='C';display(); 
+01D5:  MOVLW  01
+01D6:  MOVWF  27
+01D7:  MOVLW  0D
+01D8:  MOVWF  28
+01D9:  CALL   0CA
+01DA:  MOVLW  DF
+01DB:  MOVWF  08
+01DC:  CALL   0EB
+01DD:  MOVLW  43
+01DE:  MOVWF  08
+01DF:  CALL   0EB
+.................... for(number=0;number<=999;number++){ 
+01E0:  CLRF   21
+01E1:  CLRF   20
+01E2:  MOVF   21,W
+01E3:  SUBLW  03
+01E4:  BTFSS  03.0
+01E5:  GOTO   233
+01E6:  BTFSS  03.2
+01E7:  GOTO   1EC
+01E8:  MOVF   20,W
+01E9:  SUBLW  E7
+01EA:  BTFSS  03.0
+01EB:  GOTO   233
+.................... /******Chuyen doi sang ma ASII*******/ 
+.................... str_n[0]=0x30+number/100;  //hang tram 
+01EC:  MOVF   21,W
+01ED:  MOVWF  2A
+01EE:  MOVF   20,W
+01EF:  MOVWF  29
+01F0:  CLRF   2C
+01F1:  MOVLW  64
+01F2:  MOVWF  2B
+01F3:  CALL   119
+01F4:  MOVF   78,W
+01F5:  ADDLW  30
+01F6:  MOVWF  22
+.................... str_n[1]=0x30+(number/10)%10; //hang chuc 
+01F7:  MOVF   21,W
+01F8:  MOVWF  2A
+01F9:  MOVF   20,W
+01FA:  MOVWF  29
+01FB:  CLRF   2C
+01FC:  MOVLW  0A
+01FD:  MOVWF  2B
+01FE:  CALL   119
+01FF:  MOVF   79,W
+0200:  MOVWF  28
+0201:  MOVF   78,W
+0202:  MOVWF  27
+0203:  MOVF   79,W
+0204:  MOVWF  2A
+0205:  MOVF   78,W
+0206:  MOVWF  29
+0207:  CLRF   2C
+0208:  MOVLW  0A
+0209:  MOVWF  2B
+020A:  CALL   119
+020B:  MOVF   77,W
+020C:  ADDLW  30
+020D:  MOVWF  23
+.................... str_n[2]=0x30+number%10;   //hang don vi 
+020E:  MOVF   21,W
+020F:  MOVWF  2A
+0210:  MOVF   20,W
+0211:  MOVWF  29
+0212:  CLRF   2C
+0213:  MOVLW  0A
+0214:  MOVWF  2B
+0215:  CALL   119
+0216:  MOVF   77,W
+0217:  ADDLW  30
+0218:  MOVWF  24
+.................... /************************************/ 
+.................... moveto(1,10); 
+0219:  MOVLW  01
+021A:  MOVWF  27
+021B:  MOVLW  0A
+021C:  MOVWF  28
+021D:  CALL   0CA
+....................       for(a=0;a<3;a++){ 
+021E:  CLRF   25
+021F:  MOVF   25,W
+0220:  SUBLW  02
+0221:  BTFSS  03.0
+0222:  GOTO   22F
+....................       data=str_n[a]; 
+0223:  MOVLW  22
+0224:  ADDWF  25,W
+0225:  MOVWF  04
+0226:  BCF    03.7
+0227:  MOVF   00,W
+0228:  MOVWF  08
+....................       display(); 
+0229:  CALL   0EB
+....................       delay_ms(20);} 
+022A:  MOVLW  14
+022B:  MOVWF  28
+022C:  CALL   0D7
+022D:  INCF   25,F
+022E:  GOTO   21F
+....................       } 
+022F:  INCF   20,F
+0230:  BTFSC  03.2
+0231:  INCF   21,F
+0232:  GOTO   1E2
+.................... /*********Thong bao lan cuoi********/ 
+.................... clear(); 
+0233:  CALL   0C6
+.................... for(a=0;str5[a]!=',';a++) 
+0234:  CLRF   25
+0235:  MOVF   25,W
+0236:  CALL   051
+0237:  SUBLW  2C
+0238:  BTFSC  03.2
+0239:  GOTO   244
+....................    { 
+....................       data=str5[a]; 
+023A:  MOVF   25,W
+023B:  CALL   051
+023C:  MOVWF  78
+023D:  MOVWF  08
+....................       display(); 
+023E:  CALL   0EB
+....................       delay_ms(80); 
+023F:  MOVLW  50
+0240:  MOVWF  28
+0241:  CALL   0D7
+....................    } 
+0242:  INCF   25,F
+0243:  GOTO   235
+....................    moveto(2,3); 
+0244:  MOVLW  02
+0245:  MOVWF  27
+0246:  MOVLW  03
+0247:  MOVWF  28
+0248:  CALL   0CA
+.................... for(a=17;str5[a]!=',';a++) 
+0249:  MOVLW  11
+024A:  MOVWF  25
+024B:  MOVF   25,W
+024C:  CALL   051
+024D:  SUBLW  2C
+024E:  BTFSC  03.2
+024F:  GOTO   25A
+....................    { 
+....................       data=str5[a]; 
+0250:  MOVF   25,W
+0251:  CALL   051
+0252:  MOVWF  78
+0253:  MOVWF  08
+....................       display(); 
+0254:  CALL   0EB
+....................       delay_ms(80); 
+0255:  MOVLW  50
+0256:  MOVWF  28
+0257:  CALL   0D7
+....................    } 
+0258:  INCF   25,F
+0259:  GOTO   24B
+....................    delay_ms(1500);clear();moveto(1,5); 
+025A:  MOVLW  06
+025B:  MOVWF  27
+025C:  MOVLW  FA
+025D:  MOVWF  28
+025E:  CALL   0D7
+025F:  DECFSZ 27,F
+0260:  GOTO   25C
+0261:  CALL   0C6
+0262:  MOVLW  01
+0263:  MOVWF  27
+0264:  MOVLW  05
+0265:  MOVWF  28
+0266:  CALL   0CA
+.................... for(a=31;str5[a]!='\0';a++) 
+0267:  MOVLW  1F
+0268:  MOVWF  25
+0269:  MOVF   25,W
+026A:  CALL   051
+026B:  XORLW  00
+026C:  BTFSC  03.2
+026D:  GOTO   278
+....................    { 
+....................       data=str5[a]; 
+026E:  MOVF   25,W
+026F:  CALL   051
+0270:  MOVWF  78
+0271:  MOVWF  08
+....................       display(); 
+0272:  CALL   0EB
+....................       delay_ms(80); 
+0273:  MOVLW  50
+0274:  MOVWF  28
+0275:  CALL   0D7
+....................    } 
+0276:  INCF   25,F
+0277:  GOTO   269
+.................... for(a=0;a<=10;a++){cursor(b=!b,0,0);delay_ms(500);} 
+0278:  CLRF   25
+0279:  MOVF   25,W
+027A:  SUBLW  0A
+027B:  BTFSS  03.0
+027C:  GOTO   290
+027D:  MOVLW  01
+027E:  XORWF  26,F
+027F:  MOVLW  00
+0280:  BTFSC  26.0
+0281:  MOVLW  01
+0282:  MOVWF  27
+0283:  MOVWF  28
+0284:  CLRF   29
+0285:  CLRF   2A
+0286:  CALL   0B7
+0287:  MOVLW  02
+0288:  MOVWF  27
+0289:  MOVLW  FA
+028A:  MOVWF  28
+028B:  CALL   0D7
+028C:  DECFSZ 27,F
+028D:  GOTO   289
+028E:  INCF   25,F
+028F:  GOTO   279
+.................... } 
+0290:  GOTO   159
+.................... } 
+0291:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F3A   HS NOWDT NOPUT NODEBUG NOPROTECT NOBROWNOUT NOLVP NOCPD NOWRT
